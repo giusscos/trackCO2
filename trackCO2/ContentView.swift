@@ -17,11 +17,14 @@ struct CO2Data: Identifiable {
 
 struct ContentView: View {
     enum ActiveSheet: Identifiable {
+        case createActivityEvent
         case viewActivities
         case createActivity
         
         var id: String {
             switch self {
+            case .createActivityEvent:
+                return "createActivityEvent"
             case .viewActivities:
                 return "viewActivities"
             case .createActivity:
@@ -161,7 +164,7 @@ struct ContentView: View {
                                 }
                                 .font(.headline)
                                 
-                                Text("Try to reduce the amount of meat you eat 🥩")
+                                Text("Try to reduce the amount of meat 🥩")
                                     .fontWeight(.bold)
                             }
                             .padding()
@@ -206,7 +209,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        
+                        activeSheet = .createActivityEvent
                     } label: {
                         Label("Add", systemImage: "plus.circle.fill")
                     }
@@ -226,6 +229,8 @@ struct ContentView: View {
             }
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
+                case .createActivityEvent:
+                    ListActivityEventView()
                 case .viewActivities:
                     ListActivityView()
                         .presentationDetents([.medium, .large])

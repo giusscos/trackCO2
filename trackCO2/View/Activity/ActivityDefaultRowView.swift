@@ -17,14 +17,23 @@ struct ActivityDefaultRowView: View {
             HStack {
                 Text(emoji)
                 
-                Text(predefined.defaultName)
+                VStack (alignment: .leading) {
+                    Text("Pre-set activity")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                    
+                    Text(predefined.defaultName)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    
+                    Text("\(predefined.emissionFactor, specifier: "%.2f") \(predefined.emissionUnit.rawValue)/\(predefined.quantityUnit.rawValue)")
+                        .font(.headline)
+                        .foregroundStyle(predefined.type.isCO2Reducing ? .green : .red)
+                }
             }
             .font(.title)
             .fontWeight(.bold)
             
-            Text("\(predefined.emissionFactor, specifier: "%.2f") \(predefined.emissionUnit.rawValue)/\(predefined.quantityUnit.rawValue)")
-                .font(.headline)
-                .foregroundStyle(predefined.type.isCO2Reducing ? .green : .red)
         }
         .padding(.vertical, 8)
     }
