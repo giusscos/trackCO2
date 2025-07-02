@@ -100,7 +100,7 @@ struct EditActivityView: View {
                         .buttonStyle(.borderless)
                         .buttonBorderShape(.circle)
                         
-                        Text("\(co2Emission, specifier: "%.1f")")
+                        Text("\(co2Emission, specifier: "%.2f")")
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .contentTransition(.numericText(value: co2Emission))

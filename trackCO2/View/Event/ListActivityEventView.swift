@@ -11,7 +11,9 @@ import SwiftUI
 struct ListActivityEventView: View {
     @Query var activities: [Activity]
     
-    @State var co2EmissionsToAdd: Double = 0.0
+    @State private var co2EmissionsToAdd: Double = 0.0
+    
+    @State private var selectedTab: String?
     
     var body: some View {
         VStack {
@@ -27,79 +29,74 @@ struct ListActivityEventView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .topLeading)
             
-            TabView {
-                ForEach(activities) { activity in
-                    VStack {
-                        ActivityEventTabView(activity: activity)
-                        
-                        HStack {
-                            Button {
-                                withAnimation {
-                                    co2EmissionsToAdd -= 0.1
-                                }
-                            } label: {
-                                Label("Minus", systemImage: "minus")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .labelStyle(.iconOnly)
-                            }
-                            .buttonStyle(.borderless)
-                            .buttonBorderShape(.circle)
-                            
-                            HStack (alignment: .lastTextBaseline, spacing: 2) {
-                                Text("\(co2EmissionsToAdd, specifier: "%.1f")")
-                                    .font(.largeTitle)
-                                    .fontWeight(.bold)
-                                    .contentTransition(.numericText(value: co2EmissionsToAdd))
-                                
-                                Text("\(activity.type.quantityUnit)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
-                            
-                            Button {
-                                withAnimation {
-                                    co2EmissionsToAdd += 0.1
-                                }
-                            } label: {
-                                Label("Plus", systemImage: "plus")
-                                    .font(.title)
-                                    .fontWeight(.bold)
-                                    .labelStyle(.iconOnly)
-                            }
-                            .buttonStyle(.borderless)
-                            .buttonBorderShape(.circle)
-                        }
-                        .padding(.vertical, 24)
-                        
-                        Button {
-                            
-                        } label: {
-                            Text("Add event")
-                                .font(.headline)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal)
-                                .foregroundStyle(.background)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .tint(.primary)
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .padding()
-                }
-                
-                ForEach(ActivityType.allCases) { activityType in
-                    let emoji = activityType.emoji
-                    
-                    if let predefined = predefinedActivities[activityType] {
-                        VStack {
-                            DefaultActivityEventTabView(predefined: predefined, emoji: emoji)
-                        }
-                    }
+            TabView (selection: $selectedTab) {
+                ForEach(activities + defaultActivities) { activity in
+                    ActivityEventTabView(activity: activity)
+                        .tag(activity.id.uuidString)
                 }
             }
             .tabViewStyle(.page)
             .indexViewStyle(.page(backgroundDisplayMode: .always))
+            
+            HStack {
+                Button {
+                    withAnimation {
+                        co2EmissionsToAdd -= 0.1
+                    }
+                } label: {
+                    Label("Minus", systemImage: "minus")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
+                .buttonBorderShape(.circle)
+                
+                Text("\(co2EmissionsToAdd, specifier: "%.2f")")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .contentTransition(.numericText(value: co2EmissionsToAdd))
+                
+                Button {
+                    withAnimation {
+                        co2EmissionsToAdd += 0.1
+                    }
+                } label: {
+                    Label("Plus", systemImage: "plus")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .labelStyle(.iconOnly)
+                }
+                .buttonStyle(.borderless)
+                .buttonBorderShape(.circle)
+            }
+            .padding(.vertical, 24)
+            
+            Button {
+                let allActivities = activities + defaultActivities
+                let selectedActivity = allActivities.first { $0.id.uuidString == selectedTab }
+                
+                if let selectedActivity = selectedActivity {
+                    print(selectedActivity.name)
+                }
+            } label: {
+                Text("Add event")
+                    .font(.headline)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal)
+                    .foregroundStyle(.background)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .tint(.primary)
+            .buttonStyle(.borderedProminent)
+            .padding()
+        }
+        .onAppear() {
+            if activities.isEmpty, let activity = defaultActivities.first {
+                selectedTab = activity.id.uuidString
+            } else if let activity = activities.first {
+                selectedTab = activity.id.uuidString
+            }
         }
     }
 }

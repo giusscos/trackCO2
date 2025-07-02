@@ -32,38 +32,30 @@ class Activity {
     }
 }
 
-struct PredefinedActivity {
-    let type: ActivityType
-    let defaultName: String
-    let emissionFactor: Double // kg CO2eq per unit (positive for emissions, negative for reductions)
-    let quantityUnit: QuantityUnit
-    let emissionUnit: EmissionUnit
-}
-
-let predefinedActivities: [ActivityType: PredefinedActivity] = [
+let defaultActivities: [Activity] = [
     // Vehicles
-    .car: PredefinedActivity(type: .car, defaultName: "Car Travel", emissionFactor: 0.15, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .airplane: PredefinedActivity(type: .airplane, defaultName: "Airplane Flight", emissionFactor: 0.2, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .boat: PredefinedActivity(type: .boat, defaultName: "Boat Trip", emissionFactor: 0.1, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .motorcycle: PredefinedActivity(type: .motorcycle, defaultName: "Motorcycle Ride", emissionFactor: 0.1, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .bus: PredefinedActivity(type: .bus, defaultName: "Bus Travel", emissionFactor: 0.08, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .train: PredefinedActivity(type: .train, defaultName: "Train Travel", emissionFactor: 0.04, quantityUnit: .km, emissionUnit: .kgCO2e),
+    Activity(type: .car, name: "Car Travel", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.15),
+    Activity(type: .airplane, name: "Airplane Flight", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.2),
+    Activity(type: .boat, name: "Boat Trip", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.1),
+    Activity(type: .motorcycle, name: "Motorcycle Ride", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.1),
+    Activity(type: .bus, name: "Bus Travel", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.08),
+    Activity(type: .train, name: "Train Travel", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.04),
     
     // Foods
-    .beef: PredefinedActivity(type: .beef, defaultName: "Beef Consumption", emissionFactor: 60.0, quantityUnit: .kg, emissionUnit: .kgCO2e),
-    .chicken: PredefinedActivity(type: .chicken, defaultName: "Chicken Consumption", emissionFactor: 6.0, quantityUnit: .kg, emissionUnit: .kgCO2e),
-    .vegetables: PredefinedActivity(type: .vegetables, defaultName: "Vegetable Consumption", emissionFactor: 1.0, quantityUnit: .kg, emissionUnit: .kgCO2e),
-    .rice: PredefinedActivity(type: .rice, defaultName: "Rice Consumption", emissionFactor: 4.0, quantityUnit: .kg, emissionUnit: .kgCO2e),
-    .dairy: PredefinedActivity(type: .dairy, defaultName: "Dairy Consumption", emissionFactor: 10.0, quantityUnit: .kg, emissionUnit: .kgCO2e),
+    Activity(type: .beef, name: "Beef Consumption", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 60.0),
+    Activity(type: .chicken, name: "Chicken Consumption", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 6.0),
+    Activity(type: .vegetables, name: "Vegetable Consumption", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 1.0),
+    Activity(type: .rice, name: "Rice Consumption", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 4.0),
+    Activity(type: .dairy, name: "Dairy Consumption", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 10.0),
     
     // Energy
-    .electricity: PredefinedActivity(type: .electricity, defaultName: "Electricity Usage", emissionFactor: 0.53, quantityUnit: .kWh, emissionUnit: .kgCO2e),
+    Activity(type: .electricity, name: "Electricity Usage", quantityUnit: .kWh, emissionUnit: .kgCO2e, co2Emission: 0.53),
     
     // CO2 Reduction
-    .walking: PredefinedActivity(type: .walking, defaultName: "Walking", emissionFactor: -0.15, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .biking: PredefinedActivity(type: .biking, defaultName: "Biking", emissionFactor: -0.15, quantityUnit: .km, emissionUnit: .kgCO2e),
-    .treePlanting: PredefinedActivity(type: .treePlanting, defaultName: "Tree Planting", emissionFactor: -20.0, quantityUnit: .tree, emissionUnit: .kgCO2e),
-    .recycling: PredefinedActivity(type: .recycling, defaultName: "Recycling", emissionFactor: -0.5, quantityUnit: .kg, emissionUnit: .kgCO2e)
+    Activity(type: .walking, name: "Walking", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: -0.15),
+    Activity(type: .biking, name: "Biking", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: -0.15),
+    Activity(type: .treePlanting, name: "Tree Planting", quantityUnit: .tree, emissionUnit: .kgCO2e, co2Emission: -20.0),
+    Activity(type: .recycling, name: "Recycling", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: -0.5)
 ]
 
 enum EmissionUnit: String, CaseIterable, Codable {

@@ -29,13 +29,11 @@ struct ListActivityView: View {
 
     @State private var activeSheet: ActiveListActivitySheet?
     
-    
-
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(activities) { activity in
+                    ForEach(activities + defaultActivities) { activity in
                         ActivityRowView(activity: activity)
                         .swipeActions {
                             Button(role: .destructive) {
@@ -50,14 +48,6 @@ struct ListActivityView: View {
                                 Label("Edit", systemImage: "pencil")
                             }
                             .tint(.blue)
-                        }
-                    }
-                    
-                    ForEach(ActivityType.allCases) { activityType in
-                        let emoji = activityType.emoji
-                        
-                        if let predefined = predefinedActivities[activityType] {
-                            ActivityDefaultRowView(predefined: predefined, emoji: emoji)
                         }
                     }
                 }

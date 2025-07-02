@@ -26,7 +26,7 @@ struct ActivityEventTabView: View {
             }
             
             HStack (alignment: .lastTextBaseline, spacing: 2) {
-                Text("\(activity.co2Emission, specifier: "%.1f")")
+                Text("\(activity.co2Emission, specifier: "%.2f")")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
