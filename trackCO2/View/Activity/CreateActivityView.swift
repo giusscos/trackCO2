@@ -19,7 +19,7 @@ struct CreateActivityView: View {
     
     @FocusState private var focusedField: Field?
     
-    @State private var type: ActivityType = ActivityType.car
+    @State private var type: ActivityEmissionType = ActivityEmissionType.car
     @State private var activityName: String = ""
     @State private var activityDescription: String = ""
     @State private var emissionType: EmissionUnit = EmissionUnit.kgCO2e
@@ -34,7 +34,7 @@ struct CreateActivityView: View {
             Form {
                 Section {
                     Picker(selection: $type) {
-                        ForEach(ActivityType.allCases, id: \.self) { type in
+                        ForEach(ActivityEmissionType.allCases, id: \.self) { type in
                             Text("\(type.emoji) \(type.rawValue) (\(type.quantityUnit))")
                         }
                     } label: {

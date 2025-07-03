@@ -11,6 +11,7 @@ import SwiftUI
 enum ActiveListActivitySheet: Identifiable {
     case createActivity
     case editActivity(Activity)
+    case selectActivities
     
     var id: String {
         switch self {
@@ -18,6 +19,8 @@ enum ActiveListActivitySheet: Identifiable {
             return "createActivity"
         case .editActivity(let activity):
             return "editActivity-\(activity.id)"
+        case .selectActivities:
+            return "selectActivities"
         }
     }
 }
@@ -61,6 +64,13 @@ struct ListActivityView: View {
                         Label("Add", systemImage: "plus.circle.fill")
                     }
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        activeSheet = .selectActivities
+                    } label: {
+                        Label("Persist", systemImage: "square.and.arrow.down.fill")
+                    }
+                }
             }
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
@@ -68,6 +78,8 @@ struct ListActivityView: View {
                     CreateActivityView()
                 case .editActivity(let activity):
                     EditActivityView(activity: activity)
+                case .selectActivities:
+                    SelectActivitiesToPersistView()
                 }
             }
         }

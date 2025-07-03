@@ -8,30 +8,6 @@
 import Foundation
 import SwiftData
 
-@Model
-class Activity {
-    var id: UUID = UUID()
-    var type: ActivityType = ActivityType.car
-    var name: String
-    var activityDescription: String = ""
-    var quantityUnit: QuantityUnit = QuantityUnit.km
-    var emissionUnit: EmissionUnit = EmissionUnit.kgCO2e
-    var co2Emission: Double = 0.0 // Calculated as quantity * emission factor
-    var createdAt: Date = Date()
-    
-    @Relationship var events: [ActivityEvent] = []
-    
-    init(type: ActivityType = .car, name: String, activityDescription: String = "", quantityUnit: QuantityUnit = .km, emissionUnit: EmissionUnit = .kgCO2e, co2Emission: Double = 0.0, createdAt: Date = Date()) {
-        self.type = type
-        self.name = name
-        self.activityDescription = activityDescription
-        self.quantityUnit = quantityUnit
-        self.emissionUnit = emissionUnit
-        self.co2Emission = co2Emission
-        self.createdAt = createdAt
-    }
-}
-
 let defaultActivities: [Activity] = [
     // Vehicles
     Activity(type: .car, name: "Car Travel", quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.15),
@@ -58,6 +34,30 @@ let defaultActivities: [Activity] = [
     Activity(type: .recycling, name: "Recycling", quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: -0.5)
 ]
 
+@Model
+class Activity {
+    var id: UUID = UUID()
+    var type: ActivityEmissionType = ActivityEmissionType.car
+    var name: String
+    var activityDescription: String = ""
+    var quantityUnit: QuantityUnit = QuantityUnit.km
+    var emissionUnit: EmissionUnit = EmissionUnit.kgCO2e
+    var co2Emission: Double = 0.0 // Calculated as quantity * emission factor
+    var createdAt: Date = Date()
+    
+    @Relationship(deleteRule: .cascade) var events: [ActivityEvent]?
+    
+    init(type: ActivityEmissionType = .car, name: String, activityDescription: String = "", quantityUnit: QuantityUnit = .km, emissionUnit: EmissionUnit = .kgCO2e, co2Emission: Double = 0.0, createdAt: Date = Date()) {
+        self.type = type
+        self.name = name
+        self.activityDescription = activityDescription
+        self.quantityUnit = quantityUnit
+        self.emissionUnit = emissionUnit
+        self.co2Emission = co2Emission
+        self.createdAt = createdAt
+    }
+}
+
 enum EmissionUnit: String, CaseIterable, Codable {
     case kgCO2e = "kgCO2e"
     case gCO2e = "gCO2e"
@@ -79,7 +79,7 @@ enum QuantityUnit: String, CaseIterable, Codable {
     }
 }
 
-enum ActivityType: String, CaseIterable, Identifiable, Codable {
+enum ActivityEmissionType: String, CaseIterable, Identifiable, Codable {
     // CO2 In
     case car = "Car"
     case airplane = "Airplane"

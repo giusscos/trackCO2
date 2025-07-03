@@ -16,7 +16,8 @@ class ActivityEvent {
     
     @Relationship var activity: Activity?
     
-    init(quantity: Double) {
+    init(quantity: Double, activity: Activity?) {
         self.quantity = quantity
+        self.activity = activity
     }
 }
