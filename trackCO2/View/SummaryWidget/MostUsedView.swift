@@ -18,13 +18,13 @@ struct MostUsedView: View {
     var body: some View {
         if let mostUsed = mostUsed {
             VStack (alignment: .leading) {
-                HStack {
-                    Text("Most used")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                NavigationLink {
+                    ListMostUsedView()
+                } label: {
+                    HStack {
+                        Text("Most used")
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    NavigationLink {
-                        ListMostUsedView()
-                    } label: {
                         Label("Navigate to", systemImage: "chevron.right")
                             .labelStyle(.iconOnly)
                     }

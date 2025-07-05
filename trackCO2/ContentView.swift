@@ -87,12 +87,12 @@ struct ContentView: View {
                         Button {
                             activeSheet = .createActivity
                         } label: {
-                            Label("Add activity", systemImage: "plus")
+                            Label("Add activity", systemImage: "plus.circle.fill")
                         }
                         Button {
                             activeSheet = .selectActivities
                         } label: {
-                            Label("Add default activities", systemImage: "square.and.arrow.down.fill")
+                            Label("Add default activities", systemImage: "square.and.arrow.down.on.square.fill")
                         }
                     } label: {
                         Label("More", systemImage: "ellipsis.circle.fill")

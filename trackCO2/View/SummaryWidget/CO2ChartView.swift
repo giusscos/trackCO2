@@ -17,6 +17,7 @@ struct CO2Data: Identifiable {
 
 struct CO2ChartView: View {
     @Query var activities: [Activity]
+    
     @State private var weekOffset: Int = 0
     
     // Helper to get the start of the week for a given date
@@ -61,19 +62,19 @@ struct CO2ChartView: View {
         formatter.timeStyle = .none
         let start = weekRange.start
         let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? weekRange.end
-        return "Week: \(formatter.string(from: start)) - \(formatter.string(from: end))"
+        return "\(formatter.string(from: start)) - \(formatter.string(from: end))"
     }
     
     var body: some View {
         VStack(alignment: .leading)  {
-            HStack {
-                Text("This week CO2")
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink {
+                ListAllActivityEventView()
+            } label: {
+                HStack {
+                    Text("This week CO2")
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 
-                NavigationLink {
-                    ListAllActivityEventView()
-                } label: {
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                         .font(.headline)
@@ -84,28 +85,31 @@ struct CO2ChartView: View {
             Text(weekLabel)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-                .padding(.bottom, 4)
             
-            if data.isEmpty {
-                Text("No data for this week.")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 120)
-            } else {
-                Chart {
-                    ForEach(data) { data in
-                        BarMark(
-                            x: .value("Shape Type", data.type),
-                            y: .value("Total Count", data.count),
-                            width: 24
-                        )
-                        .clipShape(Capsule())
+            Group {
+                if data.isEmpty {
+                    Text("No data for this week.")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 120)
+                } else {
+                    Chart {
+                        ForEach(data) { data in
+                            BarMark(
+                                x: .value("Shape Type", data.type),
+                                y: .value("Total Count", data.count),
+                                width: 24
+                            )
+                            .clipShape(Capsule())
+                        }
                     }
+                    .frame(minHeight: 120)
                 }
-                .frame(minHeight: 120)
-                .gesture(
-                    DragGesture(minimumDistance: 20)
-                        .onEnded { value in
+            }
+            .gesture(
+                DragGesture(minimumDistance: 20)
+                    .onEnded { value in
+                        withAnimation(.spring()) {
                             if value.translation.width < -20 {
                                 // Next week
                                 weekOffset += 1
@@ -114,8 +118,8 @@ struct CO2ChartView: View {
                                 weekOffset -= 1
                             }
                         }
-                )
-            }
+                    }
+            )
         }
         .padding()
         .frame(maxWidth: .infinity)

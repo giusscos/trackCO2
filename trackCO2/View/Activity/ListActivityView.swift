@@ -36,7 +36,7 @@ struct ListActivityView: View {
         NavigationStack {
             List {
                 Section {
-                    ForEach(activities + defaultActivities) { activity in
+                    ForEach(activities) { activity in
                         ActivityRowView(activity: activity)
                         .swipeActions {
                             Button(role: .destructive) {
@@ -68,7 +68,7 @@ struct ListActivityView: View {
                     Button {
                         activeSheet = .selectActivities
                     } label: {
-                        Label("Persist", systemImage: "square.and.arrow.down.fill")
+                        Label("Persist", systemImage: "square.and.arrow.down.on.square.fill")
                     }
                 }
             }

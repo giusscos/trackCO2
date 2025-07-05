@@ -13,13 +13,13 @@ struct ConsumptionView: View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            HStack {
-                Text("Consumption")
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink {
+                ListConsumptionView()
+            } label: {
+                HStack {
+                    Text("Consumption")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 
-                NavigationLink {
-                    ListConsumptionView()
-                } label: {
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }

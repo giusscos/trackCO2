@@ -13,13 +13,13 @@ struct CompensationView: View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            HStack {
-                Text("Compensation")
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink {
+                ListCompensationView()
+            } label: {
+                HStack {
+                    Text("Compensation")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 
-                NavigationLink {
-                    ListCompensationView()
-                } label: {
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }

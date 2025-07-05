@@ -5,8 +5,8 @@
 //  Created by Giuseppe Cosenza on 02/07/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TipsView: View {
     @Query var activities: [Activity]
@@ -16,21 +16,21 @@ struct TipsView: View {
             return "Start tracking your activities to get personalized tips!"
         }
         if mostUsed.type.isCO2Reducing {
-            return "Great job! Your most frequent activity is CO2 reducing (\(mostUsed.type.emoji) \(mostUsed.name)). Keep it up! 🌱"
+            return "Great job! Your most frequent activity is \(mostUsed.type.emoji) \(mostUsed.name.lowercased()). Keep it up! 🌱"
         } else {
-            return "Try to balance your \(mostUsed.type.emoji) \(mostUsed.name.lowercased()) with more CO2 reducing activities like walking, biking, or recycling."
+            return "Try to reduce your \(mostUsed.type.emoji) \(mostUsed.name.lowercased()) activity."
         }
     }
     
     var body: some View {
         VStack (alignment: .leading) {
-            HStack {
-                Text("Tips")
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            NavigationLink {
+                ListTipsView()
+            } label: {
+                HStack {
+                    Text("Tips")
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 
-                NavigationLink {
-                    // TODO: Navigate to all tips view
-                } label: {
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }
