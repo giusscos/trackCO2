@@ -51,6 +51,10 @@ struct ContentView: View {
                             
                             TipsView()
                         }
+                        
+                        if hasAnyTrendsData(activities: activities) {
+                            TrendsView()
+                        }
                     })
                     
                     VStack {
