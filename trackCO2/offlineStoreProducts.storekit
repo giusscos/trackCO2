@@ -1,0 +1,228 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "1899854E",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "47.99",
+      "familyShareable" : false,
+      "internalID" : "782819FB",
+      "localizations" : [
+        {
+          "description" : "Unlimited access forever",
+          "displayName" : "Footprint Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "fp_4799_lf",
+      "referenceName" : "Footprint Lifetime",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "1C60A97F",
+      "localizations" : [
+
+      ],
+      "name" : "Footprint+",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E7B3588A",
+          "introductoryOffer" : {
+            "internalID" : "F8DD6004",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Get unlimited access for this month",
+              "displayName" : "Footprint+",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_199_1m_d",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Footprint+ Monthly",
+          "subscriptionGroupID" : "1C60A97F",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "8AD1ABF1",
+          "introductoryOffer" : {
+            "internalID" : "750991BF",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Footprint+",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_1999_1y_1w",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Footprint+ Yearly",
+          "subscriptionGroupID" : "1C60A97F",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "3.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "730224FE",
+          "introductoryOffer" : {
+            "internalID" : "5243FB25",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
+          "localizations" : [
+            {
+              "description" : "Get unlimited family access for this month",
+              "displayName" : "Footprint+ Family",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_399_1m_3d_f",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Footprint+ Family Monthly",
+          "subscriptionGroupID" : "1C60A97F",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "39.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "F42CBAC0",
+          "introductoryOffer" : {
+            "internalID" : "346A49A3",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Get unlimited family access for this year",
+              "displayName" : "Footprint+ Family",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_3999_1y_1w_f",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Footprint+ Family Yearly",
+          "subscriptionGroupID" : "1C60A97F",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}
