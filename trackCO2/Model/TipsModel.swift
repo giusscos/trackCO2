@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-class Tips {
+class TipsModel {
     var id: UUID = UUID()
     var message: String
     var createdAt: Date = Date()

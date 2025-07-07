@@ -7,6 +7,19 @@
 
 import SwiftData
 import SwiftUI
+import TipKit
+
+struct SelectPlusMultiplierTip: Tip {
+    var title: Text {
+        Text("Change the Multiplier")
+    }
+    var message: Text? {
+        Text("Long-press + or - to select a different step size.")
+    }
+    var image: Image? {
+        Image(systemName: "hand.tap.fill")
+    }
+}
 
 struct ListActivityEventView: View {
     @Environment(\.dismiss) var dismiss
@@ -19,6 +32,12 @@ struct ListActivityEventView: View {
     
     @State private var selectedTab: String?
     @State private var selectedActivity: Activity?
+    
+    @State private var stepSize: Double = 1.0
+    
+    let stepOptions: [Double] = [0.01, 0.1, 1, 10, 100]
+    
+    private var multiplierTip = SelectPlusMultiplierTip()
     
     var body: some View {
         VStack {
@@ -43,55 +62,79 @@ struct ListActivityEventView: View {
             .tabViewStyle(.page)
             .indexViewStyle(.page(backgroundDisplayMode: .always))
             
-            HStack (alignment: .lastTextBaseline) {
-                Button {                    
+            HStack(alignment: .center, spacing: 16) {
+                Button(action: {
                     withAnimation {
-                            quantityUnitFromActivity -= 0.1
-                        
+                        quantityUnitFromActivity = max(0, quantityUnitFromActivity - stepSize)
                         if let selectedActivity = selectedActivity {
-                            co2EmissionsToAdd = quantityUnitFromActivity *
-                                                  selectedActivity.co2Emission
+                            co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
                         }
                     }
-                } label: {
-                    Label("Minus", systemImage: "minus")
+                }) {
+                    Image(systemName: "minus")
                         .font(.title)
                         .fontWeight(.bold)
-                        .labelStyle(.iconOnly)
+                }
+                .contextMenu {
+                    ForEach(stepOptions, id: \..self) { option in
+                        Button(action: {
+                            stepSize = option
+                        }) {
+                            Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                            if stepSize == option {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
                 }
                 .buttonStyle(.borderless)
                 .buttonBorderShape(.circle)
-                
-                VStack {
+
+                VStack(spacing: 4) {
                     if let selectedActivity = selectedActivity {
                         Text("(\(selectedActivity.type.quantityUnit))")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     
-                    Text("\(quantityUnitFromActivity, specifier: "%.1f")")
+                    Text("\(quantityUnitFromActivity, specifier: "%.2f")")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .contentTransition(.numericText(value: quantityUnitFromActivity))
+                    
+                    Text("x\(stepSize, specifier: "%.2f")")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
-                
-                Button {
+                .frame(minWidth: 80)
+
+                Button(action: {
                     withAnimation {
-                        quantityUnitFromActivity += 0.1
-                        
+                        quantityUnitFromActivity = min(1000, quantityUnitFromActivity + stepSize)
                         if let selectedActivity = selectedActivity {
-                            co2EmissionsToAdd = quantityUnitFromActivity *
-                            selectedActivity.co2Emission
+                            co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
                         }
                     }
-                } label: {
-                    Label("Plus", systemImage: "plus")
+                }) {
+                    Image(systemName: "plus")
                         .font(.title)
                         .fontWeight(.bold)
-                        .labelStyle(.iconOnly)
+                }
+                .contextMenu {
+                    ForEach(stepOptions, id: \..self) { option in
+                        Button(action: {
+                            stepSize = option
+                        }) {
+                            Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                            if stepSize == option {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
                 }
                 .buttonStyle(.borderless)
                 .buttonBorderShape(.circle)
+                .popoverTip(multiplierTip)
             }
             .padding(.vertical, 24)
             

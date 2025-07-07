@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 @main
 struct trackCO2App: App {
@@ -22,6 +23,20 @@ struct trackCO2App: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    init() {
+        do {
+            try Tips.resetDatastore()
+            try Tips.configure([
+                .datastoreLocation(.applicationDefault),
+                .displayFrequency(.immediate)
+            ])
+        }
+        catch {
+            // Handle TipKit errors
+            print("Error initializing TipKit \(error.localizedDescription)")
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
