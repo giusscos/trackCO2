@@ -15,19 +15,34 @@
   ],
   "products" : [
     {
-      "displayPrice" : "47.99",
+      "displayPrice" : "34.99",
       "familyShareable" : false,
-      "internalID" : "782819FB",
+      "internalID" : "9D0033C9",
       "localizations" : [
         {
-          "description" : "Unlimited access forever",
+          "description" : "Lifetime unlimited access",
           "displayName" : "Footprint Lifetime",
           "locale" : "en_US"
         }
       ],
-      "productID" : "fp_4799_lf",
+      "productID" : "com.giusscos.footprintLifetime",
       "referenceName" : "Footprint Lifetime",
-      "type" : "Consumable"
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "54.99",
+      "familyShareable" : true,
+      "internalID" : "4A0158E2",
+      "localizations" : [
+        {
+          "description" : "Lifetime unlimited access for your family",
+          "displayName" : "Footprint Family Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.giusscos.footprintFamilyLifetime",
+      "referenceName" : "Footprint Family Lifetime",
+      "type" : "NonConsumable"
     }
   ],
   "settings" : {

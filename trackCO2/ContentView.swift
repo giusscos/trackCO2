@@ -15,7 +15,7 @@ struct ContentView: View {
         NavigationStack {
             if store.isLoading {
                 ProgressView()
-            } else if !store.purchasedSubscriptions.isEmpty {
+            } else if !store.purchasedSubscriptions.isEmpty || !store.purchasedProducts.isEmpty {
                 SummaryView()
             } else {
                 PaywallView()

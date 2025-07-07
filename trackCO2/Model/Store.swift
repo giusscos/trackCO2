@@ -19,8 +19,14 @@ class Store {
     private var subscriptionGroupStatus: RenewalState?
     var isLoading: Bool = true
     
-    private let productIds: [String] = ["fp_199_1m_d", "fp_1999_1y_1w", "fp_399_1m_3d_f", "fp_3999_1y_1w_f"] // test
+    let productIds: [String] = ["fp_199_1m_d", "fp_1999_1y_1w", "fp_399_1m_3d_f", "fp_3999_1y_1w_f"] // test
     let groupId: String = "1C60A97F" // test
+    
+    let productLifetimeIds: [String] = ["com.giusscos.footprintFamilyLifetime", "com.giusscos.footprintLifetime"] // test
+    
+    // if there are multiple product types - create multiple variable for each .consumable, .nonconsumable, .autoRenewable, .nonRenewable.
+    private var storeProducts: [Product] = []
+    var purchasedProducts: [Product] = []
     
     var updateListenerTask : Task<Void, Error>? = nil
     
@@ -30,7 +36,9 @@ class Store {
         
         Task {
             await requestProducts()
+            
             await updateCustomerProductStatus()
+            
             isLoading = false
         }
     }
@@ -60,6 +68,8 @@ class Store {
     @MainActor
     func requestProducts() async {
         do {
+            storeProducts = try await Product.products(for: productLifetimeIds)
+            
             // request from the app store using the product ids (hardcoded)
             subscriptions = try await Product.products(for: productIds)
         } catch {
@@ -91,6 +101,12 @@ class Store {
         }
     }
     
+    //check if product has already been purchased
+    func isPurchased(_ product: Product) async throws -> Bool {
+        // as we only have one product type grouping .nonconsumable - we check if it belongs to the purchasedCourses which ran init()
+        return purchasedProducts.contains(product)
+    }
+    
     func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         // Check whether the JWS passes StoreKit verification.
         switch result {
@@ -115,9 +131,14 @@ class Store {
                     if let subscription = subscriptions.first(where: {$0.id == transaction.productID}) {
                         purchasedSubscriptions.append(subscription)
                     }
+                case .nonConsumable:
+                    if let storeProduct = storeProducts.first(where: {$0.id == transaction.productID}) {
+                        purchasedProducts.append(storeProduct)
+                    }
                 default:
                     break
                 }
+                
                 // Always finish a transaction.
                 await transaction.finish()
             } catch {
