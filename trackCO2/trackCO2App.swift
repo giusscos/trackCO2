@@ -26,7 +26,6 @@ struct trackCO2App: App {
     
     init() {
         do {
-            try Tips.resetDatastore()
             try Tips.configure([
                 .datastoreLocation(.applicationDefault),
                 .displayFrequency(.immediate)

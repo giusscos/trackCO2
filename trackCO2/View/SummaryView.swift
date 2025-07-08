@@ -34,6 +34,10 @@ struct SummaryView: View {
     
     @State var activeSheet: ActiveSheet?
     
+    @State private var manageSubscription: Bool = false
+    
+    @State var storeKit = Store()
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -100,6 +104,21 @@ struct SummaryView: View {
                         } label: {
                             Label("Add default activities", systemImage: "square.and.arrow.down.on.square.fill")
                         }
+                        
+                        Divider()
+                        
+                        if storeKit.purchasedSubscriptions.count > 0 {
+                            Button {
+                                manageSubscription.toggle()
+                            } label: {
+                                Text("Manage subscription")
+                            }
+                        }
+                        
+                        Divider()
+                        
+                        Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                        Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
                     } label: {
                         Label("More", systemImage: "ellipsis.circle.fill")
                     }
@@ -118,6 +137,7 @@ struct SummaryView: View {
                     SelectActivitiesToPersistView()
                 }
             }
+            .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
         }
     }
 }
