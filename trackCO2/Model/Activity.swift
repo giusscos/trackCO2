@@ -38,7 +38,7 @@ let defaultActivities: [Activity] = [
 class Activity {
     var id: UUID = UUID()
     var type: ActivityEmissionType = ActivityEmissionType.car
-    var name: String
+    var name: String = ""
     var activityDescription: String = ""
     var quantityUnit: QuantityUnit = QuantityUnit.km
     var emissionUnit: EmissionUnit = EmissionUnit.kgCO2e
