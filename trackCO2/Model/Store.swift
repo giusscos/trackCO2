@@ -19,10 +19,15 @@ class Store {
     private var subscriptionGroupStatus: RenewalState?
     var isLoading: Bool = true
     
-    let productIds: [String] = ["fp_199_1m_d", "fp_1999_1y_1w", "fp_399_1m_3d_f", "fp_3999_1y_1w_f"] // test
-    let groupId: String = "1C60A97F" // test
+//    let productIds: [String] = ["fp_199_1m_d", "fp_1999_1y_1w", "fp_399_1m_3d_f", "fp_3999_1y_1w_f"] // test
+//    let groupId: String = "1C60A97F" // test
+//    
+//    let productLifetimeIds: [String] = ["com.giusscos.footprintFamilyLifetime", "com.giusscos.footprintLifetime"] // test
     
-    let productLifetimeIds: [String] = ["com.giusscos.footprintFamilyLifetime", "com.giusscos.footprintLifetime"] // test
+    let productIds: [String] = ["fp_199_1m_d", "fp_1999_1y_1w", "fp_399_1m_3d_f", "fp_3999_1y_1w_f"]
+    let groupId: String = "21727569"
+    
+    let productLifetimeIds: [String] = ["com.giusscos.footprintFamilyLifetime", "com.giusscos.footprintLifetime"]
     
     // if there are multiple product types - create multiple variable for each .consumable, .nonconsumable, .autoRenewable, .nonRenewable.
     private var storeProducts: [Product] = []

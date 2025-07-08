@@ -9,30 +9,15 @@
       }
     ]
   },
-  "identifier" : "1899854E",
+  "identifier" : "E7EC84BC",
   "nonRenewingSubscriptions" : [
 
   ],
   "products" : [
     {
-      "displayPrice" : "34.99",
-      "familyShareable" : false,
-      "internalID" : "9D0033C9",
-      "localizations" : [
-        {
-          "description" : "Lifetime unlimited access",
-          "displayName" : "Footprint Lifetime",
-          "locale" : "en_US"
-        }
-      ],
-      "productID" : "com.giusscos.footprintLifetime",
-      "referenceName" : "Footprint Lifetime",
-      "type" : "NonConsumable"
-    },
-    {
-      "displayPrice" : "54.99",
+      "displayPrice" : "59.99",
       "familyShareable" : true,
-      "internalID" : "4A0158E2",
+      "internalID" : "6748361617",
       "localizations" : [
         {
           "description" : "Lifetime unlimited access for your family",
@@ -43,10 +28,28 @@
       "productID" : "com.giusscos.footprintFamilyLifetime",
       "referenceName" : "Footprint Family Lifetime",
       "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "34.99",
+      "familyShareable" : false,
+      "internalID" : "6748358613",
+      "localizations" : [
+        {
+          "description" : "Lifetime unlimited access",
+          "displayName" : "Footprint Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.giusscos.footprintLifetime",
+      "referenceName" : "Footprint Lifetime",
+      "type" : "NonConsumable"
     }
   ],
   "settings" : {
+    "_applicationInternalID" : "6748361581",
+    "_developerTeamID" : "MA7MBQ947C",
     "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 773685392.68903804,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -99,80 +102,12 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "1C60A97F",
+      "id" : "21727569",
       "localizations" : [
-        {
-          "description" : "Track your carbon footprint",
-          "displayName" : "Claud+",
-          "locale" : "en_US"
-        }
+
       ],
-      "name" : "Footprint+",
+      "name" : "Claud+",
       "subscriptions" : [
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "1.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "E7B3588A",
-          "introductoryOffer" : {
-            "internalID" : "F8DD6004",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P3D"
-          },
-          "localizations" : [
-            {
-              "description" : "Get unlimited access for this month",
-              "displayName" : "Footprint+",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "fp_199_1m_d",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Footprint+ Monthly",
-          "subscriptionGroupID" : "1C60A97F",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
-        },
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "19.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "8AD1ABF1",
-          "introductoryOffer" : {
-            "internalID" : "750991BF",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
-          },
-          "localizations" : [
-            {
-              "description" : "Get unlimited access for this year",
-              "displayName" : "Footprint+",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "fp_1999_1y_1w",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Footprint+ Yearly",
-          "subscriptionGroupID" : "1C60A97F",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
-        },
         {
           "adHocOffers" : [
 
@@ -182,24 +117,20 @@
           ],
           "displayPrice" : "3.99",
           "familyShareable" : true,
-          "groupNumber" : 1,
-          "internalID" : "730224FE",
-          "introductoryOffer" : {
-            "internalID" : "5243FB25",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P3D"
-          },
+          "groupNumber" : 2,
+          "internalID" : "6748361628",
+          "introductoryOffer" : null,
           "localizations" : [
             {
               "description" : "Get unlimited family access for this month",
-              "displayName" : "Footprint+ Family",
+              "displayName" : "Claud+ Family",
               "locale" : "en_US"
             }
           ],
           "productID" : "fp_399_1m_3d_f",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Footprint+ Family Monthly",
-          "subscriptionGroupID" : "1C60A97F",
+          "referenceName" : "Claud+ Family Monthly",
+          "subscriptionGroupID" : "21727569",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
@@ -214,24 +145,76 @@
           ],
           "displayPrice" : "39.99",
           "familyShareable" : true,
-          "groupNumber" : 1,
-          "internalID" : "F42CBAC0",
-          "introductoryOffer" : {
-            "internalID" : "346A49A3",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
-          },
+          "groupNumber" : 4,
+          "internalID" : "6748362069",
+          "introductoryOffer" : null,
           "localizations" : [
             {
               "description" : "Get unlimited family access for this year",
-              "displayName" : "Footprint+ Family",
+              "displayName" : "Claud+",
               "locale" : "en_US"
             }
           ],
           "productID" : "fp_3999_1y_1w_f",
           "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Footprint+ Family Yearly",
-          "subscriptionGroupID" : "1C60A97F",
+          "referenceName" : "Claud+ Family Yearly",
+          "subscriptionGroupID" : "21727569",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6748362063",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Get unlimited access for this month",
+              "displayName" : "Claud+",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_199_1m_d",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Claud+ Monthly",
+          "subscriptionGroupID" : "21727569",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6748361170",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Claud+",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "fp_1999_1y_1w",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Claud+ Yearly",
+          "subscriptionGroupID" : "21727569",
           "type" : "RecurringSubscription",
           "winbackOffers" : [
 
