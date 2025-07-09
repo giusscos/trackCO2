@@ -9,18 +9,6 @@ import SwiftData
 import SwiftUI
 import TipKit
 
-struct SelectPlusMultiplierTip: Tip {
-    var title: Text {
-        Text("Change the Multiplier")
-    }
-    var message: Text? {
-        Text("Long-press + or - to select a different step size.")
-    }
-    var image: Image? {
-        Image(systemName: "hand.tap.fill")
-    }
-}
-
 struct ListActivityEventView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
@@ -35,7 +23,7 @@ struct ListActivityEventView: View {
     
     @State private var stepSize: Double = 1.0
     
-    let stepOptions: [Double] = [0.01, 0.1, 1, 10, 100]
+    private let stepOptions: [Double] = [0.01, 0.1, 1, 10, 100]
     
     private var multiplierTip = SelectPlusMultiplierTip()
     

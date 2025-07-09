@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import TipKit
 
 struct EditActivityView: View {
     @Environment(\.modelContext) var modelContext
@@ -28,6 +29,12 @@ struct EditActivityView: View {
     @State private var co2Emission: Double = 0.0
     
     @State private var isDeletingActivity: Bool = false
+    
+    @State private var stepSize: Double = 1.0
+    
+    private let stepOptions: [Double] = [0.01, 0.1, 1, 10, 100]
+    
+    private let multiplierTip = SelectPlusMultiplierTip()
     
     private var isFormValid: Bool {
         !activityName.isEmpty
@@ -89,7 +96,7 @@ struct EditActivityView: View {
                     HStack (spacing: 24) {
                         Button {
                             withAnimation {
-                                co2Emission -= 0.1
+                                co2Emission -= stepSize
                             }
                         } label: {
                             Label("Minus", systemImage: "minus")
@@ -97,17 +104,40 @@ struct EditActivityView: View {
                                 .fontWeight(.bold)
                                 .labelStyle(.iconOnly)
                         }
+                        .contextMenu {
+                            ForEach(stepOptions, id: \..self) { option in
+                                Button(action: {
+                                    stepSize = option
+                                }) {
+                                    Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                    if stepSize == option {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
                         .buttonStyle(.borderless)
                         .buttonBorderShape(.circle)
+                        .popoverTip(multiplierTip)
                         
-                        Text("\(co2Emission, specifier: "%.2f")")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .contentTransition(.numericText(value: co2Emission))
+                        HStack(alignment: .center, spacing: 16) {
+                            Text("(\(type.quantityUnit))")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(co2Emission, specifier: "%.2f")")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .contentTransition(.numericText(value: co2Emission))
+                            
+                            Text("x\(stepSize, specifier: "%.2f")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                         
                         Button {
                             withAnimation {
-                                co2Emission += 0.1
+                                co2Emission += stepSize
                             }
                         } label: {
                             Label("Plus", systemImage: "plus")
@@ -115,8 +145,21 @@ struct EditActivityView: View {
                                 .fontWeight(.bold)
                                 .labelStyle(.iconOnly)
                         }
+                        .contextMenu {
+                            ForEach(stepOptions, id: \..self) { option in
+                                Button(action: {
+                                    stepSize = option
+                                }) {
+                                    Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                    if stepSize == option {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
                         .buttonStyle(.borderless)
                         .buttonBorderShape(.circle)
+                        .popoverTip(multiplierTip)
                     }
                     .padding(.vertical)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -188,7 +231,5 @@ struct EditActivityView: View {
 }
 
 #Preview {
-    EditActivityView(
-        activity: Activity(name: "Car")
-    )
+    EditActivityView(activity: Activity(name: "Car"))
 }

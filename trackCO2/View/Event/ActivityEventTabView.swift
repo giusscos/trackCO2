@@ -14,10 +14,6 @@ struct ActivityEventTabView: View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            Text("Pre-set activity")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-            
             HStack {
                 Text(activity.type.emoji)
                     .font(.largeTitle)
@@ -25,6 +21,7 @@ struct ActivityEventTabView: View {
                 Text(activity.name)
                     .font(.title)
                     .fontWeight(.bold)
+                    .lineLimit(1)
             }
             
             VStack(alignment: .leading, spacing: 2) {
@@ -69,6 +66,7 @@ struct ActivityEventTabView: View {
             .padding(.top, 8)
         }
         .padding()
+        .frame(maxWidth: 300, alignment: .topLeading)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }

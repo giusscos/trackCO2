@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import TipKit
 
 struct CreateActivityView: View {
     @Environment(\.dismiss) var dismiss
@@ -24,6 +25,12 @@ struct CreateActivityView: View {
     @State private var activityDescription: String = ""
     @State private var emissionType: EmissionUnit = EmissionUnit.kgCO2e
     @State private var co2Emission: Double = 0.0
+    
+    @State private var stepSize: Double = 1.0
+    
+    private let stepOptions: [Double] = [0.01, 0.1, 1, 10, 100]
+    
+    private let multiplierTip = SelectPlusMultiplierTip()
     
     private var isFormValid: Bool {
         !activityName.isEmpty
@@ -82,10 +89,10 @@ struct CreateActivityView: View {
                     Text("CO2 amount")
                         .font(.headline)
                     
-                    HStack (spacing: 24) {
+                    HStack(alignment: .center, spacing: 16) {
                         Button {
                             withAnimation {
-                                co2Emission -= 0.1
+                                co2Emission -= stepSize
                             }
                         } label: {
                             Label("Minus", systemImage: "minus")
@@ -93,17 +100,41 @@ struct CreateActivityView: View {
                                 .fontWeight(.bold)
                                 .labelStyle(.iconOnly)
                         }
+                        .contextMenu {
+                            ForEach(stepOptions, id: \..self) { option in
+                                Button(action: {
+                                    stepSize = option
+                                }) {
+                                    Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                    if stepSize == option {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
                         .buttonStyle(.borderless)
                         .buttonBorderShape(.circle)
+                        .popoverTip(multiplierTip)
                         
-                        Text("\(co2Emission, specifier: "%.2f")")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .contentTransition(.numericText(value: co2Emission))
+                        VStack(spacing: 4) {
+                            Text("(\(type.quantityUnit))")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(co2Emission, specifier: "%.2f")")
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .contentTransition(.numericText(value: co2Emission))
+                            
+                            Text("x\(stepSize, specifier: "%.2f")")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+//                        .frame(minWidth: 80)
                         
                         Button {
                             withAnimation {
-                                co2Emission += 0.1
+                                co2Emission += stepSize
                             }
                         } label: {
                             Label("Plus", systemImage: "plus")
@@ -111,8 +142,21 @@ struct CreateActivityView: View {
                                 .fontWeight(.bold)
                                 .labelStyle(.iconOnly)
                         }
+                        .contextMenu {
+                            ForEach(stepOptions, id: \..self) { option in
+                                Button(action: {
+                                    stepSize = option
+                                }) {
+                                    Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                    if stepSize == option {
+                                        Image(systemName: "checkmark")
+                                    }
+                                }
+                            }
+                        }
                         .buttonStyle(.borderless)
                         .buttonBorderShape(.circle)
+                        .popoverTip(multiplierTip)
                     }
                     .padding(.vertical)
                     .frame(maxWidth: .infinity, alignment: .center)

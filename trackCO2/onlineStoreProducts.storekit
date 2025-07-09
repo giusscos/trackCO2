@@ -49,7 +49,7 @@
     "_applicationInternalID" : "6748361581",
     "_developerTeamID" : "MA7MBQ947C",
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 773685392.68903804,
+    "_lastSynchronizedDate" : 773748551.04085696,
     "_locale" : "en_US",
     "_storefront" : "USA",
     "_storeKitErrors" : [
@@ -119,7 +119,12 @@
           "familyShareable" : true,
           "groupNumber" : 2,
           "internalID" : "6748361628",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "0ACF8C63",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
           "localizations" : [
             {
               "description" : "Get unlimited family access for this month",
@@ -147,7 +152,12 @@
           "familyShareable" : true,
           "groupNumber" : 4,
           "internalID" : "6748362069",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "F6505409",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
           "localizations" : [
             {
               "description" : "Get unlimited family access for this year",
@@ -175,7 +185,12 @@
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "6748362063",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "DFEEFD21",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P3D"
+          },
           "localizations" : [
             {
               "description" : "Get unlimited access for this month",
@@ -203,7 +218,12 @@
           "familyShareable" : false,
           "groupNumber" : 3,
           "internalID" : "6748361170",
-          "introductoryOffer" : null,
+          "introductoryOffer" : {
+            "internalID" : "8989447C",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
           "localizations" : [
             {
               "description" : "Get unlimited access for this year",
