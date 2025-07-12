@@ -45,18 +45,18 @@ struct PaywallView: View {
                 .tint(.primary)
                 .interactiveDismissDisabled()
                 
-                Button {
-                    showLifetimePlans = true
-                } label: {
-                    HStack (alignment: .center, spacing: 8) {
-                        Text("Save with lifetime plans")
-                        
-                        Image(systemName: "chevron.right.circle.fill")
-                    }
-                    .font(.headline)
-                }
-                .foregroundStyle(.purple)
-                .buttonStyle(.plain)
+//                Button {
+//                    showLifetimePlans = true
+//                } label: {
+//                    HStack (alignment: .center, spacing: 8) {
+//                        Text("Save with lifetime plans")
+//                        
+//                        Image(systemName: "chevron.right.circle.fill")
+//                    }
+//                    .font(.headline)
+//                }
+//                .foregroundStyle(.purple)
+//                .buttonStyle(.plain)
             }
             .sheet(isPresented: $showLifetimePlans) {
                 PaywallLifetimeView()
