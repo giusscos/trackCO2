@@ -13,18 +13,8 @@ struct StepCountView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NavigationLink {
-                ChartStepsHistoryView()
-            } label: {
-                HStack {
-                    Text("Step Count")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Label("Navigate to", systemImage: "chevron.right")
-                        .labelStyle(.iconOnly)
-                }
-            }
-            .font(.headline)
+            Text("Step Count")
+                .font(.headline)
             
             Text("\(Int(healthKitManager.todaySteps))")
                 .font(.title)

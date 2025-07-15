@@ -31,6 +31,8 @@ struct SummaryView: View {
         }
     }
     
+    @Environment(\.modelContext) var modelContext
+    
     @Query var activities: [Activity]
     
     @State private var healthKitManager = HealthKitManager.shared
@@ -41,6 +43,10 @@ struct SummaryView: View {
     
     @State var storeKit = Store()
     
+    @State private var showAddYesterdayWalkingAlert = false
+    @State private var yesterdayDistance: Double = 0.0
+    @State private var healthKitAuthorized: Bool = false
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -48,12 +54,12 @@ struct SummaryView: View {
                     Grid (alignment: .topLeading, horizontalSpacing: 8, verticalSpacing: 8, content: {
                         CO2ChartView()
                         
-                        GridRow {
-                            StepCountView()
-                            
-                            WalkingRunningDistanceView()
+                        if healthKitAuthorized {
+                            GridRow {
+                                StepCountView()
+                                WalkingRunningDistanceView()
+                            }
                         }
-                        // END NEW
                         
                         GridRow {
                             CompensationView()
@@ -150,14 +156,44 @@ struct SummaryView: View {
             .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
             .onAppear {
                 healthKitManager.requestAuthorization { success in
+                    healthKitAuthorized = success
                     if success {
                         healthKitManager.fetchTodayData()
                         healthKitManager.fetchHistoryData()
                         healthKitManager.fetchStepsPerHourForToday()
                         healthKitManager.fetchDistancePerHourForToday()
+                        // Check for yesterday's walking event
+                        healthKitManager.fetchYesterdayDistance { distance in
+                            guard distance > 0 else { return }
+                            let walkingActivity = activities.first { $0.type == .walking }
+                            let calendar = Calendar.current
+                            let today = calendar.startOfDay(for: Date())
+                            guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today) else { return }
+                            let hasEvent = walkingActivity?.events?.contains(where: { event in
+                                calendar.isDate(event.createdAt, inSameDayAs: yesterday)
+                            }) ?? false
+                            if !hasEvent {
+                                yesterdayDistance = distance
+                                showAddYesterdayWalkingAlert = true
+                            }
+                        }
                     }
                 }
             }
+            .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {
+                Button("Add", role: .none) {
+                    let walkingActivity = activities.first { $0.type == .walking }
+                    let calendar = Calendar.current
+                    let today = calendar.startOfDay(for: Date())
+                    guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today), let walkingActivity else { return }
+                    let event = ActivityEvent(quantity: yesterdayDistance / 1000.0, activity: walkingActivity)
+                    event.createdAt = yesterday
+                    modelContext.insert(event)
+                }
+                Button("Cancel", role: .cancel) {}
+            }, message: {
+                Text("You walked \(String(format: "%.2f", yesterdayDistance / 1000.0)) km yesterday. Would you like to record this as an activity event?")
+            })
         }
     }
 }

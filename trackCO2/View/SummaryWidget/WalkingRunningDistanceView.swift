@@ -22,18 +22,8 @@ struct WalkingRunningDistanceView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            NavigationLink {
-                
-            } label: {
-                HStack {
-                    Text("Step Distance")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Label("Navigate to", systemImage: "chevron.right")
-                        .labelStyle(.iconOnly)
-                }
-            }
-            .font(.headline)
+            Text("Step Distance")
+                .font(.headline)
             
             Text(String(format: "%.2f km", healthKitManager.todayDistance / 1000.0))
                 .font(.title2)

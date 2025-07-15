@@ -168,4 +168,25 @@ class HealthKitManager {
             completion?()
         }
     }
+
+    // Fetch total walking/running distance for yesterday
+    func fetchYesterdayDistance(completion: @escaping (Double) -> Void) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today) else {
+            completion(0)
+            return
+        }
+        let start = yesterday
+        let end = today
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        let type = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let query = HKStatisticsQuery(quantityType: type, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            let distance = result?.sumQuantity()?.doubleValue(for: HKUnit.meter()) ?? 0
+            DispatchQueue.main.async {
+                completion(distance)
+            }
+        }
+        healthStore.execute(query)
+    }
 } 
