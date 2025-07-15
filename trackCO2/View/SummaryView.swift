@@ -7,6 +7,7 @@
 
 import SwiftData
 import SwiftUI
+import HealthKit
 
 struct SummaryView: View {
     enum ActiveSheet: Identifiable {
@@ -32,6 +33,8 @@ struct SummaryView: View {
     
     @Query var activities: [Activity]
     
+    @State private var healthKitManager = HealthKitManager.shared
+    
     @State var activeSheet: ActiveSheet?
     
     @State private var manageSubscription: Bool = false
@@ -44,6 +47,13 @@ struct SummaryView: View {
                 VStack {
                     Grid (alignment: .topLeading, horizontalSpacing: 8, verticalSpacing: 8, content: {
                         CO2ChartView()
+                        
+                        GridRow {
+                            StepCountView()
+                            
+                            WalkingRunningDistanceView()
+                        }
+                        // END NEW
                         
                         GridRow {
                             CompensationView()
@@ -138,6 +148,16 @@ struct SummaryView: View {
                 }
             }
             .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
+            .onAppear {
+                healthKitManager.requestAuthorization { success in
+                    if success {
+                        healthKitManager.fetchTodayData()
+                        healthKitManager.fetchHistoryData()
+                        healthKitManager.fetchStepsPerHourForToday()
+                        healthKitManager.fetchDistancePerHourForToday()
+                    }
+                }
+            }
         }
     }
 }

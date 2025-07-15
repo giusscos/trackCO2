@@ -98,7 +98,7 @@ struct CO2ChartView: View {
                             BarMark(
                                 x: .value("Shape Type", data.type),
                                 y: .value("Total Count", data.count),
-                                width: 24
+                                width: 16
                             )
                             .clipShape(Capsule())
                         }
