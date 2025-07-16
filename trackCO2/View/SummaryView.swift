@@ -15,6 +15,7 @@ struct SummaryView: View {
         case viewActivities
         case createActivity
         case selectActivities
+        case addTrip
         
         var id: String {
             switch self {
@@ -26,7 +27,8 @@ struct SummaryView: View {
                 return "createActivity"
             case .selectActivities:
                 return "selectActivities"
-                
+            case .addTrip:
+                return "addTrip"
             }
         }
     }
@@ -112,13 +114,19 @@ struct SummaryView: View {
                         Button {
                             activeSheet = .createActivity
                         } label: {
-                            Label("Add activity", systemImage: "plus.circle.fill")
+                            Label("Add activity", systemImage: "plus")
                         }
                         
                         Button {
                             activeSheet = .selectActivities
                         } label: {
-                            Label("Add default activities", systemImage: "square.and.arrow.down.on.square.fill")
+                            Label("Add default activities", systemImage: "square.and.arrow.down.on.square")
+                        }
+                        
+                        Button {
+                            activeSheet = .addTrip
+                        } label: {
+                            Label("Add map trip", systemImage: "map")
                         }
                         
                         Divider()
@@ -151,6 +159,8 @@ struct SummaryView: View {
                     CreateActivityView()
                 case .selectActivities:
                     SelectActivitiesToPersistView()
+                case .addTrip:
+                    SelectTypeView()
                 }
             }
             .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)

@@ -275,6 +275,9 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to calculate trip distances.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to calculate trip distances.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -283,7 +286,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = giusscos.trackCO2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -311,6 +314,9 @@
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app needs your location to calculate trip distances.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to calculate trip distances.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -319,7 +325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = giusscos.trackCO2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
