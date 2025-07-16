@@ -34,15 +34,26 @@ struct MapSearchView: View {
             List {
                 ForEach(locationService.completions) { completion in
                     Button(action: { didTapOnCompletion(completion) }) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(completion.title)
-                                .font(.headline)
+                        HStack (alignment: .top) {
+                            Group {
+                                if let category = completion.category {
+                                    Image(systemName: iconName(for: category))
+                                } else {
+                                    Image(systemName: "mappin")
+                                }
+                            }
+                            .font(.headline)
+                            .foregroundStyle(.white)
+                            .padding(4)
+                            .background(.red)
+                            .clipShape(.circle)
                             
-                            Text(completion.subTitle)
-                            
-                            if let url = completion.url {
-                                Link(url.absoluteString, destination: url)
-                                    .lineLimit(1)
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(completion.title)
+                                    .font(.headline)
+                                
+                                Text(completion.subTitle)
+                                    .font(.subheadline)
                             }
                         }
                     }
@@ -68,6 +79,34 @@ struct MapSearchView: View {
                 searchResults = [singleLocation]
             }
         }
+    }
+}
+
+private func iconName(for category: MKPointOfInterestCategory) -> String {
+    switch category {
+    case .restaurant: return "fork.knife"
+    case .cafe: return "cup.and.saucer"
+    case .bakery: return "birthday.cake"
+    case .store: return "bag"
+    case .pharmacy: return "cross.case"
+    case .school: return "graduationcap"
+    case .university: return "building.columns"
+    case .hotel: return "bed.double"
+    case .atm: return "banknote"
+    case .bank: return "building"
+    case .hospital: return "cross"
+    case .park: return "leaf"
+    case .museum: return "paintpalette"
+    case .movieTheater: return "film"
+    case .gasStation: return "fuelpump"
+    case .library: return "books.vertical"
+    case .postOffice: return "envelope"
+    case .police: return "shield.lefthalf.filled"
+    case .fireStation: return "flame"
+    case .publicTransport: return "bus"
+    case .airport: return "airplane"
+    case .parking: return "parkingsign.circle"
+    default: return "mappin"
     }
 }
 
