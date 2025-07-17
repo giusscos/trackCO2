@@ -8,6 +8,7 @@
 import SwiftData
 import SwiftUI
 import HealthKit
+import StoreKit
 
 struct SummaryView: View {
     enum ActiveSheet: Identifiable {
@@ -34,7 +35,8 @@ struct SummaryView: View {
     }
     
     @Environment(\.modelContext) var modelContext
-    
+    @Environment(\.requestReview) var requestReview
+
     @Query var activities: [Activity]
     
     @State private var healthKitManager = HealthKitManager.shared
@@ -188,6 +190,9 @@ struct SummaryView: View {
                             }
                         }
                     }
+                    
+                    // Check for review request on appear
+                    checkAndRequestReview()
                 }
             }
             .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {
@@ -204,6 +209,17 @@ struct SummaryView: View {
             }, message: {
                 Text("You walked \(String(format: "%.2f", yesterdayDistance / 1000.0)) km yesterday. Would you like to record this as an activity event?")
             })
+        }
+    }
+    
+    private func checkAndRequestReview() {
+        let compensation = calculateCO2Totals(activities: activities).compensation
+        let consumption = calculateCO2Totals(activities: activities).consumption
+        
+        let threshold: Double = 100.0 // Set your desired threshold here
+        
+        if compensation >= threshold || consumption >= (threshold * 3) {
+            requestReview()
         }
     }
 }

@@ -107,6 +107,9 @@ struct MapDestinationPickerView: View {
                 }
             }
         }
+        .onAppear {
+            locationManager.requestLocation()
+        }
     }
     
     private func calculateRouteForSelectedLocation() {
