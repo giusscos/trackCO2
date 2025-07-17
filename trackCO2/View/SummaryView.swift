@@ -50,6 +50,7 @@ struct SummaryView: View {
     @State private var showAddYesterdayWalkingAlert = false
     @State private var yesterdayDistance: Double = 0.0
     @State private var healthKitAuthorized: Bool = false
+    @State private var requestReviewShown: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -156,7 +157,6 @@ struct SummaryView: View {
                     ListActivityEventView()
                 case .viewActivities:
                     ListActivityView()
-                        .presentationDetents([.medium, .large])
                 case .createActivity:
                     CreateActivityView()
                 case .selectActivities:
@@ -192,7 +192,11 @@ struct SummaryView: View {
                     }
                     
                     // Check for review request on appear
+                    if requestReviewShown { return }
+                    
                     checkAndRequestReview()
+                    
+                    requestReviewShown = true
                 }
             }
             .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {

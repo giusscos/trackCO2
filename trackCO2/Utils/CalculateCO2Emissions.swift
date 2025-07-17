@@ -28,8 +28,9 @@ func calculateCO2Totals(activities: [Activity]) -> (consumption: Double, compens
 }
 
 func findMostUsedActivity(activities: [Activity]) -> Activity? {
-    guard !activities.isEmpty else { return nil }
-    return activities.max(by: { ($0.events?.count ?? 0) < ($1.events?.count ?? 0) })
+    let activitiesWithEvents = activities.filter { ($0.events?.count ?? 0) > 0 }
+    guard !activitiesWithEvents.isEmpty else { return nil }
+    return activitiesWithEvents.max(by: { ($0.events?.count ?? 0) < ($1.events?.count ?? 0) })
 }
 
 func calculateWeeklyUsage(activity: Activity) -> Double {

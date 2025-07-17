@@ -12,6 +12,8 @@ import TipKit
 struct ListActivityEventView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+
     
     @Query var activities: [Activity]
     
@@ -27,132 +29,135 @@ struct ListActivityEventView: View {
     
     private var multiplierTip = SelectPlusMultiplierTip()
     
+    var isHorizontal: Bool { verticalSizeClass == .compact }
+    
     var body: some View {
-        VStack {
-            VStack (alignment: .leading) {
-                Text("Add Event")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Text("Select an activity and insert the amount")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .topLeading)
-            
-            TabView (selection: $selectedTab) {
-                ForEach(activities) { activity in
-                    ActivityEventTabView(activity: activity, currentCO2Emission: co2EmissionsToAdd)
-                        .tag(activity.id.uuidString)
-                }
-            }
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-            
-            HStack(alignment: .center, spacing: 16) {
-                Button(action: {
-                    withAnimation {
-                        quantityUnitFromActivity = max(0, quantityUnitFromActivity - stepSize)
-                        if let selectedActivity = selectedActivity {
-                            co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
-                        }
+        NavigationStack {
+            VStack {
+                TabView (selection: $selectedTab) {
+                    ForEach(activities) { activity in
+                        ActivityEventTabView(activity: activity, currentCO2Emission: co2EmissionsToAdd)
+                            .tag(activity.id.uuidString)
                     }
-                }) {
-                    Image(systemName: "minus")
-                        .font(.title)
-                        .fontWeight(.bold)
                 }
-                .contextMenu {
-                    ForEach(stepOptions, id: \..self) { option in
-                        Button(action: {
-                            stepSize = option
-                        }) {
-                            Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
-                            if stepSize == option {
-                                Image(systemName: "checkmark")
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                
+                HStack(alignment: .center, spacing: 16) {
+                    Button(action: {
+                        withAnimation {
+                            quantityUnitFromActivity = max(0, quantityUnitFromActivity - stepSize)
+                            if let selectedActivity = selectedActivity {
+                                co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
+                            }
+                        }
+                    }) {
+                        Image(systemName: "minus")
+                            .font(.title)
+                            .fontWeight(.bold)
+                    }
+                    .contextMenu {
+                        ForEach(stepOptions, id: \..self) { option in
+                            Button(action: {
+                                stepSize = option
+                            }) {
+                                Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                if stepSize == option {
+                                    Image(systemName: "checkmark")
+                                }
                             }
                         }
                     }
-                }
-                .buttonStyle(.borderless)
-                .buttonBorderShape(.circle)
-
-                VStack(spacing: 4) {
-                    if let selectedActivity = selectedActivity {
-                        Text("(\(selectedActivity.type.quantityUnit))")
-                            .font(.subheadline)
+                    .buttonStyle(.borderless)
+                    .buttonBorderShape(.circle)
+                    
+                    VStack(spacing: 4) {
+                        if let selectedActivity = selectedActivity {
+                            Text("(\(selectedActivity.type.quantityUnit))")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        Text("\(quantityUnitFromActivity, specifier: "%.2f")")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .contentTransition(.numericText(value: quantityUnitFromActivity))
+                        
+                        Text("x\(stepSize, specifier: "%.2f")")
+                            .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .frame(minWidth: 80)
                     
-                    Text("\(quantityUnitFromActivity, specifier: "%.2f")")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .contentTransition(.numericText(value: quantityUnitFromActivity))
-                    
-                    Text("x\(stepSize, specifier: "%.2f")")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(minWidth: 80)
-
-                Button(action: {
-                    withAnimation {
-                        quantityUnitFromActivity = min(1000, quantityUnitFromActivity + stepSize)
-                        if let selectedActivity = selectedActivity {
-                            co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
+                    Button(action: {
+                        withAnimation {
+                            quantityUnitFromActivity = min(1000, quantityUnitFromActivity + stepSize)
+                            if let selectedActivity = selectedActivity {
+                                co2EmissionsToAdd = quantityUnitFromActivity * selectedActivity.co2Emission
+                            }
                         }
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title)
+                            .fontWeight(.bold)
                     }
-                }) {
-                    Image(systemName: "plus")
-                        .font(.title)
-                        .fontWeight(.bold)
-                }
-                .contextMenu {
-                    ForEach(stepOptions, id: \..self) { option in
-                        Button(action: {
-                            stepSize = option
-                        }) {
-                            Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
-                            if stepSize == option {
-                                Image(systemName: "checkmark")
+                    .contextMenu {
+                        ForEach(stepOptions, id: \..self) { option in
+                            Button(action: {
+                                stepSize = option
+                            }) {
+                                Text(option == floor(option) ? String(format: "%.0f", option) : String(option))
+                                if stepSize == option {
+                                    Image(systemName: "checkmark")
+                                }
                             }
                         }
                     }
+                    .buttonStyle(.borderless)
+                    .buttonBorderShape(.circle)
+                    .popoverTip(multiplierTip)
                 }
-                .buttonStyle(.borderless)
-                .buttonBorderShape(.circle)
-                .popoverTip(multiplierTip)
+                
+                if !isHorizontal {
+                    Button {
+                        addEvent()
+                    } label: {
+                        Text("Add event")
+                            .font(.headline)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal)
+                            .foregroundStyle(.background)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                    .tint(.primary)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                }
             }
-            .padding(.vertical, 24)
-            
-            Button {
-                addEvent()
-            } label: {
-                Text("Add event")
-                    .font(.headline)
-                    .padding(.vertical, 8)
-                    .padding(.horizontal)
-                    .foregroundStyle(.background)
-                    .frame(maxWidth: .infinity, alignment: .center)
+            .navigationTitle("Add event")
+            .toolbar {
+                if isHorizontal {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Save") {
+                            addEvent()
+                        }
+                    }
+                }
             }
-            .tint(.primary)
-            .buttonStyle(.borderedProminent)
-            .padding()
-        }
-        .onChange(of: selectedTab) { _, newValue in
-            quantityUnitFromActivity = 0
-            
-            co2EmissionsToAdd = 0
-            
-            let matchedActivity = activities.first { $0.id.uuidString == newValue }
-            if let matchedActivity = matchedActivity {
-                selectedActivity = matchedActivity
+            .onChange(of: selectedTab) { _, newValue in
+                quantityUnitFromActivity = 0
+                
+                co2EmissionsToAdd = 0
+                
+                let matchedActivity = activities.first { $0.id.uuidString == newValue }
+                if let matchedActivity = matchedActivity {
+                    selectedActivity = matchedActivity
+                }
             }
-        }
-        .onAppear() {
-            if let activity = activities.first {
-                selectedTab = activity.id.uuidString
+            .onAppear() {
+                if let activity = activities.first {
+                    selectedTab = activity.id.uuidString
+                }
             }
         }
     }

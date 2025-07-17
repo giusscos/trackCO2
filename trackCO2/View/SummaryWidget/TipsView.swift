@@ -12,7 +12,8 @@ struct TipsView: View {
     @Query var activities: [Activity]
     
     var tipMessage: String {
-        guard let mostUsed = findMostUsedActivity(activities: activities) else {
+        let activitiesWithEvents = activities.filter { $0.events?.count ?? 0 >= 3 }
+        guard let mostUsed = activitiesWithEvents.max(by: { ($0.events?.count ?? 0) < ($1.events?.count ?? 0) }) else {
             return "Start tracking your activities to get personalized tips!"
         }
         if mostUsed.type.isCO2Reducing {
