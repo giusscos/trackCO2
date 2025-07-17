@@ -13,13 +13,13 @@ struct SearchCompletions: Identifiable {
     let title: String
     let subTitle: String
     var url: URL?
-    var category: MKPointOfInterestCategory? // Nuova proprietà
+    var category: MKPointOfInterestCategory?
 }
 
 struct SearchResult: Identifiable, Hashable {
     let id = UUID()
     let location: CLLocationCoordinate2D
-    var category: MKPointOfInterestCategory? // Nuova proprietà
+    var category: MKPointOfInterestCategory?
     
     static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
         lhs.id == rhs.id
@@ -57,7 +57,7 @@ class LocationService: NSObject, MKLocalSearchCompleterDelegate {
                 title: completion.title,
                 subTitle: completion.subtitle,
                 url: mapItem?.url,
-                category: mapItem?.pointOfInterestCategory // Nuova valorizzazione
+                category: mapItem?.pointOfInterestCategory
             )
         }
     }
