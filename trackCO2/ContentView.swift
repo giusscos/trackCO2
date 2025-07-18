@@ -8,6 +8,8 @@
 import SwiftData
 import SwiftUI
 
+let defaultAppIcon = "claud"
+
 struct ContentView: View {
     @State var store = Store()
     

@@ -17,6 +17,7 @@ struct SummaryView: View {
         case createActivity
         case selectActivities
         case addTrip
+        case selectAppIcon
         
         var id: String {
             switch self {
@@ -30,10 +31,13 @@ struct SummaryView: View {
                 return "selectActivities"
             case .addTrip:
                 return "addTrip"
+            case .selectAppIcon:
+                return "selectAppIcon"
             }
         }
     }
-    
+    @AppStorage("appIcon") var appIcon: String = defaultAppIcon
+
     @Environment(\.modelContext) var modelContext
     @Environment(\.requestReview) var requestReview
 
@@ -134,6 +138,14 @@ struct SummaryView: View {
                         
                         Divider()
                         
+                        Button {
+                            activeSheet = .selectAppIcon
+                        } label: {
+                            Label("App Icon", systemImage: "inset.filled.square.dashed")
+                        }
+                        
+                        Divider()
+                        
                         if storeKit.purchasedSubscriptions.count > 0 {
                             Button {
                                 manageSubscription.toggle()
@@ -163,6 +175,8 @@ struct SummaryView: View {
                     SelectActivitiesToPersistView()
                 case .addTrip:
                     SelectTypeView()
+                case .selectAppIcon:
+                    SelectAppIconView(selectedIcon: $appIcon)
                 }
             }
             .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
