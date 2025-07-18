@@ -14,10 +14,23 @@ struct PaywallView: View {
     @State var storeKit = Store()
     
     @State private var showLifetimePlans: Bool = false
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = true
+    @State private var showOnboarding: Bool = false
     
     var body: some View {
         NavigationStack {
             VStack {
+                HStack {
+                    Button(action: {
+                        showOnboarding = true
+                    }) {
+                        Label("Onboarding", systemImage: "chevron.backward")
+                    }
+                    .accessibilityLabel("Repeat Onboarding")
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
                 SubscriptionStoreView(groupID: storeKit.groupId) {
                     VStack {
                         Image(colorScheme == .dark ? "paywall-dark" : "paywall-light")
@@ -61,6 +74,13 @@ struct PaywallView: View {
             .sheet(isPresented: $showLifetimePlans) {
                 PaywallLifetimeView()
                     .presentationDetents(.init([.medium]))
+            }
+            .sheet(isPresented: $showOnboarding) {
+                OnboardingView(onFinish: {
+                    hasCompletedOnboarding = true
+                    showOnboarding = false
+                })
+                .interactiveDismissDisabled()
             }
         }
     }
