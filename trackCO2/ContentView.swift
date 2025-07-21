@@ -16,18 +16,16 @@ struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
     
     var body: some View {
-        NavigationStack {
-            if store.isLoading {
-                ProgressView()
-            } else if !hasCompletedOnboarding {
-                OnboardingView(onFinish: {
-                    hasCompletedOnboarding = true
-                })
-            } else if !store.purchasedSubscriptions.isEmpty || !store.purchasedProducts.isEmpty {
-                SummaryView()
-            } else {
-                PaywallView()
-            }
+        if store.isLoading {
+            ProgressView()
+        } else if !hasCompletedOnboarding {
+            OnboardingView(onFinish: {
+                hasCompletedOnboarding = true
+            })
+        } else if !store.purchasedSubscriptions.isEmpty || !store.purchasedProducts.isEmpty {
+            SummaryView()
+        } else {
+            PaywallView()
         }
     }
 }

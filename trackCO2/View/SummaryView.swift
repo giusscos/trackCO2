@@ -36,6 +36,7 @@ struct SummaryView: View {
             }
         }
     }
+    
     @AppStorage("appIcon") var appIcon: String = defaultAppIcon
 
     @Environment(\.modelContext) var modelContext
