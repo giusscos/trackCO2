@@ -21,11 +21,11 @@ struct ListCompensationView: View {
         var id: String { rawValue }
         var label: String {
             switch self {
-            case .all: return "All"
-            case .day: return "Day"
-            case .week: return "Week"
-            case .month: return "Month"
-            case .year: return "Year"
+                case .all: return "All"
+                case .day: return "Day"
+                case .week: return "Week"
+                case .month: return "Month"
+                case .year: return "Year"
             }
         }
     }
@@ -47,28 +47,28 @@ struct ListCompensationView: View {
         let calendar = Calendar.current
         let now = Date()
         switch selectedRange {
-        case .all:
-            return (Date.distantPast, Date.distantFuture)
-        case .day:
-            let day = calendar.date(byAdding: .day, value: rangeOffset, to: calendar.startOfDay(for: now)) ?? now
-            let nextDay = calendar.date(byAdding: .day, value: 1, to: day) ?? now
-            return (day, nextDay)
-        case .week:
-            let weekStart = calendar.date(byAdding: .weekOfYear, value: rangeOffset, to: calendar.startOfWeek(for: now)) ?? now
-            let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart) ?? now
-            return (weekStart, weekEnd)
-        case .month:
-            let comps = calendar.dateComponents([.year, .month], from: now)
-            let thisMonth = calendar.date(from: comps) ?? now
-            let monthStart = calendar.date(byAdding: .month, value: rangeOffset, to: thisMonth) ?? now
-            let monthEnd = calendar.date(byAdding: .month, value: 1, to: monthStart) ?? now
-            return (monthStart, monthEnd)
-        case .year:
-            let comps = calendar.dateComponents([.year], from: now)
-            let thisYear = calendar.date(from: comps) ?? now
-            let yearStart = calendar.date(byAdding: .year, value: rangeOffset, to: thisYear) ?? now
-            let yearEnd = calendar.date(byAdding: .year, value: 1, to: yearStart) ?? now
-            return (yearStart, yearEnd)
+            case .all:
+                return (Date.distantPast, Date.distantFuture)
+            case .day:
+                let day = calendar.date(byAdding: .day, value: rangeOffset, to: calendar.startOfDay(for: now)) ?? now
+                let nextDay = calendar.date(byAdding: .day, value: 1, to: day) ?? now
+                return (day, nextDay)
+            case .week:
+                let weekStart = calendar.date(byAdding: .weekOfYear, value: rangeOffset, to: calendar.startOfWeek(for: now)) ?? now
+                let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart) ?? now
+                return (weekStart, weekEnd)
+            case .month:
+                let comps = calendar.dateComponents([.year, .month], from: now)
+                let thisMonth = calendar.date(from: comps) ?? now
+                let monthStart = calendar.date(byAdding: .month, value: rangeOffset, to: thisMonth) ?? now
+                let monthEnd = calendar.date(byAdding: .month, value: 1, to: monthStart) ?? now
+                return (monthStart, monthEnd)
+            case .year:
+                let comps = calendar.dateComponents([.year], from: now)
+                let thisYear = calendar.date(from: comps) ?? now
+                let yearStart = calendar.date(byAdding: .year, value: rangeOffset, to: thisYear) ?? now
+                let yearEnd = calendar.date(byAdding: .year, value: 1, to: yearStart) ?? now
+                return (yearStart, yearEnd)
         }
     }
     
@@ -92,83 +92,99 @@ struct ListCompensationView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Picker("Range", selection: $selectedRange.animation()) {
-                ForEach(TimeRange.allCases) { range in
-                    Text(range.label).tag(range)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.bottom, 4)
-            
-            HStack {
-                if selectedRange != .all {
-                    Button(action: { withAnimation { rangeOffset -= 1 } }) {
-                        Image(systemName: "chevron.left")
+        List {
+            Section {
+                Picker("Range", selection: $selectedRange.animation()) {
+                    ForEach(TimeRange.allCases) { range in
+                        Text(range.label).tag(range)
                     }
                 }
-                Text(rangeLabel)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                if selectedRange != .all {
-                    Button(action: { withAnimation { rangeOffset += 1 } }) {
-                        Image(systemName: "chevron.right")
+                .pickerStyle(.segmented)
+                
+                HStack {
+                    Spacer()
+                    
+                    if selectedRange != .all {
+                        Button(action: { withAnimation { rangeOffset -= 1 } }) {
+                            Image(systemName: "chevron.left")
+                        }
+                        .buttonStyle(.plain)
                     }
-                }
-            }
-            .padding(.bottom, 4)
-            
-            if chartData.isEmpty {
-                Text("No data for this range.")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 120)
-            } else {
-                Chart {
-                    ForEach(chartData) { data in
-                        BarMark(
-                            x: .value("Activity", data.type),
-                            y: .value("CO2", data.count),
-                            width: 16
-                        )
-                        .clipShape(Capsule())
+                    
+                    Text(rangeLabel)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .contentTransition(.numericText())
+                    
+                    if selectedRange != .all {
+                        Button(action: { withAnimation { rangeOffset += 1 } }) {
+                            Image(systemName: "chevron.right")
+                        }
+                        .buttonStyle(.plain)
                     }
+                    
+                    Spacer()
                 }
-                .frame(minHeight: 120)
-            }
-            
-            List {
-                ForEach(filteredEvents) { event in
-                    HStack {
-                        if let activity = event.activity {
-                            Text(activity.type.emoji)
-                            VStack(alignment: .leading) {
-                                Text(activity.name).font(.headline)
-                                Text("\(event.quantity, specifier: "%.2f") \(activity.quantityUnit.rawValue)")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                Text("\(event.quantity * activity.co2Emission, specifier: "%.2f") \(activity.emissionUnit.rawValue)")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(.green)
-                            }
-                        } else {
-                            Text("Unknown Activity")
+                
+                if chartData.isEmpty {
+                    Text("No data for this range.")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 120)
+                } else {
+                    Chart {
+                        ForEach(chartData) { data in
+                            BarMark(
+                                x: .value("Activity", data.type),
+                                y: .value("CO2", data.count),
+                                width: 16
+                            )
+                            .clipShape(Capsule())
                         }
                     }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            deleteEvent(event)
-                        } label: {
-                            Label("Delete", systemImage: "trash")
+                    .frame(minHeight: 120)
+                }
+            }
+            .listRowSeparator(.hidden)
+            
+            ForEach(filteredEvents) { event in
+                HStack {
+                    if let activity = event.activity {
+                        Text(activity.type.emoji)
+                        
+                        Text(activity.name)
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            Text(activity.createdAt, format: .dateTime.day().month(.abbreviated).year())
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(event.quantity, specifier: "%.2f") \(activity.quantityUnit.rawValue)")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(event.quantity * activity.co2Emission, specifier: "%.2f") \(activity.emissionUnit.rawValue)")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.green)
                         }
+                    } else {
+                        Text("Unknown Activity")
+                    }
+                }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        deleteEvent(event)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
                     }
                 }
             }
-            .listStyle(.plain)
         }
         .navigationTitle("Compensation Events")
-        .padding()
     }
     
     func deleteEvent(_ event: ActivityEvent) {

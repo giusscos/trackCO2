@@ -93,85 +93,97 @@ struct ListAllActivityEventView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Picker("Range", selection: $selectedRange.animation()) {
-                ForEach(TimeRange.allCases) { range in
-                    Text(range.label).tag(range)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.bottom, 4)
-            
-            HStack {
-                if selectedRange != .all {
-                    Button(action: { withAnimation { rangeOffset -= 1 } }) {
-                        Image(systemName: "chevron.left")
+        List {
+            Section {
+                Picker("Range", selection: $selectedRange.animation()) {
+                    ForEach(TimeRange.allCases) { range in
+                        Text(range.label).tag(range)
                     }
                 }
-                Text(rangeLabel)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                if selectedRange != .all {
-                    Button(action: { withAnimation { rangeOffset += 1 } }) {
-                        Image(systemName: "chevron.right")
+                .pickerStyle(.segmented)
+                            
+                HStack {
+                    Spacer()
+                    
+                    if selectedRange != .all {
+                        Button(action: { withAnimation { rangeOffset -= 1 } }) {
+                            Image(systemName: "chevron.left")
+                        }
+                        .buttonStyle(.plain)
                     }
-                }
-            }
-            .padding(.bottom, 4)
-            
-            if chartData.isEmpty {
-                Text("No data for this range.")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, minHeight: 120)
-            } else {
-                Chart {
-                    ForEach(chartData) { data in
-                        BarMark(
-                            x: .value("Activity", data.type),
-                            y: .value("CO2", data.count),
-                            width: 16
-                        )
-                        .clipShape(Capsule())
+                    
+                    Text(rangeLabel)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .contentTransition(.numericText())
+                    
+                    if selectedRange != .all {
+                        Button(action: { withAnimation { rangeOffset += 1 } }) {
+                            Image(systemName: "chevron.right")
+                        }
+                        .buttonStyle(.plain)
                     }
+                    
+                    Spacer()
                 }
-                .frame(minHeight: 120)
-            }
-            
-            List {
-                ForEach(filteredEvents) { event in
-                    HStack {
-                        if let activity = event.activity {
-                            Text(activity.type.emoji)
-                            VStack(alignment: .leading) {
-                                Text(event.createdAt, format: .dateTime.day().month(.abbreviated).year())
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                Text(activity.name)
-                                    .font(.headline)
-                                Text("\(event.quantity, specifier: "%.2f") \(activity.quantityUnit.rawValue)")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                Text("\(event.quantity * activity.co2Emission, specifier: "%.2f") \(activity.emissionUnit.rawValue)")
-                                    .font(.subheadline)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(activity.type.isCO2Reducing ? .green : activity.co2Emission > 0 ? .red : .blue)
-                            }
+                
+                if chartData.isEmpty {
+                    Text("No data for this range.")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, minHeight: 120)
+                } else {
+                    Chart {
+                        ForEach(chartData) { data in
+                            BarMark(
+                                x: .value("Activity", data.type),
+                                y: .value("CO2", data.count),
+                                width: 16
+                            )
+                            .clipShape(Capsule())
                         }
                     }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            deleteEvent(event)
-                        } label: {
-                            Label("Delete", systemImage: "trash")
+                    .frame(minHeight: 120)
+                }
+            }
+            .listRowSeparator(.hidden)
+            
+            ForEach(filteredEvents) { event in
+                HStack {
+                    if let activity = event.activity {
+                        Text(activity.type.emoji)
+                        
+                        Text(activity.name)
+                            .font(.headline)
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading) {
+                            Text(event.createdAt, format: .dateTime.day().month(.abbreviated).year())
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            Text("\(event.quantity, specifier: "%.2f") \(activity.quantityUnit.rawValue)")
+                                .font(.headline)
+                                .foregroundStyle(.secondary)
+                            
+                            Text("\(event.quantity * activity.co2Emission, specifier: "%.2f") \(activity.emissionUnit.rawValue)")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                                .foregroundStyle(activity.type.isCO2Reducing ? .green : activity.co2Emission > 0 ? .red : .blue)
                         }
                     }
                 }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    Button(role: .destructive) {
+                        deleteEvent(event)
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
             }
-            .listStyle(.plain)
         }
         .navigationTitle("All Events")
-        .padding()
     }
     
     func deleteEvent(_ event: ActivityEvent) {

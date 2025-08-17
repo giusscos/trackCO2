@@ -12,21 +12,35 @@ let defaultAppIcon = "claud"
 
 struct ContentView: View {
     @State var store = Store()
-    @State var hasntPaid: Bool = false
+    
+    @State var showPaywall: Bool = false
+    
+    var hasPaid: Bool {
+        !store.purchasedSubscriptions.isEmpty || !store.purchasedProducts.isEmpty
+    }
     
     var body: some View {
         if store.isLoading {
             ProgressView()
         } else {
             SummaryView()
-                .onAppear() {
-                    if store.purchasedSubscriptions.isEmpty || store.purchasedProducts.isEmpty {
-                        hasntPaid = true
+                .onAppear {
+                    if hasPaid {
+                        UITextField.appearance().clearButtonMode = .whileEditing
+                        
+                        return
                     }
+                    
+                    showPaywall = true
                 }
-                .fullScreenCover(isPresented: $hasntPaid) {
+                .fullScreenCover(isPresented: $showPaywall) {
                     PaywallView()
                 }
+                .onChange(of: hasPaid, { _, _ in
+                    if !hasPaid { return }
+                    
+                    showPaywall = false
+                })
         }
     }
 }
