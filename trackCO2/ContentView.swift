@@ -12,20 +12,21 @@ let defaultAppIcon = "claud"
 
 struct ContentView: View {
     @State var store = Store()
-    
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
+    @State var hasntPaid: Bool = false
     
     var body: some View {
         if store.isLoading {
             ProgressView()
-        } else if !hasCompletedOnboarding {
-            OnboardingView(onFinish: {
-                hasCompletedOnboarding = true
-            })
-        } else if !store.purchasedSubscriptions.isEmpty || !store.purchasedProducts.isEmpty {
-            SummaryView()
         } else {
-            PaywallView()
+            SummaryView()
+                .onAppear() {
+                    if store.purchasedSubscriptions.isEmpty || store.purchasedProducts.isEmpty {
+                        hasntPaid = true
+                    }
+                }
+                .fullScreenCover(isPresented: $hasntPaid) {
+                    PaywallView()
+                }
         }
     }
 }

@@ -11,100 +11,112 @@ import SwiftUI
 struct PaywallView: View {
     enum ActiveSheet: Identifiable {
         case lifetimePlan
-        case onboarding
         
         var id: String {
             switch self {
-            case .lifetimePlan:
-                return "lifetimePlan"
-            case .onboarding:
-                return "onboarding"
+                case .lifetimePlan:
+                    return "lifetimePlan"
             }
         }
     }
     @Environment(\.colorScheme) var colorScheme
-
+    
     @State var storeKit = Store()
     
     @State var activeSheet: ActiveSheet?
     
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding: Bool = true
+    private let contentData = [
+        (
+            title: "Welcome to trackCO2!",
+            description: "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!",
+            imageName: "paywall-world"
+        ),
+        (
+            title: "Track your carbon footprint.",
+            description: "Add your personal activities and see how much CO2 you're saving every day.",
+            imageName: "paywall-tree"
+        ),
+        (
+            title: "See Your Impact.",
+            description: "Visualize your progress, set goals, and get tips to reduce your emissions. Start your journey to a greener lifestyle today!",
+            imageName: "paywall-claud"
+        )
+    ]
     
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    Button(action: {
-                        activeSheet = .onboarding
-                    }) {
-                        Label("Onboarding", systemImage: "chevron.backward")
+            SubscriptionStoreView(groupID: storeKit.groupId) {
+                VStack {
+                    Button {
+                        activeSheet = .lifetimePlan
+                    } label: {
+                        Label("Save with Lifetime plans", systemImage: "sparkle")
+                            .font(.headline)
                     }
-                    .accessibilityLabel("Repeat Onboarding")
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                
-                SubscriptionStoreView(groupID: storeKit.groupId) {
-                    VStack {
-                        VStack {
-                            Button {
-                                activeSheet = .lifetimePlan
-                            } label: {
-                                Label("Save with Lifetime plans", systemImage: "sparkle")
-                                    .font(.headline)
+                    .tint(.purple)
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.capsule)
+                    
+                    TabView() {
+                        ForEach(0..<contentData.count, id: \.self) { index in
+                            VStack {
+                                Group {
+                                    if contentData[index].imageName == "paywall-claud" {
+                                        Image("\(contentData[index].imageName)\(colorScheme == .dark ? "-dark" : "-light")")
+                                            .resizable()
+                                    } else {
+                                        Image(contentData[index].imageName)
+                                            .resizable()
+                                    }
+                                }
+                                .scaledToFit()
+                                
+                                Text(contentData[index].title)
+                                    .font(.title)
+                                    .fontWeight(.semibold)
+                                    .multilineTextAlignment(.center)
+                                
+                                Text(contentData[index].description)
+                                    .font(.title3)
+                                    .fontWeight(.medium)
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
                             }
-                            .tint(.purple)
-                            .buttonStyle(.borderedProminent)
-                            .buttonBorderShape(.capsule)
-                            
-                            Image(colorScheme == .dark ? "paywall-dark" : "paywall-light")
-                                .resizable()
-                                .frame(minWidth: 150, maxWidth: 350, minHeight: 150, maxHeight: 350)
-                                .aspectRatio(1/1, contentMode: .fit)
-                            
-                            Text("Track your carbon footprint")
-                                .font(.title)
-                                .fontWeight(.semibold)
-                            
-                            Text("Add your personal activities and see how much CO2 you're saving every day.")
-                                .multilineTextAlignment(.center)
-                                .font(.title3)
-                                .foregroundColor(.secondary)
+                            .tag(index)
+                            .padding()
+                            .frame(maxWidth: .infinity, alignment: .center)
                         }
-                        .frame(maxHeight: .infinity, alignment: .center)
-                            
-                        HStack {
-                            Link("Terms of use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                                .foregroundColor(.primary)
-                                .buttonStyle(.plain)
-                            
-                            Text("and")
-                                .foregroundStyle(.secondary)
-                            
-                            Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
-                                .foregroundColor(.primary)
-                                .buttonStyle(.plain)
-                        }
-                        .font(.caption)
                     }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
                     .padding(.vertical)
+                    
+                    HStack {
+                        Link("Terms of use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                            .foregroundColor(.primary)
+                            .buttonStyle(.plain)
+                        
+                        Text("and")
+                            .foregroundStyle(.secondary)
+                        
+                        Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
+                            .foregroundColor(.primary)
+                            .buttonStyle(.plain)
+                    }
+                    .font(.caption)
+                    .padding(8)
                 }
-                .subscriptionStoreControlStyle(.pagedProminentPicker, placement: .bottomBar)
-                .subscriptionStoreButtonLabel(.multiline)
-                .storeButton(.visible, for: .restorePurchases)
-                .tint(.primary)
+                .frame(minHeight: 300)
             }
+            .subscriptionStoreControlStyle(.pagedProminentPicker, placement: .bottomBar)
+            .subscriptionStoreButtonLabel(.multiline)
+            .storeButton(.visible, for: .restorePurchases)
+            .storeButton(.hidden, for: .cancellation)
+            .tint(.primary)
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
-                case .onboarding:
-                    OnboardingView(onFinish: {
-                        hasCompletedOnboarding = true
-                        activeSheet = nil
-                    })
-                    .interactiveDismissDisabled()
-                case .lifetimePlan:
-                    PaywallLifetimeView()
-                        .presentationDetents(.init([.medium]))
+                    case .lifetimePlan:
+                        PaywallLifetimeView()
+                            .presentationDetents(.init([.medium]))
                 }
             }
         }
