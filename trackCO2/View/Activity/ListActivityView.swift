@@ -61,14 +61,18 @@ struct ListActivityView: View {
                     Button {
                         activeSheet = .createActivity
                     } label: {
-                        Label("Add", systemImage: "plus.circle.fill")
+                        if #available(iOS 26, *) {
+                            Label("Add", systemImage: "plus")
+                        } else {
+                            Label("Add", systemImage: "plus.circle.fill")
+                        }
                     }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         activeSheet = .selectActivities
                     } label: {
-                        Label("Persist", systemImage: "square.and.arrow.down.on.square.fill")
+                        Label("Persist", systemImage: "square.and.arrow.down.on.square")
                     }
                 }
             }

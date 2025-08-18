@@ -73,7 +73,7 @@ struct ListActivityEventView: View {
                     
                     VStack(spacing: 4) {
                         if let selectedActivity = selectedActivity {
-                            Text("(\(selectedActivity.type.quantityUnit))")
+                            Text(verbatim: "(\(selectedActivity.type.quantityUnit))")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -177,3 +177,4 @@ struct ListActivityEventView: View {
 #Preview {
     ListActivityEventView()
 }
+

@@ -112,7 +112,11 @@ struct SummaryView: View {
                     Button {
                         activeSheet = .createActivityEvent
                     } label: {
-                        Label("Add", systemImage: "plus.circle.fill")
+                        if #available(iOS 26, *) {
+                            Label("Add", systemImage: "plus")
+                        } else {
+                            Label("Add", systemImage: "plus.circle.fill")
+                        }
                     }
                     .disabled(activities.isEmpty)
                 }
@@ -160,7 +164,11 @@ struct SummaryView: View {
                         Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                         Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
                     } label: {
-                        Label("More", systemImage: "ellipsis.circle.fill")
+                        if #available(iOS 26, *) {
+                            Label("More", systemImage: "ellipsis")
+                        } else {
+                            Label("More", systemImage: "ellipsis.circle.fill")
+                        }
                     }
                 }
             }
