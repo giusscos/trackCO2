@@ -8,117 +8,133 @@
 import StoreKit
 import SwiftUI
 
-struct PaywallView: View {
-    enum ActiveSheet: Identifiable {
-        case lifetimePlan
-        
-        var id: String {
-            switch self {
-                case .lifetimePlan:
-                    return "lifetimePlan"
-            }
+private struct GlassLifetimeButtonStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content.buttonStyle(.glass)
+        } else {
+            content
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
         }
     }
-    @Environment(\.colorScheme) var colorScheme
+}
+
+struct PaywallView: View {
+    var embedsNavigationStack: Bool = true
+    var onPurchaseComplete: (() -> Void)? = nil
     
-    @State var storeKit = Store()
+    @State private var storeKit = Store()
     
-    @State var activeSheet: ActiveSheet?
+    @State private var showingLifetimePlan = false
     
-    private let contentData = [
-        (
-            title: "Welcome to trackCO2!",
-            description: "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!",
-            imageName: "paywall-world"
-        ),
-        (
-            title: "Track your carbon footprint.",
-            description: "Add your personal activities and see how much CO2 you're saving every day.",
-            imageName: "paywall-tree"
-        ),
-        (
-            title: "See Your Impact.",
-            description: "Visualize your progress, set goals, and get tips to reduce your emissions. Start your journey to a greener lifestyle today!",
-            imageName: "paywall-claud"
-        )
+    private let paywallHealth = ClaudHealth(score: 0.85)
+    
+    private struct Benefit: Identifiable {
+        let id = UUID()
+        let icon: String
+        let text: LocalizedStringKey
+    }
+    
+    private let benefits: [Benefit] = [
+        Benefit(icon: "chart.bar.fill", text: "Log daily activities and see your real CO₂ footprint grow over time."),
+        Benefit(icon: "map.fill", text: "Compare transport options and always pick the greenest route."),
+        Benefit(icon: "figure.walk", text: "Auto-sync steps and walking distance from Apple Health."),
+        Benefit(icon: "lightbulb.fill", text: "Get weekly insights and tips to reduce your impact.")
     ]
     
     var body: some View {
-        NavigationStack {
-            SubscriptionStoreView(groupID: storeKit.groupId) {
-                VStack {
-                    Button {
-                        activeSheet = .lifetimePlan
-                    } label: {
-                        Label("Save with Lifetime plans", systemImage: "sparkle")
-                            .font(.headline)
-                    }
-                    .tint(.purple)
-                    .buttonStyle(.borderedProminent)
-                    .buttonBorderShape(.capsule)
-                    
-                    TabView() {
-                        ForEach(0..<contentData.count, id: \.self) { index in
-                            VStack {
-                                Group {
-                                    if contentData[index].imageName == "paywall-claud" {
-                                        Image("\(contentData[index].imageName)\(colorScheme == .dark ? "-dark" : "-light")")
-                                            .resizable()
-                                    } else {
-                                        Image(contentData[index].imageName)
-                                            .resizable()
-                                    }
-                                }
-                                .scaledToFit()
-                                
-                                Text(contentData[index].title)
-                                    .font(.title)
-                                    .fontWeight(.semibold)
-                                    .multilineTextAlignment(.center)
-                                
-                                Text(contentData[index].description)
-                                    .font(.title3)
-                                    .fontWeight(.medium)
-                                    .foregroundStyle(.secondary)
-                                    .multilineTextAlignment(.center)
-                            }
-                            .tag(index)
-                            .padding()
-                            .frame(maxWidth: .infinity, alignment: .center)
+        Group {
+            if embedsNavigationStack {
+                NavigationStack {
+                    paywallContent
+                }
+            } else {
+                paywallContent
+            }
+        }
+        .onChange(of: storeKit.hasPaid) { _, paid in
+            guard paid else { return }
+            onPurchaseComplete?()
+        }
+    }
+    
+    private var paywallContent: some View {
+        SubscriptionStoreView(groupID: storeKit.groupId) {
+            VStack(spacing: 16) {
+                VStack(spacing: 6) {
+                    ClaudCloudView(
+                        color: paywallHealth.cloudBodyColor,
+                        baseEyeOpenness: paywallHealth.baseEyeOpenness,
+                        isHungry: false
+                    )
+                    .scaleEffect(1.2)
+                    .padding(.vertical, 8)
+
+                    Text("Unlock trackCO2 Premium")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .multilineTextAlignment(.center)
+
+                    Text("Understand your impact and make greener choices every day.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(benefits) { benefit in
+                        HStack(alignment: .top, spacing: 12) {
+                            Image(systemName: benefit.icon)
+                                .font(.body)
+                                .foregroundStyle(.tint)
+                                .frame(width: 22, alignment: .center)
+                                .padding(.top, 2)
+
+                            Text(benefit.text)
+                                .font(.subheadline)
+                                .foregroundStyle(.primary)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .padding(.vertical)
-                    
-                    HStack {
-                        Link("Terms of use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                            .foregroundColor(.primary)
-                            .buttonStyle(.plain)
-                        
-                        Text("and")
-                            .foregroundStyle(.secondary)
-                        
-                        Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
-                            .foregroundColor(.primary)
-                            .buttonStyle(.plain)
-                    }
-                    .font(.caption)
-                    .padding(8)
                 }
-                .frame(minHeight: 300)
-            }
-            .subscriptionStoreControlStyle(.pagedProminentPicker, placement: .bottomBar)
-            .subscriptionStoreButtonLabel(.multiline)
-            .storeButton(.visible, for: .restorePurchases)
-            .storeButton(.hidden, for: .cancellation)
-            .tint(.primary)
-            .sheet(item: $activeSheet) { sheet in
-                switch sheet {
-                    case .lifetimePlan:
-                        PaywallLifetimeView()
-                            .presentationDetents(.init([.medium]))
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Button {
+                    showingLifetimePlan = true
+                } label: {
+                    Label("Save with Lifetime plans", systemImage: "sparkle")
+                        .font(.headline)
                 }
+                .modifier(GlassLifetimeButtonStyle())
+
+                HStack {
+                    Link("Terms of use", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                        .foregroundColor(.primary)
+                        .buttonStyle(.plain)
+
+                    Text("and")
+                        .foregroundStyle(.secondary)
+
+                    Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
+                        .foregroundColor(.primary)
+                        .buttonStyle(.plain)
+                }
+                .font(.caption)
             }
+            .padding(.vertical)
+            .padding(.bottom, 24)
+            .frame(maxWidth: .infinity)
+        }
+        .subscriptionStoreControlStyle(.pagedProminentPicker, placement: .bottomBar)
+        .subscriptionStoreButtonLabel(.multiline)
+        .backgroundStyle(.clear)
+        .subscriptionStorePickerItemBackground(.thinMaterial)
+        .storeButton(.visible, for: .restorePurchases)
+        .storeButton(.hidden, for: .cancellation)
+        .sheet(isPresented: $showingLifetimePlan) {
+            PaywallLifetimeView()
+                .presentationDetents(.init([.medium]))
         }
     }
 }

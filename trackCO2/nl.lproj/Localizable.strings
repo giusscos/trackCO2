@@ -133,6 +133,12 @@
 "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Tik op het vinkje om deze rit op te slaan en de CO₂-uitstoot in je activiteitenlogboek te registreren.";
 
 // MARK: - Paywall
+"Unlock trackCO2 Premium" = "Ontgrendel trackCO2 Premium";
+"Understand your impact and make greener choices every day." = "Begrijp je impact en maak elke dag groenere keuzes.";
+"Log daily activities and see your real CO₂ footprint grow over time." = "Log dagelijkse activiteiten en zie je echte CO₂-voetafdruk in de loop van de tijd groeien.";
+"Compare transport options and always pick the greenest route." = "Vergelijk vervoersopties en kies altijd de groenste route.";
+"Auto-sync steps and walking distance from Apple Health." = "Synchroniseer automatisch stappen en wandelafstand vanuit Apple Gezondheid.";
+"Get weekly insights and tips to reduce your impact." = "Ontvang wekelijkse inzichten en tips om je impact te verminderen.";
 "Save with Lifetime plans" = "Bespaar met lifetime-abonnementen";
 "Welcome to trackCO2!" = "Welkom bij trackCO2!";
 "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Volg je CO₂-voetafdruk door je dagelijkse activiteiten te registreren. Ontdek hoe je keuzes het milieu beïnvloeden en maak het verschil!";
@@ -153,6 +159,7 @@
 "Sync Your Steps" = "Synchroniseer je stappen";
 "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 kan je stappentelling en wandelafstand uit Apple Gezondheid lezen om milieuvriendelijke beweging automatisch te loggen.";
 "Allow Health Access" = "Gezondheidstoegang toestaan";
+"Continue" = "Doorgaan";
 "Skip" = "Overslaan";
 "Maybe Later" = "Misschien later";
 

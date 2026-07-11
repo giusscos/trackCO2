@@ -133,6 +133,12 @@
 "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Tocca il segno di spunta per salvare questo viaggio e registrare le emissioni di CO₂ nel registro attività.";
 
 // MARK: - Paywall
+"Unlock trackCO2 Premium" = "Sblocca trackCO2 Premium";
+"Understand your impact and make greener choices every day." = "Comprendi il tuo impatto e fai scelte più green ogni giorno.";
+"Log daily activities and see your real CO₂ footprint grow over time." = "Registra le attività quotidiane e osserva la tua impronta CO₂ reale crescere nel tempo.";
+"Compare transport options and always pick the greenest route." = "Confronta le opzioni di trasporto e scegli sempre il percorso più green.";
+"Auto-sync steps and walking distance from Apple Health." = "Sincronizza automaticamente passi e distanza a piedi da Apple Health.";
+"Get weekly insights and tips to reduce your impact." = "Ricevi approfondimenti settimanali e consigli per ridurre il tuo impatto.";
 "Save with Lifetime plans" = "Risparmia con i piani a vita";
 "Welcome to trackCO2!" = "Benvenuto in trackCO2!";
 "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Monitora la tua impronta di carbonio registrando le attività quotidiane. Scopri come le tue scelte influenzano l'ambiente e fai la differenza!";
@@ -153,6 +159,7 @@
 "Sync Your Steps" = "Sincronizza i passi";
 "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 può leggere il conteggio dei passi e la distanza percorsa a piedi da Apple Health per registrare automaticamente gli spostamenti ecologici.";
 "Allow Health Access" = "Consenti accesso a Salute";
+"Continue" = "Continua";
 "Skip" = "Salta";
 "Maybe Later" = "Forse più tardi";
 

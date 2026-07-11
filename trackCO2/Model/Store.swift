@@ -33,6 +33,10 @@ class Store {
     private var storeProducts: [Product] = []
     var purchasedProducts: [Product] = []
     
+    var hasPaid: Bool {
+        !purchasedSubscriptions.isEmpty || !purchasedProducts.isEmpty
+    }
+    
     var updateListenerTask : Task<Void, Error>? = nil
     
     init() {

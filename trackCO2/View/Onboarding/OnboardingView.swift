@@ -4,7 +4,7 @@
 //
 
 import HealthKit
-import StoreKit
+import HealthKitUI
 import SwiftUI
 
 struct OnboardingView: View {
@@ -58,22 +58,19 @@ private extension View {
 
 // MARK: - Shared Layout
 
-private struct OnboardingPageLayout<Destination: View, Secondary: View>: View {
-    let symbol: String
+private struct OnboardingPageLayout<Header: View, Primary: View, Secondary: View>: View {
+    let hidesBackButton: Bool
     let title: LocalizedStringKey
     let description: LocalizedStringKey
-    let buttonTitle: LocalizedStringKey
-    @ViewBuilder let destination: () -> Destination
+    @ViewBuilder let header: () -> Header
+    @ViewBuilder let primaryButton: () -> Primary
     @ViewBuilder let secondaryButton: () -> Secondary
 
     var body: some View {
         VStack {
             Spacer()
 
-            Image(systemName: symbol)
-                .font(.system(size: 90))
-                .foregroundStyle(.tint)
-                .onboardingAppear(.icon)
+            header()
 
             Text(title)
                 .font(.largeTitle)
@@ -87,36 +84,49 @@ private struct OnboardingPageLayout<Destination: View, Secondary: View>: View {
 
             Spacer()
 
-            NavigationLink(destination: destination()) {
-                Text(buttonTitle)
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.tint)
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-            }
-            .onboardingAppear(.button)
+            primaryButton()
+                .onboardingAppear(.button)
 
             secondaryButton()
                 .onboardingAppear(.button)
         }
         .padding(.horizontal, 32)
         .multilineTextAlignment(.center)
-        .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(hidesBackButton)
     }
 }
 
 // MARK: - Pages 1–3
 
 private struct OnboardingWelcomePage: View {
+    private let welcomeHealth = ClaudHealth(score: 0.85)
+
     var body: some View {
         OnboardingPageLayout(
-            symbol: "leaf.circle.fill",
+            hidesBackButton: false,
             title: "Welcome to trackCO2!",
             description: "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!",
-            buttonTitle: "Get Started",
-            destination: { OnboardingActivitiesPage() },
+            header: {
+                ClaudCloudView(
+                    color: welcomeHealth.cloudBodyColor,
+                    baseEyeOpenness: welcomeHealth.baseEyeOpenness,
+                    isHungry: false
+                )
+                .scaleEffect(1.5)
+                .padding(.vertical, 16)
+                .onboardingAppear(.icon)
+            },
+            primaryButton: {
+                NavigationLink(destination: OnboardingActivitiesPage()) {
+                    Text("Get Started")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.tint)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+            },
             secondaryButton: { EmptyView() }
         )
     }
@@ -125,11 +135,26 @@ private struct OnboardingWelcomePage: View {
 private struct OnboardingActivitiesPage: View {
     var body: some View {
         OnboardingPageLayout(
-            symbol: "plus.circle.fill",
+            hidesBackButton: true,
             title: "Track Your Activities",
             description: "Log your daily activities — driving, flying, food, energy — and see your real CO₂ footprint build up over time.",
-            buttonTitle: "Next",
-            destination: { OnboardingTripsPage() },
+            header: {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 90))
+                    .foregroundStyle(.tint)
+                    .onboardingAppear(.icon)
+            },
+            primaryButton: {
+                NavigationLink(destination: OnboardingTripsPage()) {
+                    Text("Next")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.tint)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+            },
             secondaryButton: { EmptyView() }
         )
     }
@@ -138,11 +163,26 @@ private struct OnboardingActivitiesPage: View {
 private struct OnboardingTripsPage: View {
     var body: some View {
         OnboardingPageLayout(
-            symbol: "map.fill",
+            hidesBackButton: true,
             title: "Plan Greener Trips",
             description: "Use the map to compare transport options side by side. The greenest route is always shown first.",
-            buttonTitle: "Next",
-            destination: { OnboardingHealthKitPage() },
+            header: {
+                Image(systemName: "map.fill")
+                    .font(.system(size: 90))
+                    .foregroundStyle(.tint)
+                    .onboardingAppear(.icon)
+            },
+            primaryButton: {
+                NavigationLink(destination: OnboardingHealthKitPage()) {
+                    Text("Next")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.tint)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+            },
             secondaryButton: { EmptyView() }
         )
     }
@@ -150,113 +190,71 @@ private struct OnboardingTripsPage: View {
 
 // MARK: - Page 4 — HealthKit
 
-private func isHealthDataDenied() -> Bool {
-    guard HKHealthStore.isHealthDataAvailable() else { return true }
-    let healthStore = HKHealthStore()
-    let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-    let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
-    return healthStore.authorizationStatus(for: stepType) == .sharingDenied
-        || healthStore.authorizationStatus(for: distanceType) == .sharingDenied
-}
-
-private func probeHealthKitReadAccess(completion: @escaping (Bool) -> Void) {
-    guard HKHealthStore.isHealthDataAvailable(), !isHealthDataDenied() else {
-        completion(false)
-        return
-    }
-
-    let healthStore = HKHealthStore()
-    let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
-    let calendar = Calendar.current
-    let start = calendar.startOfDay(for: Date())
-    guard let end = calendar.date(byAdding: .day, value: 1, to: start) else {
-        completion(false)
-        return
-    }
-
-    let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
-    let query = HKStatisticsQuery(
-        quantityType: stepType,
-        quantitySamplePredicate: predicate,
-        options: .cumulativeSum
-    ) { _, _, error in
-        DispatchQueue.main.async {
-            if let error = error as? HKError {
-                completion(error.code != .errorAuthorizationDenied && error.code != .errorAuthorizationNotDetermined)
-            } else {
-                completion(error == nil)
-            }
-        }
-    }
-    healthStore.execute(query)
-}
-
 private struct OnboardingHealthKitPage: View {
     @State private var navigateToPaywall = false
+    @State private var isHealthAccessGranted = false
+    @State private var trigger = false
+
+    private let healthStore = HKHealthStore()
+    private let readTypes: Set<HKObjectType> = [
+        HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+        HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+    ]
 
     var body: some View {
-        VStack {
-            Spacer()
-
-            Image(systemName: "heart.fill")
-                .font(.system(size: 90))
-                .foregroundStyle(.tint)
-                .onboardingAppear(.icon)
-
-            Text("Sync Your Steps")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .onboardingAppear(.title)
-
-            Text("trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.")
-                .font(.body)
+        OnboardingPageLayout(
+            hidesBackButton: true,
+            title: "Sync Your Steps",
+            description: "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.",
+            header: {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 90))
+                    .foregroundStyle(.tint)
+                    .onboardingAppear(.icon)
+            },
+            primaryButton: {
+                Button {
+                    if isHealthAccessGranted {
+                        navigateToPaywall = true
+                    } else if HKHealthStore.isHealthDataAvailable() {
+                        trigger.toggle()
+                    } else {
+                        navigateToPaywall = true
+                    }
+                } label: {
+                    Text(isHealthAccessGranted ? "Continue" : "Allow Health Access")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(.tint)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                }
+                .animation(.easeInOut(duration: 0.2), value: isHealthAccessGranted)
+            },
+            secondaryButton: {
+                Button(String(localized: "Skip")) {
+                    navigateToPaywall = true
+                }
+                .font(.subheadline)
                 .foregroundStyle(.secondary)
-                .onboardingAppear(.body)
-
-            Spacer()
-
-            Button {
-                requestHealthAccessAndProceed()
-            } label: {
-                Text("Allow Health Access")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(.tint)
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                .padding(.top, 8)
             }
-            .onboardingAppear(.button)
-
-            Button(String(localized: "Skip")) {
+        )
+        .healthDataAccessRequest(store: healthStore, readTypes: readTypes, trigger: trigger) { result in
+            DispatchQueue.main.async {
+                if case .success(true) = result {
+                    isHealthAccessGranted = true
+                }
                 navigateToPaywall = true
             }
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
-            .padding(.top, 8)
-            .onboardingAppear(.button)
         }
-        .padding(.horizontal, 32)
-        .multilineTextAlignment(.center)
-        .navigationBarBackButtonHidden(true)
         .navigationDestination(isPresented: $navigateToPaywall) {
             OnboardingPaywallPage()
         }
-    }
-
-    private func requestHealthAccessAndProceed() {
-        probeHealthKitReadAccess { isAuthorized in
-            if isAuthorized {
-                navigateToPaywall = true
-                return
-            }
-            guard !isHealthDataDenied() else { return }
-
-            HealthKitManager.shared.requestAuthorization { _ in
-                probeHealthKitReadAccess { granted in
-                    guard granted else { return }
-                    navigateToPaywall = true
-                }
+        .onAppear {
+            HealthKitManager.shared.probeHealthKitReadAccess { granted in
+                isHealthAccessGranted = granted
             }
         }
     }
@@ -266,57 +264,12 @@ private struct OnboardingHealthKitPage: View {
 
 private struct OnboardingPaywallPage: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @State private var storeKit = Store()
-    @State private var showLifetime = false
-    @State private var footerAppeared = false
-
-    private var hasPaid: Bool {
-        !storeKit.purchasedSubscriptions.isEmpty || !storeKit.purchasedProducts.isEmpty
-    }
 
     var body: some View {
-        SubscriptionStoreView(groupID: storeKit.groupId) {
-            VStack {
-                Button {
-                    showLifetime = true
-                } label: {
-                    Label("Save with Lifetime plans", systemImage: "sparkle")
-                        .font(.headline)
-                }
-                .tint(.purple)
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-
-                Button(String(localized: "Maybe Later")) {
-                    hasCompletedOnboarding = true
-                }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .padding(.top, 8)
-            }
-            .frame(minHeight: 300)
-            .opacity(footerAppeared ? 1 : 0)
-            .offset(y: footerAppeared ? 0 : 24)
-        }
-        .subscriptionStoreControlStyle(.pagedProminentPicker, placement: .bottomBar)
-        .subscriptionStoreButtonLabel(.multiline)
-        .storeButton(.visible, for: .restorePurchases)
-        .storeButton(.hidden, for: .cancellation)
-        .tint(.primary)
-        .sheet(isPresented: $showLifetime) {
-            PaywallLifetimeView()
-                .presentationDetents([.medium])
-        }
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            withAnimation(.spring(duration: 0.62, bounce: 0.28).delay(0.12)) {
-                footerAppeared = true
-            }
-        }
-        .onChange(of: hasPaid) { _, paid in
-            guard paid else { return }
+        PaywallView(embedsNavigationStack: false) {
             hasCompletedOnboarding = true
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 

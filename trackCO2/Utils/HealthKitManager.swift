@@ -15,6 +15,45 @@ class HealthKitManager {
     
     private init() {}
     
+    func isHealthDataDenied() -> Bool {
+        guard HKHealthStore.isHealthDataAvailable() else { return true }
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        return healthStore.authorizationStatus(for: stepType) == .sharingDenied
+            || healthStore.authorizationStatus(for: distanceType) == .sharingDenied
+    }
+    
+    func probeHealthKitReadAccess(completion: @escaping (Bool) -> Void) {
+        guard HKHealthStore.isHealthDataAvailable(), !isHealthDataDenied() else {
+            completion(false)
+            return
+        }
+        
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let calendar = Calendar.current
+        let start = calendar.startOfDay(for: Date())
+        guard let end = calendar.date(byAdding: .day, value: 1, to: start) else {
+            completion(false)
+            return
+        }
+        
+        let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
+        let query = HKStatisticsQuery(
+            quantityType: stepType,
+            quantitySamplePredicate: predicate,
+            options: .cumulativeSum
+        ) { _, _, error in
+            DispatchQueue.main.async {
+                if let error = error as? HKError {
+                    completion(error.code != .errorAuthorizationDenied && error.code != .errorAuthorizationNotDetermined)
+                } else {
+                    completion(error == nil)
+                }
+            }
+        }
+        healthStore.execute(query)
+    }
+    
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             completion(false)

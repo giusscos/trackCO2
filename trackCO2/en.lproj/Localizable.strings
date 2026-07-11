@@ -133,6 +133,12 @@
 "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log.";
 
 // MARK: - Paywall
+"Unlock trackCO2 Premium" = "Unlock trackCO2 Premium";
+"Understand your impact and make greener choices every day." = "Understand your impact and make greener choices every day.";
+"Log daily activities and see your real CO₂ footprint grow over time." = "Log daily activities and see your real CO₂ footprint grow over time.";
+"Compare transport options and always pick the greenest route." = "Compare transport options and always pick the greenest route.";
+"Auto-sync steps and walking distance from Apple Health." = "Auto-sync steps and walking distance from Apple Health.";
+"Get weekly insights and tips to reduce your impact." = "Get weekly insights and tips to reduce your impact.";
 "Save with Lifetime plans" = "Save with Lifetime plans";
 "Welcome to trackCO2!" = "Welcome to trackCO2!";
 "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!";
@@ -153,6 +159,7 @@
 "Sync Your Steps" = "Sync Your Steps";
 "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.";
 "Allow Health Access" = "Allow Health Access";
+"Continue" = "Continue";
 "Skip" = "Skip";
 "Maybe Later" = "Maybe Later";
 
