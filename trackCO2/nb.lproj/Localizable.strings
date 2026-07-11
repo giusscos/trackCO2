@@ -1,0 +1,153 @@
+/* Localizable.strings - trackCO2 (Norwegian Bokmål) */
+
+// MARK: - Tab Bar
+"Home" = "Hjem";
+"Trips" = "Reiser";
+"Activities" = "Aktiviteter";
+
+// MARK: - SummaryView
+"Summary" = "Oppsummering";
+"Add" = "Legg til";
+"Add activity" = "Legg til aktivitet";
+"Add default activities" = "Legg til standardaktiviteter";
+"App Icon" = "App-ikon";
+"Manage subscription" = "Administrer abonnement";
+"Terms of Service" = "Vilkår for bruk";
+"Privacy Policy" = "Personvernerklæring";
+"Add yesterday's walking distance?" = "Legge til gårsdagens gåavstand?";
+"Cancel" = "Avbryt";
+"More" = "Mer";
+
+// MARK: - Activity CRUD
+"Create Activity" = "Opprett aktivitet";
+"Edit Activity" = "Rediger aktivitet";
+"Activity type" = "Aktivitetstype";
+"Type" = "Type";
+"Name" = "Navn";
+"Description" = "Beskrivelse";
+"Info" = "Info";
+"CO2 unit" = "CO2-enhet";
+"CO2e that is equivalent to CO2eq" = "CO2e tilsvarende CO2eq";
+"CO2 amount" = "CO2-mengde";
+"Minus" = "Minus";
+"Plus" = "Pluss";
+"Amount" = "Mengde";
+"Save" = "Lagre";
+"Delete activity" = "Slett aktivitet";
+"Are you sure you want to delete this activity?" = "Er du sikker på at du vil slette denne aktiviteten?";
+"Delete" = "Slett";
+"Edit" = "Rediger";
+"Persist" = "Behold";
+"Select Activities" = "Velg aktiviteter";
+
+// MARK: - Events
+"Reference" = "Referanse";
+"Actual" = "Faktisk";
+"Add event" = "Legg til hendelse";
+
+// MARK: - Map & Trips
+"Select type" = "Velg type";
+"Close" = "Lukk";
+"Search for a destination" = "Søk etter en destinasjon";
+"Search destination" = "Søk destinasjon";
+"Selected" = "Valgt";
+"Save Trip" = "Lagre reise";
+"Calculating routes…" = "Beregner ruter…";
+"CO₂ saved" = "CO₂ spart";
+"CO₂ emitted" = "CO₂ utslipp";
+"Pinned" = "Festet";
+"Frequent" = "Hyppige";
+"Nearby" = "I nærheten";
+"No nearby places found" = "Ingen steder i nærheten funnet";
+"Unpin" = "Løsne";
+"Pin" = "Fest";
+"Place" = "Sted";
+
+// MARK: - Summary Widgets
+"This week CO2" = "CO2 denne uken";
+"Navigate to" = "Naviger til";
+"No data for this week." = "Ingen data for denne uken.";
+"Compensation" = "Kompensasjon";
+"Consumption" = "Forbruk";
+"Most used" = "Mest brukt";
+"Step Count" = "Skrittelling";
+"Step Distance" = "Skrittavstand";
+"Tips" = "Tips";
+"Trends" = "Trender";
+"No activity data yet" = "Ingen aktivitetsdata ennå";
+"Start logging activities to see your weekly trends" = "Begynn å logge aktiviteter for å se ukentlige trender";
+"Start tracking your activities to get personalized tips!" = "Begynn å spore aktivitetene dine for å få personlige tips!";
+
+// MARK: - Detail Views
+"All Events" = "Alle hendelser";
+"Compensation Events" = "Kompensasjonshendelser";
+"Consumption Events" = "Forbrukshendelser";
+"Most Used Activities" = "Mest brukte aktiviteter";
+"Activity Tips" = "Aktivitetstips";
+"Range" = "Periode";
+"All" = "Alle";
+"Day" = "Dag";
+"Week" = "Uke";
+"Month" = "Måned";
+"Year" = "År";
+"No data for this range." = "Ingen data for denne perioden.";
+"Unknown Activity" = "Ukjent aktivitet";
+"No Activity Data" = "Ingen aktivitetsdata";
+"You need at least 5 days of activity data to see trends" = "Du trenger minst 5 dager med aktivitetsdata for å se trender";
+"Weekly Trends" = "Ukentlige trender";
+"Weekly Summary" = "Ukeoppsummering";
+"Saved" = "Spart";
+"Emitted" = "Utslipp";
+"Total Emitted" = "Totalt utslipp";
+"Total Saved" = "Totalt spart";
+"Sorted by CO₂ impact (highest to lowest)" = "Sortert etter CO₂-påvirkning (høyest til lavest)";
+"No activities found. Start tracking your activities to get personalized tips!" = "Ingen aktiviteter funnet. Begynn å spore aktivitetene dine for å få personlige tips!";
+"Used %lld times" = "Brukt %lld ganger";
+"Used %lld time" = "Brukt %lld gang";
+"this week" = "denne uken";
+
+// MARK: - Mascot
+"Thriving" = "Strålende";
+"Good" = "Bra";
+"Neutral" = "Nøytral";
+"Tired" = "Trøtt";
+"Sick" = "Syk";
+"I feel amazing!\nKeep saving the planet! 🌱" = "Jeg føler meg fantastisk!\nFortsett å redde planeten! 🌱";
+"I'm doing well!\nNice CO₂ tracking this week!" = "Jeg har det bra!\nFin CO₂-sporing denne uken!";
+"I'm okay…\nTry to offset a bit more?" = "Det går greit…\nPrøv å kompensere litt mer?";
+"Feeling tired…\nMore green choices, please!" = "Føler meg trøtt…\nFlere grønne valg, takk!";
+"I'm not well…\nToo much CO₂ this week!" = "Jeg har det ikke bra…\nFor mye CO₂ denne uken!";
+"Hey, I'm peckish!\nGive me a green snack! 🌿" = "Hei, jeg er sulten!\nGi meg en grønn snack! 🌿";
+"My tummy's rumbling!\nMore compensation, please! 🍃" = "Magen rumler!\nMer kompensasjon, takk! 🍃";
+"I'M STARVING!\nWay too much CO₂! 😰" = "JEG SULTER!\nAltfor mye CO₂! 😰";
+"% health" = "% helse";
+
+// MARK: - TipKit
+"Change the Multiplier" = "Endre multiplikatoren";
+"Long-press + or - to select a different step size." = "Trykk lenge på + eller - for å velge en annen trinnstørrelse.";
+"Pick a Destination" = "Velg destinasjon";
+"Tap anywhere on the map or use the search button to choose where you're headed." = "Trykk hvor som helst på kartet eller bruk søkeknappen for å velge destinasjon.";
+"Compare Transport Modes" = "Sammenlign transportmåter";
+"Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Sveip gjennom kortene for å sammenligne CO₂-påvirkning. Den grønneste ruten vises alltid først.";
+"Log Your Trip" = "Logg reise";
+"Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Trykk på haken for å lagre denne reisen og registrere CO₂-utslippene i aktivitetsloggen.";
+
+// MARK: - Paywall
+"Save with Lifetime plans" = "Spar med livstidsplaner";
+"Welcome to trackCO2!" = "Velkommen til trackCO2!";
+"Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Spor karbonavtrykket ditt ved å logge daglige aktiviteter. Oppdag hvordan valgene dine påvirker miljøet, og gjør en forskjell!";
+"Track your carbon footprint." = "Spor karbonavtrykket ditt.";
+"Add your personal activities and see how much CO2 you're saving every day." = "Legg til personlige aktiviteter og se hvor mye CO2 du sparer hver dag.";
+"See Your Impact." = "Se din påvirkning.";
+"Visualize your progress, set goals, and get tips to reduce your emissions. Start your journey to a greener lifestyle today!" = "Visualiser fremgangen din, sett mål og få tips for å redusere utslippene. Start reisen mot en grønnere livsstil i dag!";
+"Terms of use" = "Vilkår for bruk";
+"and" = "og";
+
+// MARK: - App Icon
+"Select Icon" = "Velg ikon";
+
+// MARK: - Dynamic Tips
+"Great job! Your most frequent activity is %@ %@. Keep it up! 🌱" = "Bra jobbet! Din mest brukte aktivitet er %1$@ %2$@. Fortsett sånn! 🌱";
+"Try to reduce your %@ %@ activity." = "Prøv å redusere %1$@ %2$@-aktiviteten din.";
+"Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱" = "Bra jobbet! %@-aktiviteten din bidrar til å redusere CO2-utslipp. Fortsett sånn! 🌱";
+"Consider reducing your %@ usage or balancing it with CO2 reducing activities." = "Vurder å redusere bruken av %@ eller balansere den med CO2-reduserende aktiviteter.";

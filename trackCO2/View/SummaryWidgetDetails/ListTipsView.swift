@@ -21,9 +21,9 @@ struct ListTipsView: View {
     
     func generateTip(for activity: Activity) -> String {
         if activity.type.isCO2Reducing {
-            return "Great job! Your \(activity.name.lowercased()) activity is helping reduce CO2 emissions. Keep it up! 🌱"
+            return String(localized: "Great job! Your \(activity.name.lowercased()) activity is helping reduce CO2 emissions. Keep it up! 🌱")
         } else {
-            return "Consider reducing your \(activity.name.lowercased()) usage or balancing it with CO2 reducing activities."
+            return String(localized: "Consider reducing your \(activity.name.lowercased()) usage or balancing it with CO2 reducing activities.")
         }
     }
     

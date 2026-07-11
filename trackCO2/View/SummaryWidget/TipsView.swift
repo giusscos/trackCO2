@@ -14,12 +14,12 @@ struct TipsView: View {
     var tipMessage: String {
         let activitiesWithEvents = activities.filter { $0.events?.count ?? 0 >= 3 }
         guard let mostUsed = activitiesWithEvents.max(by: { ($0.events?.count ?? 0) < ($1.events?.count ?? 0) }) else {
-            return "Start tracking your activities to get personalized tips!"
+            return String(localized: "Start tracking your activities to get personalized tips!")
         }
         if mostUsed.type.isCO2Reducing {
-            return "Great job! Your most frequent activity is \(mostUsed.type.emoji) \(mostUsed.name.lowercased()). Keep it up! 🌱"
+            return String(localized: "Great job! Your most frequent activity is \(mostUsed.type.emoji) \(mostUsed.name.lowercased()). Keep it up! 🌱")
         } else {
-            return "Try to reduce your \(mostUsed.type.emoji) \(mostUsed.name.lowercased()) activity."
+            return String(localized: "Try to reduce your \(mostUsed.type.emoji) \(mostUsed.name.lowercased()) activity.")
         }
     }
     

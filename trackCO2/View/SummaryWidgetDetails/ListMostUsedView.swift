@@ -27,7 +27,7 @@ struct ListMostUsedView: View {
                         Text(activity.name)
                             .font(.headline)
                         
-                        Text("Used \(activity.events?.count ?? 0) \(activity.events?.count != 1 ? "times" : "time")")
+                        Text(usageText(for: activity))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -46,6 +46,15 @@ struct ListMostUsedView: View {
     
     func deleteActivity(_ activity: Activity) {
         modelContext.delete(activity)
+    }
+
+    private func usageText(for activity: Activity) -> String {
+        let count = activity.events?.count ?? 0
+        if count == 1 {
+            return String(format: String(localized: "Used %lld time"), count)
+        } else {
+            return String(format: String(localized: "Used %lld times"), count)
+        }
     }
 }
 

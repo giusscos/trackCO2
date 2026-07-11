@@ -33,29 +33,29 @@ struct ClaudHealth {
 
     var label: String {
         switch score {
-        case 0.75...: return "Thriving"
-        case 0.5..<0.75: return "Good"
-        case 0.25..<0.5: return "Neutral"
-        case 0.1..<0.25: return "Tired"
-        default: return "Sick"
+        case 0.75...: return String(localized: "Thriving")
+        case 0.5..<0.75: return String(localized: "Good")
+        case 0.25..<0.5: return String(localized: "Neutral")
+        case 0.1..<0.25: return String(localized: "Tired")
+        default: return String(localized: "Sick")
         }
     }
 
     var message: String {
         switch score {
-        case 0.75...: return "I feel amazing!\nKeep saving the planet! 🌱"
-        case 0.5..<0.75: return "I'm doing well!\nNice CO₂ tracking this week!"
-        case 0.25..<0.5: return "I'm okay…\nTry to offset a bit more?"
-        case 0.1..<0.25: return "Feeling tired…\nMore green choices, please!"
-        default: return "I'm not well…\nToo much CO₂ this week!"
+        case 0.75...: return String(localized: "I feel amazing!\nKeep saving the planet! 🌱")
+        case 0.5..<0.75: return String(localized: "I'm doing well!\nNice CO₂ tracking this week!")
+        case 0.25..<0.5: return String(localized: "I'm okay…\nTry to offset a bit more?")
+        case 0.1..<0.25: return String(localized: "Feeling tired…\nMore green choices, please!")
+        default: return String(localized: "I'm not well…\nToo much CO₂ this week!")
         }
     }
 
     var hungryMessage: String {
         switch score {
-        case 0.5...: return "Hey, I'm peckish!\nGive me a green snack! 🌿"
-        case 0.25...: return "My tummy's rumbling!\nMore compensation, please! 🍃"
-        default: return "I'M STARVING!\nWay too much CO₂! 😰"
+        case 0.5...: return String(localized: "Hey, I'm peckish!\nGive me a green snack! 🌿")
+        case 0.25...: return String(localized: "My tummy's rumbling!\nMore compensation, please! 🍃")
+        default: return String(localized: "I'M STARVING!\nWay too much CO₂! 😰")
         }
     }
 

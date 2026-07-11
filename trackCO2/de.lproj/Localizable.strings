@@ -1,0 +1,153 @@
+/* Localizable.strings - trackCO2 (German) */
+
+// MARK: - Tab Bar
+"Home" = "Start";
+"Trips" = "Reisen";
+"Activities" = "Aktivitäten";
+
+// MARK: - SummaryView
+"Summary" = "Übersicht";
+"Add" = "Hinzufügen";
+"Add activity" = "Aktivität hinzufügen";
+"Add default activities" = "Standardaktivitäten hinzufügen";
+"App Icon" = "App-Symbol";
+"Manage subscription" = "Abonnement verwalten";
+"Terms of Service" = "Nutzungsbedingungen";
+"Privacy Policy" = "Datenschutzrichtlinie";
+"Add yesterday's walking distance?" = "Gestrige Gehstrecke hinzufügen?";
+"Cancel" = "Abbrechen";
+"More" = "Mehr";
+
+// MARK: - Activity CRUD
+"Create Activity" = "Aktivität erstellen";
+"Edit Activity" = "Aktivität bearbeiten";
+"Activity type" = "Aktivitätstyp";
+"Type" = "Typ";
+"Name" = "Name";
+"Description" = "Beschreibung";
+"Info" = "Info";
+"CO2 unit" = "CO2-Einheit";
+"CO2e that is equivalent to CO2eq" = "CO2e, das CO2eq entspricht";
+"CO2 amount" = "CO2-Menge";
+"Minus" = "Minus";
+"Plus" = "Plus";
+"Amount" = "Menge";
+"Save" = "Speichern";
+"Delete activity" = "Aktivität löschen";
+"Are you sure you want to delete this activity?" = "Möchtest du diese Aktivität wirklich löschen?";
+"Delete" = "Löschen";
+"Edit" = "Bearbeiten";
+"Persist" = "Beibehalten";
+"Select Activities" = "Aktivitäten auswählen";
+
+// MARK: - Events
+"Reference" = "Referenz";
+"Actual" = "Tatsächlich";
+"Add event" = "Ereignis hinzufügen";
+
+// MARK: - Map & Trips
+"Select type" = "Typ auswählen";
+"Close" = "Schließen";
+"Search for a destination" = "Nach einem Ziel suchen";
+"Search destination" = "Ziel suchen";
+"Selected" = "Ausgewählt";
+"Save Trip" = "Reise speichern";
+"Calculating routes…" = "Routen werden berechnet…";
+"CO₂ saved" = "CO₂ eingespart";
+"CO₂ emitted" = "CO₂ ausgestoßen";
+"Pinned" = "Angeheftet";
+"Frequent" = "Häufig";
+"Nearby" = "In der Nähe";
+"No nearby places found" = "Keine Orte in der Nähe gefunden";
+"Unpin" = "Lösen";
+"Pin" = "Anheften";
+"Place" = "Ort";
+
+// MARK: - Summary Widgets
+"This week CO2" = "CO2 diese Woche";
+"Navigate to" = "Navigieren zu";
+"No data for this week." = "Keine Daten für diese Woche.";
+"Compensation" = "Kompensation";
+"Consumption" = "Verbrauch";
+"Most used" = "Am häufigsten";
+"Step Count" = "Schrittzahl";
+"Step Distance" = "Schrittweite";
+"Tips" = "Tipps";
+"Trends" = "Trends";
+"No activity data yet" = "Noch keine Aktivitätsdaten";
+"Start logging activities to see your weekly trends" = "Beginne mit der Erfassung deiner Aktivitäten, um wöchentliche Trends zu sehen";
+"Start tracking your activities to get personalized tips!" = "Beginne mit der Verfolgung deiner Aktivitäten, um personalisierte Tipps zu erhalten!";
+
+// MARK: - Detail Views
+"All Events" = "Alle Ereignisse";
+"Compensation Events" = "Kompensationsereignisse";
+"Consumption Events" = "Verbrauchsereignisse";
+"Most Used Activities" = "Am häufigsten genutzte Aktivitäten";
+"Activity Tips" = "Aktivitätstipps";
+"Range" = "Zeitraum";
+"All" = "Alle";
+"Day" = "Tag";
+"Week" = "Woche";
+"Month" = "Monat";
+"Year" = "Jahr";
+"No data for this range." = "Keine Daten für diesen Zeitraum.";
+"Unknown Activity" = "Unbekannte Aktivität";
+"No Activity Data" = "Keine Aktivitätsdaten";
+"You need at least 5 days of activity data to see trends" = "Du benötigst mindestens 5 Tage Aktivitätsdaten, um Trends zu sehen";
+"Weekly Trends" = "Wöchentliche Trends";
+"Weekly Summary" = "Wochenübersicht";
+"Saved" = "Eingespart";
+"Emitted" = "Ausgestoßen";
+"Total Emitted" = "Gesamt ausgestoßen";
+"Total Saved" = "Gesamt eingespart";
+"Sorted by CO₂ impact (highest to lowest)" = "Sortiert nach CO₂-Auswirkung (höchste zuerst)";
+"No activities found. Start tracking your activities to get personalized tips!" = "Keine Aktivitäten gefunden. Beginne mit der Verfolgung deiner Aktivitäten, um personalisierte Tipps zu erhalten!";
+"Used %lld times" = "%lld-mal verwendet";
+"Used %lld time" = "%lld-mal verwendet";
+"this week" = "diese Woche";
+
+// MARK: - Mascot
+"Thriving" = "Prächtig";
+"Good" = "Gut";
+"Neutral" = "Neutral";
+"Tired" = "Müde";
+"Sick" = "Krank";
+"I feel amazing!\nKeep saving the planet! 🌱" = "Ich fühle mich großartig!\nRette weiter den Planeten! 🌱";
+"I'm doing well!\nNice CO₂ tracking this week!" = "Mir geht es gut!\nTolles CO₂-Tracking diese Woche!";
+"I'm okay…\nTry to offset a bit more?" = "Geht so…\nVersuchst du, etwas mehr auszugleichen?";
+"Feeling tired…\nMore green choices, please!" = "Ich bin müde…\nMehr grüne Entscheidungen, bitte!";
+"I'm not well…\nToo much CO₂ this week!" = "Mir geht es schlecht…\nZu viel CO₂ diese Woche!";
+"Hey, I'm peckish!\nGive me a green snack! 🌿" = "Hey, ich hab Hunger!\nGib mir einen grünen Snack! 🌿";
+"My tummy's rumbling!\nMore compensation, please! 🍃" = "Mein Magen knurrt!\nMehr Kompensation, bitte! 🍃";
+"I'M STARVING!\nWay too much CO₂! 😰" = "ICH VERHUNGERE!\nViel zu viel CO₂! 😰";
+"% health" = "% Gesundheit";
+
+// MARK: - TipKit
+"Change the Multiplier" = "Multiplikator ändern";
+"Long-press + or - to select a different step size." = "Halte + oder - gedrückt, um eine andere Schrittgröße auszuwählen.";
+"Pick a Destination" = "Ziel wählen";
+"Tap anywhere on the map or use the search button to choose where you're headed." = "Tippe irgendwo auf die Karte oder nutze die Suchtaste, um dein Ziel auszuwählen.";
+"Compare Transport Modes" = "Verkehrsmittel vergleichen";
+"Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Wische durch die Karten, um die CO₂-Auswirkung zu vergleichen. Die grünste Route wird immer zuerst angezeigt.";
+"Log Your Trip" = "Reise protokollieren";
+"Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Tippe auf das Häkchen, um diese Reise zu speichern und ihre CO₂-Emissionen im Aktivitätsprotokoll zu erfassen.";
+
+// MARK: - Paywall
+"Save with Lifetime plans" = "Mit Lifetime-Plänen sparen";
+"Welcome to trackCO2!" = "Willkommen bei trackCO2!";
+"Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Verfolge deinen CO₂-Fußabdruck, indem du deine täglichen Aktivitäten erfasst. Entdecke, wie deine Entscheidungen die Umwelt beeinflussen, und bewirke etwas!";
+"Track your carbon footprint." = "Verfolge deinen CO₂-Fußabdruck.";
+"Add your personal activities and see how much CO2 you're saving every day." = "Füge deine persönlichen Aktivitäten hinzu und sieh, wie viel CO2 du jeden Tag einsparst.";
+"See Your Impact." = "Sieh deine Auswirkung.";
+"Visualize your progress, set goals, and get tips to reduce your emissions. Start your journey to a greener lifestyle today!" = "Visualisiere deinen Fortschritt, setze Ziele und erhalte Tipps zur Reduzierung deiner Emissionen. Starte noch heute deinen Weg zu einem grüneren Lebensstil!";
+"Terms of use" = "Nutzungsbedingungen";
+"and" = "und";
+
+// MARK: - App Icon
+"Select Icon" = "Symbol auswählen";
+
+// MARK: - Dynamic Tips
+"Great job! Your most frequent activity is %@ %@. Keep it up! 🌱" = "Super! Deine häufigste Aktivität ist %1$@ %2$@. Weiter so! 🌱";
+"Try to reduce your %@ %@ activity." = "Versuche, deine %1$@ %2$@-Aktivität zu reduzieren.";
+"Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱" = "Super! Deine %@-Aktivität hilft, CO2-Emissionen zu reduzieren. Weiter so! 🌱";
+"Consider reducing your %@ usage or balancing it with CO2 reducing activities." = "Erwäge, deine %@-Nutzung zu reduzieren oder sie mit CO2-reduzierenden Aktivitäten auszugleichen.";
