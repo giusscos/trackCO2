@@ -133,15 +133,15 @@
 "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Tocca il segno di spunta per salvare questo viaggio e registrare le emissioni di CO₂ nel registro attività.";
 
 // MARK: - Paywall
-"Unlock trackCO2 Premium" = "Sblocca trackCO2 Premium";
+"Unlock Premium" = "Sblocca Premium";
 "Understand your impact and make greener choices every day." = "Comprendi il tuo impatto e fai scelte più green ogni giorno.";
 "Log daily activities and see your real CO₂ footprint grow over time." = "Registra le attività quotidiane e osserva la tua impronta CO₂ reale crescere nel tempo.";
 "Compare transport options and always pick the greenest route." = "Confronta le opzioni di trasporto e scegli sempre il percorso più green.";
 "Auto-sync steps and walking distance from Apple Health." = "Sincronizza automaticamente passi e distanza a piedi da Apple Health.";
 "Get weekly insights and tips to reduce your impact." = "Ricevi approfondimenti settimanali e consigli per ridurre il tuo impatto.";
 "Save with Lifetime plans" = "Risparmia con i piani a vita";
-"Welcome to trackCO2!" = "Benvenuto in trackCO2!";
-"Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Monitora la tua impronta di carbonio registrando le attività quotidiane. Scopri come le tue scelte influenzano l'ambiente e fai la differenza!";
+"Meet Claud!" = "Incontra Claud!";
+"I'm here to help you track your carbon footprint by logging daily activities. Discover how your choices impact the environment and make a difference!" = "Sono qui per aiutarti a monitorare la tua impronta di carbonio registrando le attività quotidiane. Scopri come le tue scelte impattano l'ambiente e fai la differenza!";
 "Track your carbon footprint." = "Monitora la tua impronta di carbonio.";
 "Add your personal activities and see how much CO2 you're saving every day." = "Aggiungi le tue attività personali e scopri quanto CO2 risparmi ogni giorno.";
 "See Your Impact." = "Vedi il tuo impatto.";
@@ -157,7 +157,7 @@
 "Plan Greener Trips" = "Pianifica viaggi più green";
 "Use the map to compare transport options side by side. The greenest route is always shown first." = "Usa la mappa per confrontare le opzioni di trasporto affiancate. Il percorso più green è sempre mostrato per primo.";
 "Sync Your Steps" = "Sincronizza i passi";
-"trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 può leggere il conteggio dei passi e la distanza percorsa a piedi da Apple Health per registrare automaticamente gli spostamenti ecologici.";
+"I can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "Posso leggere il conteggio dei passi e la distanza percorsa a piedi da Apple Health per registrare automaticamente gli spostamenti ecologici.";
 "Allow Health Access" = "Consenti accesso a Salute";
 "Continue" = "Continua";
 "Skip" = "Salta";

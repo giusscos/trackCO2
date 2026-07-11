@@ -20,6 +20,61 @@ private struct GlassLifetimeButtonStyle: ViewModifier {
     }
 }
 
+private struct PaywallBenefitRow: View {
+    let icon: String
+    let accent: Color
+    let text: LocalizedStringKey
+    let index: Int
+
+    @State private var appeared = false
+    @State private var iconBounce = false
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            ZStack {
+                Circle()
+                    .fill(accent.gradient.opacity(0.22))
+                    .frame(width: 42, height: 42)
+
+                Image(systemName: icon)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(accent.gradient)
+                    .symbolEffect(.bounce, value: iconBounce)
+            }
+
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(.primary)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 10)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(accent.opacity(0.09))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .strokeBorder(accent.opacity(0.18), lineWidth: 1)
+                }
+        }
+        .opacity(appeared ? 1 : 0)
+        .offset(x: appeared ? 0 : -28)
+        .scaleEffect(appeared ? 1 : 0.94, anchor: .leading)
+        .onAppear {
+            let delay = 0.18 + Double(index) * 0.11
+            withAnimation(.spring(duration: 0.58, bounce: 0.34).delay(delay)) {
+                appeared = true
+            }
+            Task {
+                try? await Task.sleep(for: .seconds(delay + 0.22))
+                iconBounce.toggle()
+            }
+        }
+    }
+}
+
 struct PaywallView: View {
     var embedsNavigationStack: Bool = true
     var onPurchaseComplete: (() -> Void)? = nil
@@ -31,16 +86,17 @@ struct PaywallView: View {
     private let paywallHealth = ClaudHealth(score: 0.85)
     
     private struct Benefit: Identifiable {
-        let id = UUID()
+        var id: String { icon }
         let icon: String
+        let accent: Color
         let text: LocalizedStringKey
     }
     
     private let benefits: [Benefit] = [
-        Benefit(icon: "chart.bar.fill", text: "Log daily activities and see your real CO₂ footprint grow over time."),
-        Benefit(icon: "map.fill", text: "Compare transport options and always pick the greenest route."),
-        Benefit(icon: "figure.walk", text: "Auto-sync steps and walking distance from Apple Health."),
-        Benefit(icon: "lightbulb.fill", text: "Get weekly insights and tips to reduce your impact.")
+        Benefit(icon: "chart.bar.fill", accent: .green, text: "Log daily activities and see your real CO₂ footprint grow over time."),
+        Benefit(icon: "map.fill", accent: .blue, text: "Compare transport options and always pick the greenest route."),
+        Benefit(icon: "figure.walk", accent: .mint, text: "Auto-sync steps and walking distance from Apple Health."),
+        Benefit(icon: "lightbulb.fill", accent: .yellow, text: "Get weekly insights and tips to reduce your impact.")
     ]
     
     var body: some View {
@@ -71,7 +127,7 @@ struct PaywallView: View {
                     .scaleEffect(1.2)
                     .padding(.vertical, 8)
 
-                    Text("Unlock trackCO2 Premium")
+                    Text("Unlock Premium")
                         .font(.title2)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
@@ -82,23 +138,16 @@ struct PaywallView: View {
                         .multilineTextAlignment(.center)
                 }
 
-                VStack(alignment: .leading, spacing: 12) {
-                    ForEach(benefits) { benefit in
-                        HStack(alignment: .top, spacing: 12) {
-                            Image(systemName: benefit.icon)
-                                .font(.body)
-                                .foregroundStyle(.tint)
-                                .frame(width: 22, alignment: .center)
-                                .padding(.top, 2)
-
-                            Text(benefit.text)
-                                .font(.subheadline)
-                                .foregroundStyle(.primary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(Array(benefits.enumerated()), id: \.element.id) { index, benefit in
+                        PaywallBenefitRow(
+                            icon: benefit.icon,
+                            accent: benefit.accent,
+                            text: benefit.text,
+                            index: index
+                        )
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
 
                 Button {
                     showingLifetimePlan = true

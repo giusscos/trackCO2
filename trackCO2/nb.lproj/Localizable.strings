@@ -133,15 +133,15 @@
 "Tap the checkmark to save this trip and record its CO₂ emissions to your activity log." = "Trykk på haken for å lagre denne reisen og registrere CO₂-utslippene i aktivitetsloggen.";
 
 // MARK: - Paywall
-"Unlock trackCO2 Premium" = "Lås opp trackCO2 Premium";
+"Unlock Premium" = "Lås opp Premium";
 "Understand your impact and make greener choices every day." = "Forstå påvirkningen din og ta grønnere valg hver dag.";
 "Log daily activities and see your real CO₂ footprint grow over time." = "Logg daglige aktiviteter og se ditt faktiske CO₂-fotavtrykk vokse over tid.";
 "Compare transport options and always pick the greenest route." = "Sammenlign transportalternativer og velg alltid den grønneste ruten.";
 "Auto-sync steps and walking distance from Apple Health." = "Synkroniser automatisk skritt og gåavstand fra Apple Helse.";
 "Get weekly insights and tips to reduce your impact." = "Få ukentlige innsikter og tips for å redusere påvirkningen din.";
 "Save with Lifetime plans" = "Spar med livstidsplaner";
-"Welcome to trackCO2!" = "Velkommen til trackCO2!";
-"Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!" = "Spor karbonavtrykket ditt ved å logge daglige aktiviteter. Oppdag hvordan valgene dine påvirker miljøet, og gjør en forskjell!";
+"Meet Claud!" = "Møt Claud!";
+"I'm here to help you track your carbon footprint by logging daily activities. Discover how your choices impact the environment and make a difference!" = "Jeg er her for å hjelpe deg med å spore karbonavtrykket ditt ved å logge daglige aktiviteter. Oppdag hvordan valgene dine påvirker miljøet og gjør en forskjell!";
 "Track your carbon footprint." = "Spor karbonavtrykket ditt.";
 "Add your personal activities and see how much CO2 you're saving every day." = "Legg til personlige aktiviteter og se hvor mye CO2 du sparer hver dag.";
 "See Your Impact." = "Se din påvirkning.";
@@ -157,7 +157,7 @@
 "Plan Greener Trips" = "Planlegg grønnere reiser";
 "Use the map to compare transport options side by side. The greenest route is always shown first." = "Bruk kartet til å sammenligne transportalternativer side om side. Den grønneste ruten vises alltid først.";
 "Sync Your Steps" = "Synkroniser stegene dine";
-"trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 kan lese skrittellingen og gåavstanden din fra Apple Helse for å automatisk logge miljøvennlig bevegelse.";
+"I can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "Jeg kan lese skrittellingen og gåavstanden din fra Apple Helse for å automatisk logge miljøvennlig bevegelse.";
 "Allow Health Access" = "Tillat helsetilgang";
 "Continue" = "Fortsett";
 "Skip" = "Hopp over";

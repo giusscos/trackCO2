@@ -104,8 +104,8 @@ private struct OnboardingWelcomePage: View {
     var body: some View {
         OnboardingPageLayout(
             hidesBackButton: false,
-            title: "Welcome to trackCO2!",
-            description: "Track your carbon footprint by logging your daily activities. Discover how your choices impact the environment and make a difference!",
+            title: "Meet Claud!",
+            description: "I'm here to help you track your carbon footprint by logging daily activities. Discover how your choices impact the environment and make a difference!",
             header: {
                 ClaudCloudView(
                     color: welcomeHealth.cloudBodyColor,
@@ -121,11 +121,10 @@ private struct OnboardingWelcomePage: View {
                     Text("Get Started")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.tint)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .padding(.vertical, 12)
                 }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
             },
             secondaryButton: { EmptyView() }
         )
@@ -149,11 +148,10 @@ private struct OnboardingActivitiesPage: View {
                     Text("Next")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.tint)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .padding(.vertical, 12)
                 }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
             },
             secondaryButton: { EmptyView() }
         )
@@ -177,11 +175,10 @@ private struct OnboardingTripsPage: View {
                     Text("Next")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.tint)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .padding(.vertical, 12)
                 }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
             },
             secondaryButton: { EmptyView() }
         )
@@ -205,7 +202,7 @@ private struct OnboardingHealthKitPage: View {
         OnboardingPageLayout(
             hidesBackButton: true,
             title: "Sync Your Steps",
-            description: "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.",
+            description: "I can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.",
             header: {
                 Image(systemName: "heart.fill")
                     .font(.system(size: 90))
@@ -225,11 +222,10 @@ private struct OnboardingHealthKitPage: View {
                     Text(isHealthAccessGranted ? "Continue" : "Allow Health Access")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.tint)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .padding(.vertical, 12)
                 }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
                 .animation(.easeInOut(duration: 0.2), value: isHealthAccessGranted)
             },
             secondaryButton: {
