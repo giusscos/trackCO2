@@ -13,24 +13,18 @@ import StoreKit
 struct SummaryView: View {
     enum ActiveSheet: Identifiable {
         case createActivityEvent
-        case viewActivities
         case createActivity
         case selectActivities
-        case addTrip
         case selectAppIcon
-        
+
         var id: String {
             switch self {
             case .createActivityEvent:
                 return "createActivityEvent"
-            case .viewActivities:
-                return "viewActivities"
             case .createActivity:
                 return "createActivity"
             case .selectActivities:
                 return "selectActivities"
-            case .addTrip:
-                return "addTrip"
             case .selectAppIcon:
                 return "selectAppIcon"
             }
@@ -62,6 +56,8 @@ struct SummaryView: View {
             ScrollView {
                 VStack {
                     Grid (alignment: .topLeading, horizontalSpacing: 8, verticalSpacing: 8, content: {
+                        ClaudMascotView(healthScore: calculateWeeklyCO2Health(activities: activities))
+
                         CO2ChartView()
                         
                         if healthKitAuthorized {
@@ -79,30 +75,14 @@ struct SummaryView: View {
                         
                         GridRow {
                             MostUsedView()
-                            
+
                             TipsView()
                         }
-                        
+
                         if hasAnyTrendsData(activities: activities) {
                             TrendsView()
                         }
                     })
-                    
-                    VStack {
-                        Button {
-                            activeSheet = .viewActivities
-                        } label: {
-                            Text("See all activities".capitalized)
-                                .font(.headline)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal)
-                                .foregroundStyle(.background)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                        }
-                        .tint(.primary)
-                        .buttonStyle(.borderedProminent)
-                    }
-                    .padding(.vertical)
                 }
                 .padding()
             }
@@ -134,13 +114,7 @@ struct SummaryView: View {
                         } label: {
                             Label("Add default activities", systemImage: "square.and.arrow.down.on.square")
                         }
-                        
-                        Button {
-                            activeSheet = .addTrip
-                        } label: {
-                            Label("Add map trip", systemImage: "map")
-                        }
-                        
+
                         Divider()
                         
                         Button {
@@ -176,14 +150,10 @@ struct SummaryView: View {
                 switch sheet {
                 case .createActivityEvent:
                     ListActivityEventView()
-                case .viewActivities:
-                    ListActivityView()
                 case .createActivity:
                     CreateActivityView()
                 case .selectActivities:
                     SelectActivitiesToPersistView()
-                case .addTrip:
-                    SelectTypeView()
                 case .selectAppIcon:
                     SelectAppIconView(selectedIcon: $appIcon)
                 }

@@ -14,17 +14,27 @@ struct SearchCompletions: Identifiable {
     let subTitle: String
     var url: URL?
     var category: MKPointOfInterestCategory?
+    var coordinate: CLLocationCoordinate2D?
 }
 
 struct SearchResult: Identifiable, Hashable {
     let id = UUID()
     let location: CLLocationCoordinate2D
+    var name: String?
+    var subtitle: String?
     var category: MKPointOfInterestCategory?
-    
+
+    init(location: CLLocationCoordinate2D, name: String? = nil, subtitle: String? = nil, category: MKPointOfInterestCategory? = nil) {
+        self.location = location
+        self.name = name
+        self.subtitle = subtitle
+        self.category = category
+    }
+
     static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
         lhs.id == rhs.id
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -57,7 +67,8 @@ class LocationService: NSObject, MKLocalSearchCompleterDelegate {
                 title: completion.title,
                 subTitle: completion.subtitle,
                 url: mapItem?.url,
-                category: mapItem?.pointOfInterestCategory
+                category: mapItem?.pointOfInterestCategory,
+                coordinate: mapItem?.placemark.coordinate
             )
         }
     }
@@ -75,9 +86,28 @@ class LocationService: NSObject, MKLocalSearchCompleterDelegate {
         
         return response.mapItems.compactMap { mapItem in
             guard let location = mapItem.placemark.location?.coordinate else { return nil }
-            
-            return .init(location: location, category: mapItem.pointOfInterestCategory)
+            return SearchResult(
+                location: location,
+                name: mapItem.name,
+                subtitle: mapItem.placemark.title,
+                category: mapItem.pointOfInterestCategory
+            )
         }
+    }
+
+    static func searchNearby(coordinate: CLLocationCoordinate2D, radius: CLLocationDistance = 800) async throws -> [SearchResult] {
+        let request = MKLocalPointsOfInterestRequest(center: coordinate, radius: radius)
+        let search = MKLocalSearch(request: request)
+        let response = try await search.start()
+        return Array(response.mapItems.prefix(20).compactMap { item -> SearchResult? in
+            guard let location = item.placemark.location?.coordinate else { return nil }
+            return SearchResult(
+                location: location,
+                name: item.name,
+                subtitle: item.placemark.thoroughfare ?? item.placemark.locality,
+                category: item.pointOfInterestCategory
+            )
+        })
     }
 
 }

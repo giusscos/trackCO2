@@ -11,8 +11,9 @@ import SwiftUI
 struct MapSearchView: View {
     @State private var locationService = LocationService(completer: .init())
     @State private var search: String = ""
-    
+
     @Binding var searchResults: [SearchResult]
+    var userLocation: CLLocationCoordinate2D?
     
     var body: some View {
         VStack {
@@ -34,7 +35,7 @@ struct MapSearchView: View {
             List {
                 ForEach(locationService.completions) { completion in
                     Button(action: { didTapOnCompletion(completion) }) {
-                        HStack (alignment: .top) {
+                        HStack(alignment: .top) {
                             Group {
                                 if let category = completion.category {
                                     Image(systemName: iconName(for: category))
@@ -47,13 +48,24 @@ struct MapSearchView: View {
                             .padding(4)
                             .background(.red)
                             .clipShape(.circle)
-                            
+
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(completion.title)
                                     .font(.headline)
-                                
+
                                 Text(completion.subTitle)
                                     .font(.subheadline)
+                            }
+
+                            Spacer()
+
+                            if let coord = completion.coordinate, let userCoord = userLocation {
+                                let userCL = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+                                let destCL = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+                                let distanceKm = userCL.distance(from: destCL) / 1000.0
+                                Text(distanceKm < 1 ? String(format: "%.0f m", distanceKm * 1000) : String(format: "%.1f km", distanceKm))
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
                             }
                         }
                     }

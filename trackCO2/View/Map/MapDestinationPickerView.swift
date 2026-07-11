@@ -66,7 +66,7 @@ struct MapDestinationPickerView: View {
                     MapUserLocationButton()
                 }
                 .sheet(isPresented: $isSheetPresented) {
-                    MapSearchView(searchResults: $searchResults)
+                    MapSearchView(searchResults: $searchResults, userLocation: locationManager.lastLocation?.coordinate)
                 }
                 .onChange(of: selectedLocation) { oldValue, newValue in
                     isSheetPresented = newValue == nil
@@ -188,8 +188,10 @@ struct MapDestinationPickerView: View {
                     routePolyline = route.polyline
 
                     // Center map on route
-                    let region = MKCoordinateRegion(route.polyline.boundingMapRect)
-                    position = .region(region)
+                    let paddedRect = route.polyline.boundingMapRect.insetBy(dx: -route.polyline.boundingMapRect.width * 0.15, dy: -route.polyline.boundingMapRect.height * 0.15)
+                    withAnimation(.easeInOut(duration: 0.7)) {
+                        position = .region(MKCoordinateRegion(paddedRect))
+                    }
                 } else {
                     // Fallback to straight line distance
                     calculatedDistance = origin.distance(from: destination) / 1000.0

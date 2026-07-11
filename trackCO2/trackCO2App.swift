@@ -14,6 +14,7 @@ struct trackCO2App: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Activity.self,
+            FavoritePlace.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         

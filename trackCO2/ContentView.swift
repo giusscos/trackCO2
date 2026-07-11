@@ -23,24 +23,36 @@ struct ContentView: View {
         if store.isLoading {
             ProgressView()
         } else {
-            SummaryView()
-                .onAppear {
-                    if hasPaid {
-                        UITextField.appearance().clearButtonMode = .whileEditing
-                        
-                        return
+            TabView {
+                SummaryView()
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
                     }
-                    
-                    showPaywall = true
+
+                TripsView()
+                    .tabItem {
+                        Label("Trips", systemImage: "map.fill")
+                    }
+
+                ListActivityView()
+                    .tabItem {
+                        Label("Activities", systemImage: "list.bullet")
+                    }
+            }
+            .onAppear {
+                if hasPaid {
+                    UITextField.appearance().clearButtonMode = .whileEditing
+                    return
                 }
-                .fullScreenCover(isPresented: $showPaywall) {
-                    PaywallView()
-                }
-                .onChange(of: hasPaid, { _, _ in
-                    if !hasPaid { return }
-                    
-                    showPaywall = false
-                })
+                showPaywall = true
+            }
+            .fullScreenCover(isPresented: $showPaywall) {
+                PaywallView()
+            }
+            .onChange(of: hasPaid, { _, _ in
+                if !hasPaid { return }
+                showPaywall = false
+            })
         }
     }
 }

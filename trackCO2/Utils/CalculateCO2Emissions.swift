@@ -80,6 +80,28 @@ func getTopActivitiesByWeeklyUsage(activities: [Activity], limit: Int = 2) -> [A
         .map { $0.activity }
 }
 
+func calculateWeeklyCO2Health(activities: [Activity]) -> Double {
+    let calendar = Calendar.current
+    let now = Date()
+    let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: now) ?? now
+
+    var consumption: Double = 0
+    var compensation: Double = 0
+
+    for activity in activities {
+        guard let events = activity.events else { continue }
+        for event in events where event.createdAt >= sevenDaysAgo {
+            let emission = event.quantity * activity.co2Emission
+            if emission > 0 { consumption += emission }
+            else if emission < 0 { compensation += abs(emission) }
+        }
+    }
+
+    let total = consumption + compensation
+    guard total > 0 else { return 0.5 }
+    return min(compensation / total, 1.0)
+}
+
 func hasAnyTrendsData(activities: [Activity]) -> Bool {
     return activities.contains { activity in
         calculateWeeklyUsage(activity: activity) > 0 && hasEnoughDataForTrends(activity: activity)

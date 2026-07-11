@@ -23,11 +23,17 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func requestLocation() {
         manager.requestWhenInUseAuthorization()
-        manager.requestLocation()
+        manager.startUpdatingLocation()
     }
-    
+
+    func stopUpdating() {
+        manager.stopUpdatingLocation()
+    }
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        lastLocation = locations.last
+        guard let location = locations.last else { return }
+        lastLocation = location
+        manager.stopUpdatingLocation()
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
