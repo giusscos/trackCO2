@@ -375,7 +375,7 @@ struct ErtEarthView: View {
     }
 }
 
-// MARK: - Speech Bubble (downward tail)
+// MARK: - Speech Bubble shapes
 
 struct SpeechBubbleDownShape: Shape {
     var tailFraction: CGFloat = 0.45   // tail tip x as fraction of width
@@ -420,25 +420,93 @@ struct SpeechBubbleDownShape: Shape {
     }
 }
 
+struct SpeechBubbleUpShape: Shape {
+    var tailFraction: CGFloat = 0.5
+    var cornerRadius: CGFloat = 18
+    var tailH: CGFloat = 20
+    var tailW: CGFloat = 26
+
+    func path(in rect: CGRect) -> Path {
+        let r = cornerRadius
+        let bodyTop = rect.minY + tailH
+        let tx = rect.width * tailFraction
+
+        var p = Path()
+        p.move(to: CGPoint(x: tx - tailW / 2, y: bodyTop))
+        p.addLine(to: CGPoint(x: tx, y: rect.minY))
+        p.addLine(to: CGPoint(x: tx + tailW / 2, y: bodyTop))
+        p.addLine(to: CGPoint(x: rect.maxX - r, y: bodyTop))
+        p.addArc(center: .init(x: rect.maxX - r, y: bodyTop + r),
+                 radius: r, startAngle: .degrees(-90), endAngle: .degrees(0), clockwise: false)
+        p.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - r))
+        p.addArc(center: .init(x: rect.maxX - r, y: rect.maxY - r),
+                 radius: r, startAngle: .degrees(0), endAngle: .degrees(90), clockwise: false)
+        p.addLine(to: CGPoint(x: rect.minX + r, y: rect.maxY))
+        p.addArc(center: .init(x: rect.minX + r, y: rect.maxY - r),
+                 radius: r, startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)
+        p.addLine(to: CGPoint(x: rect.minX, y: bodyTop + r))
+        p.addArc(center: .init(x: rect.minX + r, y: bodyTop + r),
+                 radius: r, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
+        p.addLine(to: CGPoint(x: tx - tailW / 2, y: bodyTop))
+        p.closeSubpath()
+        return p
+    }
+}
+
+enum SpeechBubbleTailDirection {
+    case up, down
+
+    var shape: AnyShape {
+        switch self {
+        case .up: AnyShape(SpeechBubbleUpShape())
+        case .down: AnyShape(SpeechBubbleDownShape())
+        }
+    }
+}
+
+struct AnyShape: Shape {
+    private let pathBuilder: (CGRect) -> Path
+
+    init<S: Shape>(_ shape: S) {
+        pathBuilder = { rect in shape.path(in: rect) }
+    }
+
+    func path(in rect: CGRect) -> Path { pathBuilder(rect) }
+}
+
 struct SpeechBubble: View {
     let text: String
+    var tailDirection: SpeechBubbleTailDirection = .down
 
     var body: some View {
         Text(text)
             .font(.callout).fontWeight(.medium)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
-            .padding(.top, 14)
-            .padding(.bottom, 32)   // extra room for the 20pt tail
-            // No maxWidth: .infinity — width is driven by the text content
-            .background {
-                ZStack {
-                    SpeechBubbleDownShape()
-                        .fill(Color(.systemBackground))
-                    SpeechBubbleDownShape()
-                        .stroke(Color.primary, lineWidth: 4)
+            .padding(.top, tailDirection == .up ? 32 : 14)
+            .padding(.bottom, tailDirection == .up ? 14 : 32)
+            .modifier(SpeechBubbleBackground(tailDirection: tailDirection))
+    }
+}
+
+private struct SpeechBubbleBackground: ViewModifier {
+    let tailDirection: SpeechBubbleTailDirection
+
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content
+                .glassEffect(.regular, in: tailDirection.shape)
+        } else {
+            content
+                .background {
+                    ZStack {
+                        tailDirection.shape
+                            .fill(.ultraThinMaterial)
+                        tailDirection.shape
+                            .stroke(Color.primary.opacity(0.25), lineWidth: 1.5)
+                    }
                 }
-            }
+        }
     }
 }
 
@@ -454,41 +522,20 @@ struct ClaudMascotView: View {
     @State private var shakeOffset: CGFloat = 0
     @State private var tapCount: Int = 0
     @State private var lastTapDate: Date = .distantPast
+    @State private var bubbleScheduleStarted = false
 
     private var health: ClaudHealth { ClaudHealth(score: healthScore) }
     private var activeMascot: MascotType { .from(appIcon: appIcon) }
 
-    // The bubble area is always 110pt tall so mascot/info never shift.
-    // The bubble itself is content-sized (fixedSize) and centred within it.
-    private let bubbleAreaHeight: CGFloat = 110
-
     var body: some View {
         VStack(spacing: 0) {
-
-            // Fixed-height bubble area — mascot position is never affected
-            ZStack(alignment: .top) {
-                Color.clear.frame(height: bubbleAreaHeight)
-
-                if showBubble {
-                    SpeechBubble(text: isHungry ? health.hungryMessage : health.message)
-                        .fixedSize(horizontal: true, vertical: false)
-                        .padding(.top, 8)
-                        .transition(
-                            .scale(scale: 0.85, anchor: .bottom)
-                            .combined(with: .opacity)
-                        )
-                }
-            }
-            .frame(height: bubbleAreaHeight)
-            .animation(.spring(duration: 0.35, bounce: 0.1), value: showBubble)
-
-            // Mascot — always at the same Y position
             mascotDrawing
                 .offset(x: shakeOffset)
+                .contentShape(Rectangle())
                 .onTapGesture { handleTap() }
-                .padding(.bottom, 8)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
 
-            // Info: name, status badge, life bar — always at same Y position
             VStack(spacing: 8) {
                 Text(activeMascot.name)
                     .font(.title3).fontWeight(.bold)
@@ -504,27 +551,49 @@ struct ClaudMascotView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
+            .overlay(alignment: .top) {
+                if showBubble {
+                    SpeechBubble(
+                        text: isHungry ? health.hungryMessage : health.message,
+                        tailDirection: .up
+                    )
+                    .fixedSize(horizontal: true, vertical: false)
+                    .alignmentGuide(.top) { dimensions in dimensions[.bottom] }
+                    .allowsHitTesting(false)
+                    .transition(
+                        .scale(scale: 0.85, anchor: .top)
+                        .combined(with: .opacity)
+                    )
+                }
+            }
+            .animation(.spring(duration: 0.35, bounce: 0.1), value: showBubble)
         }
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .task {
-            // Random appearance loop — bubble shows on its own schedule
-            do {
-                try await Task.sleep(for: .seconds(Double.random(in: 1.5...3.0)))
-                while true {
-                    guard !isHungry else {
-                        try await Task.sleep(for: .seconds(1))
-                        continue
-                    }
-                    withAnimation { showBubble = true }
-                    try await Task.sleep(for: .seconds(Double.random(in: 3.0...5.0)))
-                    guard !isHungry else { continue }
-                    withAnimation { showBubble = false }
-                    try await Task.sleep(for: .seconds(Double.random(in: 6.0...14.0)))
-                }
-            } catch { }
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .task(id: bubbleScheduleStarted) {
+            guard bubbleScheduleStarted else { return }
+            await runBubbleSchedule()
         }
+        .onAppear {
+            if !bubbleScheduleStarted { bubbleScheduleStarted = true }
+        }
+    }
+
+    private func runBubbleSchedule() async {
+        do {
+            try await Task.sleep(for: .seconds(Double.random(in: 4.0...10.0)))
+            while !Task.isCancelled {
+                guard !isHungry else {
+                    try await Task.sleep(for: .seconds(1))
+                    continue
+                }
+                withAnimation { showBubble = true }
+                try await Task.sleep(for: .seconds(Double.random(in: 3.0...5.0)))
+                guard !isHungry else { continue }
+                withAnimation { showBubble = false }
+                try await Task.sleep(for: .seconds(Double.random(in: 8.0...18.0)))
+            }
+        } catch { }
     }
 
     @ViewBuilder
