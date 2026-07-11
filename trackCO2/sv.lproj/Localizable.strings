@@ -143,6 +143,19 @@
 "Terms of use" = "Användarvillkor";
 "and" = "och";
 
+// MARK: - Onboarding
+"Get Started" = "Kom igång";
+"Next" = "Nästa";
+"Track Your Activities" = "Spåra dina aktiviteter";
+"Log your daily activities — driving, flying, food, energy — and see your real CO₂ footprint build up over time." = "Logga dina dagliga aktiviteter — bilkörning, flyg, mat, energi — och se ditt verkliga CO₂-avtryck växa över tid.";
+"Plan Greener Trips" = "Planera grönare resor";
+"Use the map to compare transport options side by side. The greenest route is always shown first." = "Använd kartan för att jämföra transportalternativ sida vid sida. Den grönaste rutten visas alltid först.";
+"Sync Your Steps" = "Synka dina steg";
+"trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 kan läsa ditt stegantal och gångavstånd från Apple Hälsa för att automatiskt logga miljövänliga rörelser.";
+"Allow Health Access" = "Tillåt hälsotillgång";
+"Skip" = "Hoppa över";
+"Maybe Later" = "Kanske senare";
+
 // MARK: - App Icon
 "Select Icon" = "Välj ikon";
 

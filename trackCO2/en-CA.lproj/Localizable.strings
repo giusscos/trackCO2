@@ -143,6 +143,19 @@
 "Terms of use" = "Terms of use";
 "and" = "and";
 
+// MARK: - Onboarding
+"Get Started" = "Get Started";
+"Next" = "Next";
+"Track Your Activities" = "Track Your Activities";
+"Log your daily activities — driving, flying, food, energy — and see your real CO₂ footprint build up over time." = "Log your daily activities — driving, flying, food, energy — and see your real CO₂ footprint build up over time.";
+"Plan Greener Trips" = "Plan Greener Trips";
+"Use the map to compare transport options side by side. The greenest route is always shown first." = "Use the map to compare transport options side by side. The greenest route is always shown first.";
+"Sync Your Steps" = "Sync Your Steps";
+"trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "trackCO2 can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.";
+"Allow Health Access" = "Allow Health Access";
+"Skip" = "Skip";
+"Maybe Later" = "Maybe Later";
+
 // MARK: - App Icon
 "Select Icon" = "Select Icon";
 

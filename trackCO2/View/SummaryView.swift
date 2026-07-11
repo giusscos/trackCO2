@@ -32,6 +32,7 @@ struct SummaryView: View {
     }
     
     @AppStorage("appIcon") var appIcon: String = defaultAppIcon
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
 
     @Environment(\.modelContext) var modelContext
     @Environment(\.requestReview) var requestReview
@@ -160,37 +161,12 @@ struct SummaryView: View {
             }
             .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
             .onAppear {
-                healthKitManager.requestAuthorization { success in
-                    healthKitAuthorized = success
-                    if success {
-                        healthKitManager.fetchTodayData()
-                        healthKitManager.fetchHistoryData()
-                        healthKitManager.fetchStepsPerHourForToday()
-                        healthKitManager.fetchDistancePerHourForToday()
-                        // Check for yesterday's walking event
-                        healthKitManager.fetchYesterdayDistance { distance in
-                            guard distance > 0 else { return }
-                            let walkingActivity = activities.first { $0.type == .walking }
-                            let calendar = Calendar.current
-                            let today = calendar.startOfDay(for: Date())
-                            guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today) else { return }
-                            let hasEvent = walkingActivity?.events?.contains(where: { event in
-                                calendar.isDate(event.createdAt, inSameDayAs: yesterday)
-                            }) ?? false
-                            if !hasEvent {
-                                yesterdayDistance = distance
-                                showAddYesterdayWalkingAlert = true
-                            }
-                        }
-                    }
-                    
-                    // Check for review request on appear
-                    if requestReviewShown { return }
-                    
-                    checkAndRequestReview()
-                    
-                    requestReviewShown = true
-                }
+                guard hasCompletedOnboarding else { return }
+                loadHealthKitData()
+            }
+            .onChange(of: hasCompletedOnboarding) { _, completed in
+                guard completed else { return }
+                loadHealthKitData()
             }
             .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {
                 Button("Add", role: .none) {
@@ -209,6 +185,37 @@ struct SummaryView: View {
         }
     }
     
+    private func loadHealthKitData() {
+        healthKitManager.requestAuthorization { success in
+            healthKitAuthorized = success
+            if success {
+                healthKitManager.fetchTodayData()
+                healthKitManager.fetchHistoryData()
+                healthKitManager.fetchStepsPerHourForToday()
+                healthKitManager.fetchDistancePerHourForToday()
+                healthKitManager.fetchYesterdayDistance { distance in
+                    guard distance > 0 else { return }
+                    let walkingActivity = activities.first { $0.type == .walking }
+                    let calendar = Calendar.current
+                    let today = calendar.startOfDay(for: Date())
+                    guard let yesterday = calendar.date(byAdding: .day, value: -1, to: today) else { return }
+                    let hasEvent = walkingActivity?.events?.contains(where: { event in
+                        calendar.isDate(event.createdAt, inSameDayAs: yesterday)
+                    }) ?? false
+                    if !hasEvent {
+                        yesterdayDistance = distance
+                        showAddYesterdayWalkingAlert = true
+                    }
+                }
+            }
+
+            if requestReviewShown { return }
+
+            checkAndRequestReview()
+            requestReviewShown = true
+        }
+    }
+
     private func checkAndRequestReview() {
         let compensation = calculateCO2Totals(activities: activities).compensation
         let consumption = calculateCO2Totals(activities: activities).consumption
