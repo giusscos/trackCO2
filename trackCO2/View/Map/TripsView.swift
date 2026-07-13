@@ -45,9 +45,11 @@ struct TripsView: View {
     @State private var showLocationDeniedAlert = false
     @Namespace private var searchZoom
 
-    private let pickDestinationTip = MapPickDestinationTip()
-    private let routeOptionsTip = RouteOptionsTip()
-    private let saveTripTip = SaveTripTip()
+    @State private var mapTips = TipGroup(.ordered) {
+        MapPickDestinationTip()
+        RouteOptionsTip()
+        SaveTripTip()
+    }
 
     var routePolyline: MKPolyline? { selectedOption?.polyline }
     var hasRoute: Bool { selectedOption != nil }
@@ -79,7 +81,7 @@ struct TripsView: View {
                         .shadow(color: .black.opacity(0.12), radius: 6, y: 3)
                 }
                 .matchedTransitionSource(id: "searchBtn", in: searchZoom)
-                .popoverTip(pickDestinationTip, arrowEdge: .bottom)
+                .popoverTip(mapTips.currentTip as? MapPickDestinationTip, arrowEdge: .bottom)
                 .padding(16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -223,7 +225,7 @@ struct TripsView: View {
                         .clipShape(Circle())
                 }
                 .buttonStyle(.borderless)
-                .popoverTip(saveTripTip, arrowEdge: .top)
+                .popoverTip(mapTips.currentTip as? SaveTripTip, arrowEdge: .top)
             }
         }
         .padding(.horizontal, 16)
@@ -245,7 +247,7 @@ struct TripsView: View {
             .transition(.opacity)
         } else if !routeOptions.isEmpty {
             VStack(spacing: 0) {
-                TipView(routeOptionsTip, arrowEdge: .bottom)
+                TipView(mapTips.currentTip as? RouteOptionsTip, arrowEdge: .bottom)
                     .padding(.horizontal, 16)
                     .padding(.bottom, 6)
 
@@ -354,9 +356,12 @@ struct TripsView: View {
 
     private func finalize(_ options: [RouteOption]) {
         let sorted = options.sorted { $0.co2Impact < $1.co2Impact }
-        routeOptions = sorted
-        isCalculating = false
-        selectOption(sorted.first)
+        Task { @MainActor in
+            await MapPickDestinationTip().invalidate(reason: .actionPerformed)
+            routeOptions = sorted
+            isCalculating = false
+            selectOption(sorted.first)
+        }
     }
 
     private func selectOption(_ option: RouteOption?) {

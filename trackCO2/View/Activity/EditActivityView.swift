@@ -46,7 +46,7 @@ struct EditActivityView: View {
                 Section {
                     Picker(selection: $type) {
                         ForEach(ActivityEmissionType.allCases, id: \.self) { type in
-                            Text("\(type.emoji) \(type.rawValue) (\(type.quantityUnit))")
+                            Text(verbatim: "\(type.emoji) \(type.rawValue) (\(type.quantityUnit))")
                         }
                     } label: {
                         Text("Activity type")
@@ -78,7 +78,7 @@ struct EditActivityView: View {
                     VStack (alignment: .leading) {
                         Picker(selection: $emissionType) {
                             ForEach(EmissionUnit.allCases, id: \.self) { emissionType in
-                                Text("\(emissionType)")
+                                Text(verbatim: "\(emissionType)")
                             }
                         } label: {
                             Text("CO2 unit")
@@ -121,7 +121,7 @@ struct EditActivityView: View {
                         .popoverTip(multiplierTip)
                         
                         HStack(alignment: .center, spacing: 16) {
-                            Text("(\(type.quantityUnit))")
+                            Text(verbatim: "(\(type.quantityUnit))")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                             

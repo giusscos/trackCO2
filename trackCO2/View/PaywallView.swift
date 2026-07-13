@@ -71,11 +71,11 @@ struct PaywallView: View {
                     await storeKit.updateCustomerProductStatus()
                     await transaction.finish()
                 }
-                await completePurchase()
+                completePurchase()
             case .pending:
                 await storeKit.updateCustomerProductStatus()
                 if storeKit.hasPaid {
-                    await completePurchase()
+                    completePurchase()
                 }
             case .userCancelled:
                 break

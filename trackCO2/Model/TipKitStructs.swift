@@ -29,6 +29,10 @@ struct MapPickDestinationTip: Tip {
     var image: Image? {
         Image(systemName: "mappin.and.ellipse")
     }
+
+    var options: [TipOption] {
+        MaxDisplayCount(1)
+    }
 }
 
 struct RouteOptionsTip: Tip {
@@ -41,6 +45,10 @@ struct RouteOptionsTip: Tip {
     var image: Image? {
         Image(systemName: "leaf.fill")
     }
+
+    var options: [TipOption] {
+        MaxDisplayCount(1)
+    }
 }
 
 struct SaveTripTip: Tip {
@@ -52,5 +60,9 @@ struct SaveTripTip: Tip {
     }
     var image: Image? {
         Image(systemName: "checkmark.circle.fill")
+    }
+
+    var options: [TipOption] {
+        MaxDisplayCount(1)
     }
 }
