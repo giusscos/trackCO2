@@ -21,16 +21,20 @@ struct ContentView: View {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
 
-    private var showOnboarding: Binding<Bool> {
-        Binding(
-            get: { !hasCompletedOnboarding },
-            set: { if !$0 { hasCompletedOnboarding = true } }
-        )
-    }
-
     var body: some View {
         if store.isLoading {
             ProgressView()
+        } else if !hasCompletedOnboarding {
+            OnboardingView()
+                .environment(store)
+                .onChange(of: store.hasPaid) { _, paid in
+                    guard paid else { return }
+                    hasCompletedOnboarding = true
+                }
+                .subscriptionStatusTask(for: store.groupId) { status in
+                    guard hasActiveSubscription(status) else { return }
+                    hasCompletedOnboarding = true
+                }
         } else {
             TabView {
                 SummaryView()
@@ -49,13 +53,8 @@ struct ContentView: View {
                     }
             }
             .onAppear {
-                guard hasCompletedOnboarding else { return }
                 UITextField.appearance().clearButtonMode = .whileEditing
                 checkWhatsNew()
-            }
-            .fullScreenCover(isPresented: showOnboarding) {
-                OnboardingView()
-                    .environment(store)
             }
             .fullScreenCover(isPresented: $showWhatsNew, onDismiss: {
                 lastSeenVersion = currentVersion
@@ -65,14 +64,6 @@ struct ContentView: View {
             .onChange(of: hasCompletedOnboarding) { _, completed in
                 guard completed else { return }
                 checkWhatsNew()
-            }
-            .onChange(of: store.hasPaid) { _, paid in
-                guard paid else { return }
-                hasCompletedOnboarding = true
-            }
-            .subscriptionStatusTask(for: store.groupId) { status in
-                guard hasActiveSubscription(status) else { return }
-                hasCompletedOnboarding = true
             }
         }
     }

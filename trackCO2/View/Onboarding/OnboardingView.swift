@@ -159,6 +159,14 @@ private struct OnboardingActivitiesPage: View {
 }
 
 private struct OnboardingTripsPage: View {
+    @State private var locationManager = LocationManager.shared
+    @State private var navigateToWeather = false
+    @State private var isLocationAuthorized = false
+
+    private var canProceed: Bool {
+        isLocationAuthorized || locationManager.authorizationStatus != .notDetermined
+    }
+
     var body: some View {
         OnboardingPageLayout(
             hidesBackButton: true,
@@ -171,21 +179,55 @@ private struct OnboardingTripsPage: View {
                     .onboardingAppear(.icon)
             },
             primaryButton: {
-                NavigationLink(destination: OnboardingWeatherPage()) {
-                    Text("Next")
+                Button {
+                    if canProceed {
+                        navigateToWeather = true
+                    } else {
+                        locationManager.requestAuthorizationIfNeeded()
+                    }
+                } label: {
+                    Text(canProceed ? "Next" : "Enable Location")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
+                .animation(.easeInOut(duration: 0.2), value: canProceed)
             },
-            secondaryButton: { EmptyView() }
+            secondaryButton: {
+                Button(String(localized: "Skip")) {
+                    navigateToWeather = true
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.top, 8)
+            }
         )
+        .navigationDestination(isPresented: $navigateToWeather) {
+            OnboardingWeatherPage()
+        }
+        .onAppear {
+            isLocationAuthorized = locationManager.isAuthorized
+        }
+        .onChange(of: locationManager.authorizationStatus) { _, _ in
+            isLocationAuthorized = locationManager.isAuthorized
+            if isLocationAuthorized {
+                locationManager.startUpdatingIfAuthorized()
+            }
+        }
     }
 }
 
 private struct OnboardingWeatherPage: View {
+    @State private var locationManager = LocationManager.shared
+    @State private var navigateToHealthKit = false
+    @State private var isLocationAuthorized = false
+
+    private var canProceed: Bool {
+        isLocationAuthorized || locationManager.authorizationStatus != .notDetermined
+    }
+
     var body: some View {
         OnboardingPageLayout(
             hidesBackButton: true,
@@ -198,17 +240,46 @@ private struct OnboardingWeatherPage: View {
                     .onboardingAppear(.icon)
             },
             primaryButton: {
-                NavigationLink(destination: OnboardingHealthKitPage()) {
-                    Text("Next")
+                Button {
+                    if canProceed {
+                        navigateToHealthKit = true
+                    } else {
+                        locationManager.requestAuthorizationIfNeeded()
+                    }
+                } label: {
+                    Text(canProceed ? "Next" : "Enable Location")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                 }
                 .buttonStyle(.borderedProminent)
                 .buttonBorderShape(.capsule)
+                .animation(.easeInOut(duration: 0.2), value: canProceed)
             },
-            secondaryButton: { EmptyView() }
+            secondaryButton: {
+                Button(String(localized: "Skip")) {
+                    navigateToHealthKit = true
+                }
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .padding(.top, 8)
+            }
         )
+        .navigationDestination(isPresented: $navigateToHealthKit) {
+            OnboardingHealthKitPage()
+        }
+        .onAppear {
+            isLocationAuthorized = locationManager.isAuthorized
+            if isLocationAuthorized {
+                locationManager.startUpdatingIfAuthorized()
+            }
+        }
+        .onChange(of: locationManager.authorizationStatus) { _, _ in
+            isLocationAuthorized = locationManager.isAuthorized
+            if isLocationAuthorized {
+                locationManager.startUpdatingIfAuthorized()
+            }
+        }
     }
 }
 

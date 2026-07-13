@@ -15,12 +15,13 @@ struct MapDestinationPickerView: View {
     
     var activity: Activity
     
-    @State private var locationManager = LocationManager()
+    @State private var locationManager = LocationManager.shared
     @State private var position = MapCameraPosition.automatic
     @State private var searchResults = [SearchResult]()
     @State private var selectedLocation: SearchResult?
     @State private var isSheetPresented: Bool = true
     @State private var showingSaveAlert = false
+    @State private var showLocationDeniedAlert = false
     @State private var calculatedDistance: Double = 0.0
     @State private var estimatedTime: TimeInterval = 0.0
     @State private var selectedRoute: MKRoute?
@@ -108,7 +109,30 @@ struct MapDestinationPickerView: View {
             }
         }
         .onAppear {
-            locationManager.requestLocation()
+            handleLocationAccess()
+        }
+        .alert("Location Access Needed", isPresented: $showLocationDeniedAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Not Now", role: .cancel) { }
+        } message: {
+            Text("Allow location access in Settings to see your position on the map and find nearby places.")
+        }
+    }
+
+    private func handleLocationAccess() {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            locationManager.requestAuthorizationIfNeeded()
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingIfAuthorized()
+        case .denied, .restricted:
+            showLocationDeniedAlert = true
+        @unknown default:
+            break
         }
     }
     

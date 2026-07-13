@@ -7,7 +7,7 @@ import SwiftUI
 
 struct WeatherSuggestionView: View {
     @State private var weather = WeatherManager.shared
-    @State private var locationManager = LocationManager()
+    @State private var locationManager = LocationManager.shared
 
     private var config: (icon: String, accent: Color, title: LocalizedStringKey, body: LocalizedStringKey) {
         switch weather.suggestion {
@@ -88,7 +88,14 @@ struct WeatherSuggestionView: View {
         }
         .buttonStyle(.plain)
         .task {
+            guard locationManager.isAuthorized else { return }
             await weather.refresh(using: locationManager)
+        }
+        .onChange(of: locationManager.authorizationStatus) { _, _ in
+            guard locationManager.isAuthorized else { return }
+            Task {
+                await weather.refresh(using: locationManager)
+            }
         }
         .onChange(of: locationManager.lastLocation) { _, location in
             guard location != nil else { return }

@@ -7,7 +7,7 @@ import SwiftUI
 
 struct ListWeatherForecastView: View {
     @State private var weather = WeatherManager.shared
-    @State private var locationManager = LocationManager()
+    @State private var locationManager = LocationManager.shared
 
     private let temperatureFormatter: MeasurementFormatter = {
         let formatter = MeasurementFormatter()
@@ -77,7 +77,17 @@ struct ListWeatherForecastView: View {
             }
         }
         .task {
+            if locationManager.authorizationStatus == .notDetermined {
+                locationManager.requestAuthorizationIfNeeded()
+            }
+            guard locationManager.isAuthorized else { return }
             await weather.refresh(using: locationManager)
+        }
+        .onChange(of: locationManager.authorizationStatus) { _, _ in
+            guard locationManager.isAuthorized else { return }
+            Task {
+                await weather.refresh(using: locationManager)
+            }
         }
         .onChange(of: locationManager.lastLocation) { _, location in
             guard location != nil else { return }

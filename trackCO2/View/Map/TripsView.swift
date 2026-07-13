@@ -32,7 +32,7 @@ struct TripsView: View {
         activities.filter { $0.quantityUnit == .km }
     }
 
-    @State private var locationManager = LocationManager()
+    @State private var locationManager = LocationManager.shared
     @State private var searchResults: [SearchResult] = []
     @State private var selectedLocation: SearchResult?
     @State private var tappedCoordinate: CLLocationCoordinate2D?
@@ -42,6 +42,7 @@ struct TripsView: View {
     @State private var showSearchSheet = false
     @State private var nearbyResults: [SearchResult] = []
     @State private var isLoadingNearby = false
+    @State private var showLocationDeniedAlert = false
     @Namespace private var searchZoom
 
     private let pickDestinationTip = MapPickDestinationTip()
@@ -123,14 +124,17 @@ struct TripsView: View {
             if searchResults.count == 1 { selectedLocation = searchResults.first }
         }
         .onAppear {
-            locationManager.requestLocation()
-            if let coord = locationManager.lastLocation?.coordinate, nearbyResults.isEmpty, !isLoadingNearby {
-                isLoadingNearby = true
-                Task {
-                    nearbyResults = (try? await LocationService.searchNearby(coordinate: coord)) ?? []
-                    isLoadingNearby = false
+            handleLocationAccess()
+        }
+        .alert("Location Access Needed", isPresented: $showLocationDeniedAlert) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
                 }
             }
+            Button("Not Now", role: .cancel) { }
+        } message: {
+            Text("Allow location access in Settings to see your position on the map and find nearby places.")
         }
         .onChange(of: locationManager.lastLocation) { _, newLocation in
             guard let coord = newLocation?.coordinate, nearbyResults.isEmpty, !isLoadingNearby else { return }
@@ -139,6 +143,29 @@ struct TripsView: View {
                 nearbyResults = (try? await LocationService.searchNearby(coordinate: coord)) ?? []
                 isLoadingNearby = false
             }
+        }
+    }
+
+    private func handleLocationAccess() {
+        switch locationManager.authorizationStatus {
+        case .notDetermined:
+            locationManager.requestAuthorizationIfNeeded()
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingIfAuthorized()
+            loadNearbyPlacesIfNeeded()
+        case .denied, .restricted:
+            showLocationDeniedAlert = true
+        @unknown default:
+            break
+        }
+    }
+
+    private func loadNearbyPlacesIfNeeded() {
+        guard let coord = locationManager.lastLocation?.coordinate, nearbyResults.isEmpty, !isLoadingNearby else { return }
+        isLoadingNearby = true
+        Task {
+            nearbyResults = (try? await LocationService.searchNearby(coordinate: coord)) ?? []
+            isLoadingNearby = false
         }
     }
 

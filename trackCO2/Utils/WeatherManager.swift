@@ -61,8 +61,10 @@ final class WeatherManager {
     private init() {}
 
     func refresh(using locationManager: LocationManager) async {
+        guard locationManager.isAuthorized else { return }
+
         guard let location = locationManager.lastLocation else {
-            locationManager.requestLocation()
+            locationManager.startUpdatingIfAuthorized()
             return
         }
         await fetchWeather(for: location)

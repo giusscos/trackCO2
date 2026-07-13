@@ -159,6 +159,11 @@
 "Sync Your Steps" = "Sync Your Steps";
 "I can read your step count and walking distance from Apple Health to automatically log eco-friendly movement." = "I can read your step count and walking distance from Apple Health to automatically log eco-friendly movement.";
 "Allow Health Access" = "Allow Health Access";
+"Enable Location" = "Enable Location";
+"Location Access Needed" = "Location Access Needed";
+"Open Settings" = "Open Settings";
+"Not Now" = "Not Now";
+"Allow location access in Settings to see your position on the map and find nearby places." = "Allow location access in Settings to see your position on the map and find nearby places.";
 "Continue" = "Continue";
 "Skip" = "Skip";
 "Maybe Later" = "Maybe Later";
