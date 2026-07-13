@@ -59,6 +59,15 @@ struct ClaudHealth {
         }
     }
 
+    func weatherMessage(for suggestion: WeatherManager.WalkingSuggestion) -> String {
+        switch suggestion {
+        case .walk: return String(localized: "Sky is clear!\nPerfect day to walk. 🌤️")
+        case .caution: return String(localized: "A bit cloudy…\nA short walk still counts! 🚶")
+        case .avoid: return String(localized: "Stay safe!\nPoor air today. 🏠")
+        case .unknown: return message
+        }
+    }
+
     var tintColor: Color {
         switch score {
         case 0.75...: return .green
@@ -517,6 +526,7 @@ struct ClaudMascotView: View {
 
     @AppStorage("appIcon") private var appIcon: String = "claud"
 
+    @State private var weather = WeatherManager.shared
     @State private var showBubble: Bool = false
     @State private var isHungry: Bool = false
     @State private var shakeOffset: CGFloat = 0
@@ -554,7 +564,7 @@ struct ClaudMascotView: View {
             .overlay(alignment: .top) {
                 if showBubble {
                     SpeechBubble(
-                        text: isHungry ? health.hungryMessage : health.message,
+                        text: isHungry ? health.hungryMessage : health.weatherMessage(for: weather.suggestion),
                         tailDirection: .up
                     )
                     .fixedSize(horizontal: true, vertical: false)

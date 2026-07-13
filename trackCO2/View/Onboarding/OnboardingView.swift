@@ -171,6 +171,33 @@ private struct OnboardingTripsPage: View {
                     .onboardingAppear(.icon)
             },
             primaryButton: {
+                NavigationLink(destination: OnboardingWeatherPage()) {
+                    Text("Next")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+            },
+            secondaryButton: { EmptyView() }
+        )
+    }
+}
+
+private struct OnboardingWeatherPage: View {
+    var body: some View {
+        OnboardingPageLayout(
+            hidesBackButton: true,
+            title: "Walk When It's Worth It",
+            description: "Claud checks local weather and air conditions to nudge you toward walking or cycling when the sky is clear — and warns you when poor air quality makes driving the smarter call.",
+            header: {
+                Image(systemName: "cloud.sun.fill")
+                    .font(.system(size: 90))
+                    .foregroundStyle(.tint)
+                    .onboardingAppear(.icon)
+            },
+            primaryButton: {
                 NavigationLink(destination: OnboardingHealthKitPage()) {
                     Text("Next")
                         .font(.headline)
@@ -260,12 +287,23 @@ private struct OnboardingHealthKitPage: View {
 
 private struct OnboardingPaywallPage: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @Environment(Store.self) private var store
 
     var body: some View {
-        PaywallView(embedsNavigationStack: false) {
-            hasCompletedOnboarding = true
-        }
+        PaywallView(
+            embedsNavigationStack: false,
+            onPurchaseComplete: finishOnboarding
+        )
         .navigationBarBackButtonHidden(true)
+        .onChange(of: store.hasPaid) { _, paid in
+            guard paid else { return }
+            finishOnboarding()
+        }
+    }
+
+    @MainActor
+    private func finishOnboarding() {
+        hasCompletedOnboarding = true
     }
 }
 

@@ -9,50 +9,45 @@ import SwiftData
 import SwiftUI
 
 struct ListTipsView: View {
-    @Environment(\.modelContext) var modelContext
-    
     @Query var activities: [Activity]
-    
-    var sortedActivities: [Activity] {
-        activities
-            .filter { $0.events?.count ?? 0 >= 3 }
-            .sorted { ($0.events?.count ?? 0) > ($1.events?.count ?? 0) }
+
+    private var tips: [GeneratedTip] {
+        TipGenerator.generate(from: activities)
     }
-    
-    func generateTip(for activity: Activity) -> String {
-        if activity.type.isCO2Reducing {
-            return String(localized: "Great job! Your \(activity.name.lowercased()) activity is helping reduce CO2 emissions. Keep it up! 🌱")
-        } else {
-            return String(localized: "Consider reducing your \(activity.name.lowercased()) usage or balancing it with CO2 reducing activities.")
-        }
-    }
-    
+
     var body: some View {
         List {
-            if sortedActivities.isEmpty {
+            if tips.isEmpty {
                 Text("No activities found. Start tracking your activities to get personalized tips!")
                     .font(.headline)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding()
             } else {
-                ForEach(sortedActivities, id: \.id) { activity in
+                ForEach(tips) { tip in
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(activity.type.emoji)
-                                .font(.title2)
-                            
-                            VStack(alignment: .leading) {
-                                Text(activity.name)
-                                    .font(.headline)
-                                
-//                                Text("Used \(activity.events?.count ?? 0) \(activity.events?.count != 1 ? "times" : "time")")
-//                                    .font(.subheadline)
-//                                    .foregroundStyle(.secondary)
+                            if let activity = tip.activity {
+                                Text(activity.type.emoji)
+                                    .font(.title2)
+
+                                VStack(alignment: .leading) {
+                                    Text(activity.displayName)
+                                        .font(.headline)
+                                    Text(tip.title)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            } else {
+                                VStack(alignment: .leading) {
+                                    Text(tip.title)
+                                        .font(.headline)
+                                }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            if activity.type.isCO2Reducing {
+
+                            Spacer()
+
+                            if tip.isPositive {
                                 Image(systemName: "leaf.fill")
                                     .foregroundStyle(.green)
                             } else {
@@ -60,8 +55,8 @@ struct ListTipsView: View {
                                     .foregroundStyle(.orange)
                             }
                         }
-                        
-                        Text(generateTip(for: activity))
+
+                        Text(tip.message)
                             .font(.subheadline)
                     }
                     .padding(.vertical, 4)

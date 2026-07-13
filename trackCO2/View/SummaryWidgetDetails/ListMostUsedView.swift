@@ -24,7 +24,7 @@ struct ListMostUsedView: View {
                     Text(activity.type.emoji)
                     
                     VStack(alignment: .leading) {
-                        Text(activity.name)
+                        Text(activity.displayName)
                             .font(.headline)
                         
                         Text(usageText(for: activity))

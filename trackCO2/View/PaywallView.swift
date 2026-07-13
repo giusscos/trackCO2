@@ -8,78 +8,11 @@
 import StoreKit
 import SwiftUI
 
-private struct GlassLifetimeButtonStyle: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, *) {
-            content.buttonStyle(.glass)
-        } else {
-            content
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-        }
-    }
-}
-
-private struct PaywallBenefitRow: View {
-    let icon: String
-    let accent: Color
-    let text: LocalizedStringKey
-    let index: Int
-
-    @State private var appeared = false
-    @State private var iconBounce = false
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            ZStack {
-                Circle()
-                    .fill(accent.gradient.opacity(0.22))
-                    .frame(width: 42, height: 42)
-
-                Image(systemName: icon)
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(accent.gradient)
-                    .symbolEffect(.bounce, value: iconBounce)
-            }
-
-            Text(text)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 10)
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 12)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(accent.opacity(0.09))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .strokeBorder(accent.opacity(0.18), lineWidth: 1)
-                }
-        }
-        .opacity(appeared ? 1 : 0)
-        .offset(x: appeared ? 0 : -28)
-        .scaleEffect(appeared ? 1 : 0.94, anchor: .leading)
-        .onAppear {
-            let delay = 0.18 + Double(index) * 0.11
-            withAnimation(.spring(duration: 0.58, bounce: 0.34).delay(delay)) {
-                appeared = true
-            }
-            Task {
-                try? await Task.sleep(for: .seconds(delay + 0.22))
-                iconBounce.toggle()
-            }
-        }
-    }
-}
-
 struct PaywallView: View {
     var embedsNavigationStack: Bool = true
     var onPurchaseComplete: (() -> Void)? = nil
     
-    @State private var storeKit = Store()
+    @Environment(Store.self) private var storeKit
     
     @State private var showingLifetimePlan = false
     
@@ -96,6 +29,7 @@ struct PaywallView: View {
         Benefit(icon: "chart.bar.fill", accent: .green, text: "Log daily activities and see your real CO₂ footprint grow over time."),
         Benefit(icon: "map.fill", accent: .blue, text: "Compare transport options and always pick the greenest route."),
         Benefit(icon: "figure.walk", accent: .mint, text: "Auto-sync steps and walking distance from Apple Health."),
+        Benefit(icon: "cloud.sun.fill", accent: .cyan, text: "Weather-smart nudges: get prompted to walk or cycle when air is clean and skies are clear."),
         Benefit(icon: "lightbulb.fill", accent: .yellow, text: "Get weekly insights and tips to reduce your impact.")
     ]
     
@@ -109,9 +43,59 @@ struct PaywallView: View {
                 paywallContent
             }
         }
+        .onInAppPurchaseCompletion { _, result in
+            await handleInAppPurchaseCompletion(result)
+        }
+        .subscriptionStatusTask(for: storeKit.groupId) { status in
+            guard hasActiveSubscription(status) else { return }
+            completePurchase()
+        }
         .onChange(of: storeKit.hasPaid) { _, paid in
             guard paid else { return }
-            onPurchaseComplete?()
+            completePurchase()
+        }
+    }
+
+    @MainActor
+    private func completePurchase() {
+        onPurchaseComplete?()
+    }
+
+    private func handleInAppPurchaseCompletion(_ result: Result<Product.PurchaseResult, Error>) async {
+        switch result {
+        case .success(let purchaseResult):
+            switch purchaseResult {
+            case .success(let verification):
+                if let transaction = try? storeKit.checkVerified(verification) {
+                    storeKit.recordEntitlement(for: transaction)
+                    await storeKit.updateCustomerProductStatus()
+                    await transaction.finish()
+                }
+                await completePurchase()
+            case .pending:
+                await storeKit.updateCustomerProductStatus()
+                if storeKit.hasPaid {
+                    await completePurchase()
+                }
+            case .userCancelled:
+                break
+            @unknown default:
+                break
+            }
+        case .failure:
+            break
+        }
+    }
+
+    private func hasActiveSubscription(_ status: EntitlementTaskState<[Product.SubscriptionInfo.Status]>) -> Bool {
+        guard let statuses = status.value else { return false }
+        return statuses.contains { subscriptionStatus in
+            switch subscriptionStatus.state {
+            case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
+                return true
+            default:
+                return false
+            }
         }
     }
     
@@ -190,4 +174,5 @@ struct PaywallView: View {
 
 #Preview {
     PaywallView()
+        .environment(Store())
 }

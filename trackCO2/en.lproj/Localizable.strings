@@ -163,6 +163,28 @@
 "Skip" = "Skip";
 "Maybe Later" = "Maybe Later";
 
+// MARK: - Weather
+"Walk When It's Worth It" = "Walk When It's Worth It";
+"Claud checks local weather and air conditions to nudge you toward walking or cycling when the sky is clear — and warns you when poor air quality makes driving the smarter call." = "Claud checks local weather and air conditions to nudge you toward walking or cycling when the sky is clear — and warns you when poor air quality makes driving the smarter call.";
+"Weather-smart nudges: get prompted to walk or cycle when air is clean and skies are clear." = "Weather-smart nudges: get prompted to walk or cycle when air is clean and skies are clear.";
+"Great time to walk!" = "Great time to walk!";
+"Skies are clear. Skip the car and log some green steps." = "Skies are clear. Skip the car and log some green steps.";
+"Walking is possible" = "Walking is possible";
+"Conditions are okay but not ideal. A short walk still counts." = "Conditions are okay but not ideal. A short walk still counts.";
+"Poor conditions outside" = "Poor conditions outside";
+"Air quality or weather makes outdoor activity inadvisable. Consider public transport." = "Air quality or weather makes outdoor activity inadvisable. Consider public transport.";
+"Sky is clear!\nPerfect day to walk. 🌤️" = "Sky is clear!\nPerfect day to walk. 🌤️";
+"A bit cloudy…\nA short walk still counts! 🚶" = "A bit cloudy…\nA short walk still counts! 🚶";
+"Stay safe!\nPoor air today. 🏠" = "Stay safe!\nPoor air today. 🏠";
+"Weather Forecast" = "Weather Forecast";
+"Great day to walk or cycle" = "Great day to walk or cycle";
+"Walking possible" = "Walking possible";
+"Stay indoors" = "Stay indoors";
+"Checking conditions…" = "Checking conditions…";
+"If driving is unavoidable, this is a better day for it." = "If driving is unavoidable, this is a better day for it.";
+"It's hot — wear a hat, use sun protection, and avoid walking at midday." = "It's hot — wear a hat, use sun protection, and avoid walking at midday.";
+"It's cold — dress in layers, cover your hands and head, and warm up before longer walks." = "It's cold — dress in layers, cover your hands and head, and warm up before longer walks.";
+
 // MARK: - App Icon
 "Select Icon" = "Select Icon";
 
@@ -171,3 +193,50 @@
 "Try to reduce your %@ %@ activity." = "Try to reduce your %1$@ %2$@ activity.";
 "Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱" = "Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱";
 "Consider reducing your %@ usage or balancing it with CO2 reducing activities." = "Consider reducing your %@ usage or balancing it with CO2 reducing activities.";
+
+// MARK: - Smart Tips
+"tip.title.high_impact_emitter" = "High Impact Emitter";
+"tip.title.trend" = "Usage Trend";
+"tip.title.offset_gap" = "Offset Gap";
+"tip.title.substitution" = "Greener Alternative";
+"tip.title.food_swap" = "Food Swap";
+"tip.title.streak" = "Streak";
+"tip.title.milestone" = "Milestone";
+"tip.title.inactivity" = "Activity Reminder";
+"tip.title.fallback" = "Get Started";
+"tip.high_impact_emitter" = "%1$@ %2$@ is your biggest source — %3$.0f kg CO₂ this month. That's %4$.0f%% of your total emissions.";
+"tip.trend_increase" = "%1$@ Your %2$@ usage is up %3$.0f%% vs. last week (+%4$.1f kg CO₂). Small changes add up — try one car-free day.";
+"tip.offset_gap" = "This month you emitted %1$.0f kg CO₂ but only offset %2$.0f kg. Planting %3$d more trees would offset %4$.0f kg.";
+"tip.substitution" = "Your %1$@ %2$@ totaled %3$.0f km this week. Replacing %4$d trips with %5$@ %6$@ would save ~%7$.1f kg CO₂ (%8$.0f%% less per km).";
+"tip.food_swap" = "%1$@ %2$@ has a very high footprint (%3$.0f kg CO₂/kg). Swapping one meal per week to %4$@ vegetables saves ~%5$.1f kg CO₂/month.";
+"tip.streak" = "You've %1$@ %2$@ for %3$d days in a row! That's %4$.2f kg CO₂ avoided — equivalent to skipping %5$.0f km by car.";
+"tip.milestone" = "You've offset %1$.0f kg CO₂ total! That's like taking a car off the road for %2$.1f weeks.";
+"tip.inactivity" = "You haven't logged %1$@ %2$@ in %3$d days. Even a %4$.0f km walk offsets %5$.0f g CO₂.";
+
+// MARK: - Default Activities
+"Car Travel" = "Car Travel";
+"Airplane Flight" = "Airplane Flight";
+"Boat Trip" = "Boat Trip";
+"Motorcycle Ride" = "Motorcycle Ride";
+"Bus Travel" = "Bus Travel";
+"Train Travel" = "Train Travel";
+"Beef Consumption" = "Beef Consumption";
+"Chicken Consumption" = "Chicken Consumption";
+"Vegetable Consumption" = "Vegetable Consumption";
+"Rice Consumption" = "Rice Consumption";
+"Dairy Consumption" = "Dairy Consumption";
+"Electricity Usage" = "Electricity Usage";
+"Walking" = "Walking";
+"Biking" = "Biking";
+"Tree Planting" = "Tree Planting";
+"Recycling" = "Recycling";
+
+// MARK: - What's New
+"whats_new.title" = "What's New in trackCO2";
+"whats_new.subtitle" = "Here's what we've been working on for you.";
+"whats_new.feature.mascot" = "Meet your new mascot — Claud now reacts to your CO₂ score in real time.";
+"whats_new.feature.weather" = "Weather-aware tips — Claud checks local conditions to suggest the best time to walk, cycle, or take transit.";
+"whats_new.feature.tips" = "Smarter activity tips — data-driven insights with real CO₂ numbers, usage trends, and actionable suggestions from your logged activities.";
+"whats_new.feature.ui" = "A cleaner, faster experience — redesigned cards, smoother navigation, and a more intuitive layout throughout the app.";
+"whats_new.feature.maps" = "New Maps experience — plan greener trips with live transport comparison and CO₂ estimates on the map.";
+"whats_new.cta" = "Continue";

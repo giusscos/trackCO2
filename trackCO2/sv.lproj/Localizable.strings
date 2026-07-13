@@ -163,6 +163,28 @@
 "Skip" = "Hoppa över";
 "Maybe Later" = "Kanske senare";
 
+// MARK: - Weather
+"Walk When It's Worth It" = "Gå när det är värt det";
+"Claud checks local weather and air conditions to nudge you toward walking or cycling when the sky is clear — and warns you when poor air quality makes driving the smarter call." = "Claud kollar lokalt väder och luftkvalitet för att uppmuntra dig att gå eller cykla när himlen är klar — och varnar dig när dålig luftkvalitet gör bil till det smartare valet.";
+"Weather-smart nudges: get prompted to walk or cycle when air is clean and skies are clear." = "Väder-smarta påminnelser: få en knuff att gå eller cykla när luften är ren och himlen klar.";
+"Great time to walk!" = "Perfekt tillfälle att gå!";
+"Skies are clear. Skip the car and log some green steps." = "Himlen är klar. Skippa bilen och logga gröna steg.";
+"Walking is possible" = "Promenad är möjlig";
+"Conditions are okay but not ideal. A short walk still counts." = "Förhållandena är okej men inte idealiska. En kort promenad räknas ändå.";
+"Poor conditions outside" = "Dåliga förhållanden ute";
+"Air quality or weather makes outdoor activity inadvisable. Consider public transport." = "Luftkvalitet eller väder gör utomhusaktivitet olämplig. Överväg kollektivtrafik.";
+"Sky is clear!\nPerfect day to walk. 🌤️" = "Himlen är klar!\nPerfekt dag för en promenad. 🌤️";
+"A bit cloudy…\nA short walk still counts! 🚶" = "Lite molnigt…\nEn kort promenad räknas ändå! 🚶";
+"Stay safe!\nPoor air today. 🏠" = "Var försiktig!\nDålig luft idag. 🏠";
+"Weather Forecast" = "Väderprognos";
+"Great day to walk or cycle" = "Bra dag för promenad eller cykling";
+"Walking possible" = "Promenad möjlig";
+"Stay indoors" = "Stanna inomhus";
+"Checking conditions…" = "Kontrollerar förhållanden…";
+"If driving is unavoidable, this is a better day for it." = "Om bilkörning är oundviklig är detta en bättre dag för det.";
+"It's hot — wear a hat, use sun protection, and avoid walking at midday." = "Det är varmt — bär hatt, använd solskydd och undvik promenader vid middagstid.";
+"It's cold — dress in layers, cover your hands and head, and warm up before longer walks." = "Det är kallt — klä dig i lager, skydda händer och huvud och värm upp innan längre promenader.";
+
 // MARK: - App Icon
 "Select Icon" = "Välj ikon";
 
@@ -171,3 +193,50 @@
 "Try to reduce your %@ %@ activity." = "Försök minska din %1$@ %2$@-aktivitet.";
 "Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱" = "Bra jobbat! Din %@-aktivitet hjälper till att minska CO2-utsläpp. Fortsätt så! 🌱";
 "Consider reducing your %@ usage or balancing it with CO2 reducing activities." = "Överväg att minska din användning av %@ eller balansera den med CO2-minskande aktiviteter.";
+
+// MARK: - Smart Tips
+"tip.title.high_impact_emitter" = "Största utsläppskällan";
+"tip.title.trend" = "Användningstrend";
+"tip.title.offset_gap" = "Kompensationsgap";
+"tip.title.substitution" = "Grönare alternativ";
+"tip.title.food_swap" = "Matbyte";
+"tip.title.streak" = "Sviter";
+"tip.title.milestone" = "Milstolpe";
+"tip.title.inactivity" = "Aktivitetspåminnelse";
+"tip.title.fallback" = "Kom igång";
+"tip.high_impact_emitter" = "%1$@ %2$@ är din största källa — %3$.0f kg CO₂ den här månaden. Det är %4$.0f%% av dina totala utsläpp.";
+"tip.trend_increase" = "%1$@ Din användning av %2$@ har ökat %3$.0f%% jämfört med förra veckan (+%4$.1f kg CO₂). Små förändringar räknas — prova en bilfri dag.";
+"tip.offset_gap" = "Den här månaden släppte du ut %1$.0f kg CO₂ men kompenserade bara %2$.0f kg. Att plantera %3$d fler träd skulle kompensera %4$.0f kg.";
+"tip.substitution" = "Din %1$@ %2$@ blev %3$.0f km den här veckan. Att ersätta %4$d resor med %5$@ %6$@ skulle spara ~%7$.1f kg CO₂ (%8$.0f%% mindre per km).";
+"tip.food_swap" = "%1$@ %2$@ har ett mycket högt fotavtryck (%3$.0f kg CO₂/kg). Att byta en måltid i veckan till %4$@ grönsaker sparar ~%5$.1f kg CO₂/månad.";
+"tip.streak" = "Du har %1$@ %2$@ %3$d dagar i rad! Det är %4$.2f kg CO₂ undviket — motsvarar %5$.0f km med bil.";
+"tip.milestone" = "Du har kompenserat %1$.0f kg CO₂ totalt! Det är som att ta en bil av vägen i %2$.1f veckor.";
+"tip.inactivity" = "Du har inte loggat %1$@ %2$@ på %3$d dagar. Även en promenad på %4$.0f km kompenserar %5$.0f g CO₂.";
+
+// MARK: - Default Activities
+"Car Travel" = "Bilresa";
+"Airplane Flight" = "Flygresa";
+"Boat Trip" = "Båttur";
+"Motorcycle Ride" = "Motorcykeltur";
+"Bus Travel" = "Bussresa";
+"Train Travel" = "Tågresa";
+"Beef Consumption" = "Nötköttkonsumtion";
+"Chicken Consumption" = "Kycklingkonsumtion";
+"Vegetable Consumption" = "Grönsakskonsumtion";
+"Rice Consumption" = "Riskonsumtion";
+"Dairy Consumption" = "Mejerikonsumtion";
+"Electricity Usage" = "Elförbrukning";
+"Walking" = "Promenad";
+"Biking" = "Cykling";
+"Tree Planting" = "Trädplantering";
+"Recycling" = "Återvinning";
+
+// MARK: - What's New
+"whats_new.title" = "Nytt i trackCO2";
+"whats_new.subtitle" = "Här är vad vi har jobbat med för dig.";
+"whats_new.feature.mascot" = "Träffa din nya maskot — Claud reagerar nu på ditt CO₂-resultat i realtid.";
+"whats_new.feature.weather" = "Vädermedvetna tips — Claud kollar lokala förhållanden och föreslår bästa tiden att gå, cykla eller åka kollektivt.";
+"whats_new.feature.tips" = "Smartare aktivitetstips — datadrivna insikter med riktiga CO₂-siffror, användningstrender och konkreta förslag från dina loggade aktiviteter.";
+"whats_new.feature.ui" = "En renare och snabbare upplevelse — omdesignade kort, smidigare navigering och en mer intuitiv layout i hela appen.";
+"whats_new.feature.maps" = "Ny kartupplevelse — planera grönare resor med live transportjämförelse och CO₂-uppskattningar på kartan.";
+"whats_new.cta" = "Fortsätt";

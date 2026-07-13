@@ -437,7 +437,7 @@ struct RouteOptionCard: View {
                     }
                 }
 
-                Text(option.activity.name)
+                Text(option.activity.displayName)
                     .font(.caption)
                     .fontWeight(.semibold)
                     .lineLimit(1)

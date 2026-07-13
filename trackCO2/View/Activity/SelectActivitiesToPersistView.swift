@@ -6,20 +6,20 @@ struct SelectActivitiesToPersistView: View {
     @Environment(\.modelContext) var modelContext
     @Query var activities: [Activity]
     
-    @State private var selectedIDs: Set<UUID> = []
+    @State private var selectedTypes: Set<ActivityEmissionType> = []
     
     var unpersistedActivities: [Activity] {
-        let persistedNames = Set(activities.map { $0.name })
-        return defaultActivities.filter { !persistedNames.contains($0.name) }
+        let persistedTypes = Set(activities.map { $0.type })
+        return defaultActivities.filter { !persistedTypes.contains($0.type) }
     }
     
     var body: some View {
         NavigationStack {
-            List(unpersistedActivities, id: \.id, selection: $selectedIDs) { activity in
+            List(unpersistedActivities, id: \.type, selection: $selectedTypes) { activity in
                 HStack {
                     Text(activity.type.emoji)
                     VStack(alignment: .leading) {
-                        Text(activity.name).font(.headline)
+                        Text(activity.displayName).font(.headline)
                         if !activity.activityDescription.isEmpty {
                             Text(activity.activityDescription).font(.subheadline).foregroundStyle(.secondary)
                         }
@@ -35,7 +35,7 @@ struct SelectActivitiesToPersistView: View {
                     Button("Save") {
                         persistSelected()
                     }
-                    .disabled(selectedIDs.isEmpty)
+                    .disabled(selectedTypes.isEmpty)
                 }
             }
             .environment(\.editMode, .constant(.active))
@@ -43,10 +43,10 @@ struct SelectActivitiesToPersistView: View {
     }
     
     private func persistSelected() {
-        for activity in unpersistedActivities where selectedIDs.contains(activity.id) {
+        for activity in unpersistedActivities where selectedTypes.contains(activity.type) {
             let newActivity = Activity(
                 type: activity.type,
-                name: activity.name,
+                name: activity.type.defaultNameKey,
                 activityDescription: activity.activityDescription,
                 quantityUnit: activity.quantityUnit,
                 emissionUnit: activity.emissionUnit,

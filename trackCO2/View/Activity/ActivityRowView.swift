@@ -21,7 +21,7 @@ struct ActivityRowView: View {
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     
-                    Text(activity.name)
+                    Text(activity.displayName)
                         .font(.title)
                         .fontWeight(.bold)
                     

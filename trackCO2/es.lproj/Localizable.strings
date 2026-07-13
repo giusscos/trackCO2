@@ -163,6 +163,28 @@
 "Skip" = "Omitir";
 "Maybe Later" = "Quizás más tarde";
 
+// MARK: - Weather
+"Walk When It's Worth It" = "Camina cuando merezca la pena";
+"Claud checks local weather and air conditions to nudge you toward walking or cycling when the sky is clear — and warns you when poor air quality makes driving the smarter call." = "Claud comprueba el clima y la calidad del aire local para animarte a caminar o ir en bici cuando el cielo está despejado, y te avisa cuando la mala calidad del aire hace que conducir sea la opción más inteligente.";
+"Weather-smart nudges: get prompted to walk or cycle when air is clean and skies are clear." = "Recordatorios inteligentes del clima: recibe avisos para caminar o ir en bici cuando el aire está limpio y el cielo despejado.";
+"Great time to walk!" = "¡Buen momento para caminar!";
+"Skies are clear. Skip the car and log some green steps." = "El cielo está despejado. Deja el coche y registra pasos verdes.";
+"Walking is possible" = "Caminar es posible";
+"Conditions are okay but not ideal. A short walk still counts." = "Las condiciones son aceptables pero no ideales. Un paseo corto también cuenta.";
+"Poor conditions outside" = "Malas condiciones afuera";
+"Air quality or weather makes outdoor activity inadvisable. Consider public transport." = "La calidad del aire o el clima desaconsejan actividad al aire libre. Considera el transporte público.";
+"Sky is clear!\nPerfect day to walk. 🌤️" = "¡Cielo despejado!\nDía perfecto para caminar. 🌤️";
+"A bit cloudy…\nA short walk still counts! 🚶" = "Un poco nublado…\n¡Un paseo corto también cuenta! 🚶";
+"Stay safe!\nPoor air today. 🏠" = "¡Cuídate!\nMala calidad del aire hoy. 🏠";
+"Weather Forecast" = "Pronóstico del tiempo";
+"Great day to walk or cycle" = "Buen día para caminar o ir en bicicleta";
+"Walking possible" = "Caminar es posible";
+"Stay indoors" = "Quédate en casa";
+"Checking conditions…" = "Comprobando condiciones…";
+"If driving is unavoidable, this is a better day for it." = "Si conducir es inevitable, hoy es un mejor día para hacerlo.";
+"It's hot — wear a hat, use sun protection, and avoid walking at midday." = "Hace calor — usa sombrero, protección solar y evita caminar al mediodía.";
+"It's cold — dress in layers, cover your hands and head, and warm up before longer walks." = "Hace frío — vístete en capas, cubre manos y cabeza y caliéntate antes de caminatas largas.";
+
 // MARK: - App Icon
 "Select Icon" = "Seleccionar icono";
 
@@ -171,3 +193,50 @@
 "Try to reduce your %@ %@ activity." = "Intenta reducir tu actividad %1$@ %2$@.";
 "Great job! Your %@ activity is helping reduce CO2 emissions. Keep it up! 🌱" = "¡Buen trabajo! Tu actividad %@ ayuda a reducir las emisiones de CO2. ¡Sigue así! 🌱";
 "Consider reducing your %@ usage or balancing it with CO2 reducing activities." = "Considera reducir tu uso de %@ o equilibrarlo con actividades que reducen CO2.";
+
+// MARK: - Smart Tips
+"tip.title.high_impact_emitter" = "Mayor emisor";
+"tip.title.trend" = "Tendencia de uso";
+"tip.title.offset_gap" = "Brecha de compensación";
+"tip.title.substitution" = "Alternativa más verde";
+"tip.title.food_swap" = "Cambio alimenticio";
+"tip.title.streak" = "Racha";
+"tip.title.milestone" = "Hito";
+"tip.title.inactivity" = "Recordatorio de actividad";
+"tip.title.fallback" = "Empezar";
+"tip.high_impact_emitter" = "%1$@ %2$@ es tu mayor fuente — %3$.0f kg CO₂ este mes. Eso es el %4$.0f%% de tus emisiones totales.";
+"tip.trend_increase" = "%1$@ Tu uso de %2$@ ha subido un %3$.0f%% respecto a la semana pasada (+%4$.1f kg CO₂). Los pequeños cambios suman — prueba un día sin coche.";
+"tip.offset_gap" = "Este mes emitiste %1$.0f kg CO₂ pero solo compensaste %2$.0f kg. Plantar %3$d árboles más compensaría %4$.0f kg.";
+"tip.substitution" = "Tu %1$@ %2$@ sumó %3$.0f km esta semana. Sustituir %4$d viajes por %5$@ %6$@ ahorraría ~%7$.1f kg CO₂ (%8$.0f%% menos por km).";
+"tip.food_swap" = "%1$@ %2$@ tiene una huella muy alta (%3$.0f kg CO₂/kg). Cambiar una comida por semana a %4$@ verduras ahorra ~%5$.1f kg CO₂/mes.";
+"tip.streak" = "¡Has %1$@ %2$@ %3$d días seguidos! Eso son %4$.2f kg CO₂ evitados — equivalente a no conducir %5$.0f km.";
+"tip.milestone" = "¡Has compensado %1$.0f kg CO₂ en total! Es como quitar un coche de la carretera durante %2$.1f semanas.";
+"tip.inactivity" = "No has registrado %1$@ %2$@ en %3$d días. Incluso una caminata de %4$.0f km compensa %5$.0f g CO₂.";
+
+// MARK: - Default Activities
+"Car Travel" = "Viaje en coche";
+"Airplane Flight" = "Vuelo en avión";
+"Boat Trip" = "Viaje en barco";
+"Motorcycle Ride" = "Viaje en moto";
+"Bus Travel" = "Viaje en autobús";
+"Train Travel" = "Viaje en tren";
+"Beef Consumption" = "Consumo de ternera";
+"Chicken Consumption" = "Consumo de pollo";
+"Vegetable Consumption" = "Consumo de verduras";
+"Rice Consumption" = "Consumo de arroz";
+"Dairy Consumption" = "Consumo de lácteos";
+"Electricity Usage" = "Consumo eléctrico";
+"Walking" = "Caminar";
+"Biking" = "Ciclismo";
+"Tree Planting" = "Plantación de árboles";
+"Recycling" = "Reciclaje";
+
+// MARK: - What's New
+"whats_new.title" = "Novedades en trackCO2";
+"whats_new.subtitle" = "Esto es en lo que hemos estado trabajando para ti.";
+"whats_new.feature.mascot" = "Conoce a tu nueva mascota — Claud ahora reacciona a tu puntuación de CO₂ en tiempo real.";
+"whats_new.feature.weather" = "Consejos según el clima — Claud comprueba las condiciones locales para sugerir el mejor momento para caminar, ir en bici o usar transporte público.";
+"whats_new.feature.tips" = "Consejos de actividad más inteligentes — información basada en datos con cifras reales de CO₂, tendencias de uso y sugerencias prácticas de tus actividades registradas.";
+"whats_new.feature.ui" = "Una experiencia más limpia y rápida — tarjetas rediseñadas, navegación más fluida y un diseño más intuitivo en toda la app.";
+"whats_new.feature.maps" = "Nueva experiencia de mapas — planifica viajes más ecológicos con comparación de transporte en vivo y estimaciones de CO₂ en el mapa.";
+"whats_new.cta" = "Continuar";

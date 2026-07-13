@@ -11,7 +11,7 @@ import SwiftUI
 struct PaywallLifetimeView: View {
     @Environment(\.colorScheme) var colorScheme
     
-    @State var storeKit = Store()
+    @Environment(Store.self) private var storeKit
     
     var body: some View {
         StoreView(ids: storeKit.productLifetimeIds) { product in
@@ -32,4 +32,5 @@ struct PaywallLifetimeView: View {
 
 #Preview {
     PaywallLifetimeView()
+        .environment(Store())
 }

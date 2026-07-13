@@ -7,12 +7,19 @@
 
 import SwiftData
 import SwiftUI
+import StoreKit
 
 let defaultAppIcon = "claud"
 
 struct ContentView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @State var store = Store()
+    @AppStorage("lastSeenVersion") private var lastSeenVersion: String = ""
+    @Environment(Store.self) private var store
+    @State private var showWhatsNew = false
+
+    private var currentVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
 
     private var showOnboarding: Binding<Bool> {
         Binding(
@@ -44,13 +51,46 @@ struct ContentView: View {
             .onAppear {
                 guard hasCompletedOnboarding else { return }
                 UITextField.appearance().clearButtonMode = .whileEditing
+                checkWhatsNew()
             }
             .fullScreenCover(isPresented: showOnboarding) {
                 OnboardingView()
+                    .environment(store)
+            }
+            .fullScreenCover(isPresented: $showWhatsNew, onDismiss: {
+                lastSeenVersion = currentVersion
+            }) {
+                WhatsNewView()
+            }
+            .onChange(of: hasCompletedOnboarding) { _, completed in
+                guard completed else { return }
+                checkWhatsNew()
             }
             .onChange(of: store.hasPaid) { _, paid in
                 guard paid else { return }
                 hasCompletedOnboarding = true
+            }
+            .subscriptionStatusTask(for: store.groupId) { status in
+                guard hasActiveSubscription(status) else { return }
+                hasCompletedOnboarding = true
+            }
+        }
+    }
+
+    private func checkWhatsNew() {
+        guard hasCompletedOnboarding else { return }
+        guard lastSeenVersion != currentVersion else { return }
+        showWhatsNew = true
+    }
+
+    private func hasActiveSubscription(_ status: EntitlementTaskState<[Product.SubscriptionInfo.Status]>) -> Bool {
+        guard let statuses = status.value else { return false }
+        return statuses.contains { subscriptionStatus in
+            switch subscriptionStatus.state {
+            case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
+                return true
+            default:
+                return false
             }
         }
     }
@@ -58,4 +98,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(Store())
 }

@@ -10,19 +10,15 @@ import SwiftUI
 
 struct TipsView: View {
     @Query var activities: [Activity]
-    
-    var tipMessage: String {
-        let activitiesWithEvents = activities.filter { $0.events?.count ?? 0 >= 3 }
-        guard let mostUsed = activitiesWithEvents.max(by: { ($0.events?.count ?? 0) < ($1.events?.count ?? 0) }) else {
-            return String(localized: "Start tracking your activities to get personalized tips!")
-        }
-        if mostUsed.type.isCO2Reducing {
-            return String(localized: "Great job! Your most frequent activity is \(mostUsed.type.emoji) \(mostUsed.name.lowercased()). Keep it up! 🌱")
-        } else {
-            return String(localized: "Try to reduce your \(mostUsed.type.emoji) \(mostUsed.name.lowercased()) activity.")
-        }
+
+    private var tips: [GeneratedTip] {
+        TipGenerator.generate(from: activities)
     }
-    
+
+    private var topTip: GeneratedTip? {
+        tips.first
+    }
+
     var body: some View {
         VStack (alignment: .leading) {
             NavigationLink {
@@ -31,16 +27,18 @@ struct TipsView: View {
                 HStack {
                     Text("Tips")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }
             }
             .font(.headline)
-            
-            Text(tipMessage)
-                .fontWeight(.bold)
-                .lineLimit(3)
+
+            if let tip = topTip {
+                Text(tip.message)
+                    .fontWeight(.bold)
+                    .lineLimit(2)
+            }
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

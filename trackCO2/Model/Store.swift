@@ -32,9 +32,10 @@ class Store {
     // if there are multiple product types - create multiple variable for each .consumable, .nonconsumable, .autoRenewable, .nonRenewable.
     private var storeProducts: [Product] = []
     var purchasedProducts: [Product] = []
+    private(set) var entitledProductIDs: Set<String> = []
     
     var hasPaid: Bool {
-        !purchasedSubscriptions.isEmpty || !purchasedProducts.isEmpty
+        !purchasedSubscriptions.isEmpty || !purchasedProducts.isEmpty || !entitledProductIDs.isEmpty
     }
     
     var updateListenerTask : Task<Void, Error>? = nil
@@ -62,9 +63,8 @@ class Store {
             for await result in Transaction.updates {
                 do {
                     let transaction = try self.checkVerified(result)
-                    // deliver products to the user
+                    await self.recordEntitlement(for: transaction)
                     await self.updateCustomerProductStatus()
-                    
                     await transaction.finish()
                 } catch {
                     print("transaction failed verification")
@@ -129,31 +129,56 @@ class Store {
     }
     
     @MainActor
+    func recordEntitlement(for transaction: Transaction) {
+        entitledProductIDs.insert(transaction.productID)
+
+        switch transaction.productType {
+        case .autoRenewable:
+            if let subscription = subscriptions.first(where: { $0.id == transaction.productID }),
+               !purchasedSubscriptions.contains(where: { $0.id == subscription.id }) {
+                purchasedSubscriptions.append(subscription)
+            }
+        case .nonConsumable:
+            if let storeProduct = storeProducts.first(where: { $0.id == transaction.productID }),
+               !purchasedProducts.contains(where: { $0.id == storeProduct.id }) {
+                purchasedProducts.append(storeProduct)
+            }
+        default:
+            break
+        }
+    }
+
+    @MainActor
     func updateCustomerProductStatus() async {
+        var newPurchasedSubscriptions: [Product] = []
+        var newPurchasedProducts: [Product] = []
+        var newEntitledProductIDs: Set<String> = []
+
         for await result in Transaction.currentEntitlements {
             do {
-                // Check whether the transaction is verified. If it isn't, catch `failedVerification` error.
                 let transaction = try checkVerified(result)
-                
+                newEntitledProductIDs.insert(transaction.productID)
+
                 switch transaction.productType {
                 case .autoRenewable:
-                    if let subscription = subscriptions.first(where: {$0.id == transaction.productID}) {
-                        purchasedSubscriptions.append(subscription)
+                    if let subscription = subscriptions.first(where: { $0.id == transaction.productID }) {
+                        newPurchasedSubscriptions.append(subscription)
                     }
                 case .nonConsumable:
-                    if let storeProduct = storeProducts.first(where: {$0.id == transaction.productID}) {
-                        purchasedProducts.append(storeProduct)
+                    if let storeProduct = storeProducts.first(where: { $0.id == transaction.productID }) {
+                        newPurchasedProducts.append(storeProduct)
                     }
                 default:
                     break
                 }
-                
-                // Always finish a transaction.
-                await transaction.finish()
             } catch {
                 print("failed updating products")
             }
         }
+
+        purchasedSubscriptions = newPurchasedSubscriptions
+        purchasedProducts = newPurchasedProducts
+        entitledProductIDs = newEntitledProductIDs
     }
 }
 

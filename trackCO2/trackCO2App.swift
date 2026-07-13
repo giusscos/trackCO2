@@ -11,6 +11,8 @@ import TipKit
 
 @main
 struct trackCO2App: App {
+    @State private var store = Store()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Activity.self,
@@ -41,6 +43,7 @@ struct trackCO2App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(store)
         }
         .modelContainer(sharedModelContainer)
     }

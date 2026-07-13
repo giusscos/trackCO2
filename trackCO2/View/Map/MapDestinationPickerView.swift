@@ -100,9 +100,9 @@ struct MapDestinationPickerView: View {
                     }
                 } message: {
                     if estimatedTime > 0 {
-                        Text("Distance: \(calculatedDistance, specifier: "%.1f") km\nEstimated time: \(formatTime(estimatedTime))\nType: \(activity.name)")
+                        Text("Distance: \(calculatedDistance, specifier: "%.1f") km\nEstimated time: \(formatTime(estimatedTime))\nType: \(activity.displayName)")
                     } else {
-                        Text("Distance: \(calculatedDistance, specifier: "%.1f") km\nType: \(activity.name)")
+                        Text("Distance: \(calculatedDistance, specifier: "%.1f") km\nType: \(activity.displayName)")
                     }
                 }
             }

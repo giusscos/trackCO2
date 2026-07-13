@@ -45,12 +45,12 @@ struct SummaryView: View {
     
     @State private var manageSubscription: Bool = false
     
-    @State var storeKit = Store()
+    @Environment(Store.self) private var storeKit
     
     @State private var showAddYesterdayWalkingAlert = false
     @State private var yesterdayDistance: Double = 0.0
     @State private var healthKitAuthorized: Bool = false
-    @State private var requestReviewShown: Bool = false
+    @State private var reviewCheckTask: Task<Void, Never>?
     
     var body: some View {
         NavigationStack {
@@ -67,6 +67,9 @@ struct SummaryView: View {
                                 WalkingRunningDistanceView()
                             }
                         }
+
+                        WeatherSuggestionView()
+                            .gridCellColumns(2)
                         
                         GridRow {
                             CompensationView()
@@ -163,10 +166,23 @@ struct SummaryView: View {
             .onAppear {
                 guard hasCompletedOnboarding else { return }
                 loadHealthKitData()
+                scheduleReviewRequestIfAppropriate()
             }
             .onChange(of: hasCompletedOnboarding) { _, completed in
                 guard completed else { return }
                 loadHealthKitData()
+                scheduleReviewRequestIfAppropriate()
+            }
+            .onChange(of: showAddYesterdayWalkingAlert) { wasShowing, isShowing in
+                guard wasShowing, !isShowing else { return }
+                scheduleReviewRequestIfAppropriate()
+            }
+            .onChange(of: activeSheet) { _, sheet in
+                guard sheet == nil else { return }
+                scheduleReviewRequestIfAppropriate()
+            }
+            .onDisappear {
+                reviewCheckTask?.cancel()
             }
             .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {
                 Button("Add", role: .none) {
@@ -209,25 +225,24 @@ struct SummaryView: View {
                 }
             }
 
-            if requestReviewShown { return }
-
-            checkAndRequestReview()
-            requestReviewShown = true
         }
     }
 
-    private func checkAndRequestReview() {
-        let compensation = calculateCO2Totals(activities: activities).compensation
-        let consumption = calculateCO2Totals(activities: activities).consumption
-        
-        let threshold: Double = 100.0 // Set your desired threshold here
-        
-        if compensation >= threshold || consumption >= (threshold * 3) {
+    private func scheduleReviewRequestIfAppropriate() {
+        reviewCheckTask?.cancel()
+        reviewCheckTask = Task { @MainActor in
+            AppReviewManager.recordVisit()
+            try? await Task.sleep(for: .seconds(AppReviewManager.promptDelay))
+            guard !Task.isCancelled else { return }
+            guard activeSheet == nil, !showAddYesterdayWalkingAlert else { return }
+            guard AppReviewManager.shouldRequestReview(activities: activities) else { return }
             requestReview()
+            AppReviewManager.markReviewRequested()
         }
     }
 }
 
 #Preview {
     SummaryView()
+        .environment(Store())
 }

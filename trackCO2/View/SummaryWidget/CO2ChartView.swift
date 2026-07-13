@@ -52,7 +52,7 @@ struct CO2ChartView: View {
             return (activity.events?.contains { event in
                 let date = event.createdAt
                 return date >= weekRange.start && date < weekRange.end
-            } == true) ? CO2Data(type: activity.name, count: total) : nil
+            } == true) ? CO2Data(type: activity.displayName, count: total) : nil
         }
     }
     

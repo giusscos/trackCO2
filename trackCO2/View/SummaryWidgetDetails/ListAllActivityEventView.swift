@@ -77,7 +77,7 @@ struct ListAllActivityEventView: View {
         var dict: [String: Double] = [:]
         for event in filteredEvents {
             if let activity = event.activity {
-                dict[activity.name, default: 0] += event.quantity * activity.co2Emission
+                dict[activity.displayName, default: 0] += event.quantity * activity.co2Emission
             }
         }
         return dict.map { CO2Data(type: $0.key, count: $0.value) }
@@ -153,7 +153,7 @@ struct ListAllActivityEventView: View {
                     if let activity = event.activity {
                         Text(activity.type.emoji)
                         
-                        Text(activity.name)
+                        Text(activity.displayName)
                             .font(.headline)
                         
                         Spacer()

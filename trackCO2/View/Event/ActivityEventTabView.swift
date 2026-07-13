@@ -22,7 +22,7 @@ struct ActivityEventTabView: View {
                 Text(activity.type.emoji)
                     .font(.largeTitle)
                 
-                Text(activity.name)
+                Text(activity.displayName)
                     .font(.title)
                     .fontWeight(.bold)
                     .lineLimit(1)
