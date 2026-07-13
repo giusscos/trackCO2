@@ -51,6 +51,9 @@ struct SummaryView: View {
     @State private var yesterdayDistance: Double = 0.0
     @State private var healthKitAuthorized: Bool = false
     @State private var reviewCheckTask: Task<Void, Never>?
+    #if DEBUG
+    @State private var showEraseAllDataConfirmation = false
+    #endif
     
     var body: some View {
         NavigationStack {
@@ -60,16 +63,16 @@ struct SummaryView: View {
                         ClaudMascotView(healthScore: calculateWeeklyCO2Health(activities: activities))
 
                         CO2ChartView()
-                        
+
+                        WeatherSuggestionView()
+                            .gridCellColumns(2)
+
                         if healthKitAuthorized {
                             GridRow {
                                 StepCountView()
                                 WalkingRunningDistanceView()
                             }
                         }
-
-                        WeatherSuggestionView()
-                            .gridCellColumns(2)
                         
                         GridRow {
                             CompensationView()
@@ -137,6 +140,22 @@ struct SummaryView: View {
                             }
                         }
                         
+                        #if DEBUG
+                        Divider()
+
+                        Button {
+                            generateMockData()
+                        } label: {
+                            Label("Generate mock data", systemImage: "wand.and.stars")
+                        }
+
+                        Button(role: .destructive) {
+                            showEraseAllDataConfirmation = true
+                        } label: {
+                            Label("Erase all data", systemImage: "trash")
+                        }
+                        #endif
+
                         Divider()
                         
                         Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
@@ -184,6 +203,19 @@ struct SummaryView: View {
             .onDisappear {
                 reviewCheckTask?.cancel()
             }
+            #if DEBUG
+            .confirmationDialog(
+                "Erase all data?",
+                isPresented: $showEraseAllDataConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Erase all data", role: .destructive) {
+                    eraseAllData()
+                }
+            } message: {
+                Text("This permanently deletes all activities, events, and favorite places.")
+            }
+            #endif
             .alert("Add yesterday's walking distance?", isPresented: $showAddYesterdayWalkingAlert, actions: {
                 Button("Add", role: .none) {
                     let walkingActivity = activities.first { $0.type == .walking }
@@ -227,6 +259,24 @@ struct SummaryView: View {
 
         }
     }
+
+    #if DEBUG
+    private func generateMockData() {
+        do {
+            try DevelopmentDataManager.generateMockData(in: modelContext)
+        } catch {
+            print("Failed to generate mock data: \(error.localizedDescription)")
+        }
+    }
+
+    private func eraseAllData() {
+        do {
+            try DevelopmentDataManager.eraseAllData(in: modelContext)
+        } catch {
+            print("Failed to erase data: \(error.localizedDescription)")
+        }
+    }
+    #endif
 
     private func scheduleReviewRequestIfAppropriate() {
         reviewCheckTask?.cancel()
