@@ -1,6 +1,6 @@
-# trackCO2 — App Store Connect Metadata
+# Claud CO2 — App Store Connect Metadata
 
-**Version:** 1.0.6  
+**Version:** 1.0.7  
 **Locale:** Dutch  
 **Locale code:** `nl`
 
@@ -10,7 +10,7 @@
 
 | Field | Value | Limit | Count |
 |---|---|---|---|
-| **Name** | trackCO2 | 30 | 8 |
+| **Name** | Claud CO2 | 30 | 9 |
 | **Subtitle** | Volg je CO₂-voetafdruk | 30 | 22 |
 | **Promotional Text** | Ontmoet Claud — je wolkenmascotte die reageert op je CO₂-score. Log activiteiten, plan groenere reizen en krijg weerbewuste wandel tips. | 170 | 127 |
 
@@ -28,7 +28,7 @@ koolstof,CO2,klimaat,duurzaamheid,eco,vervoer,gezondheid,weer,tips,voetafdruk,mi
 
 ## Description
 
-trackCO2 helpt je je persoonlijke CO₂-voetafdruk te begrijpen en dag voor dag te verkleinen.
+Claud CO2 helpt je je persoonlijke CO₂-voetafdruk te begrijpen en dag voor dag te verkleinen.
 
 Log de activiteiten die ertoe doen: autorijden, vliegen, openbaar vervoer, voeding, energieverbruik thuis, wandelen, fietsen, bomen planten en recyclen. Zie hoe je werkelijke CO₂-verbruik en compensatie zich over de week ontwikkelen met duidelijke grafieken.
 
@@ -50,13 +50,13 @@ Krijg gepersonaliseerde inzichten uit je gelogde activiteiten: gebruikstrends, g
 **Volg trends in de tijd**  
 Wekelijkse trends, verbruik vs. compensatie en je meest gebruikte activiteiten helpen je patronen te herkennen en te verbeteren.
 
-Abonnementen en lifetime-plannen ontgrendelen de volledige trackCO2-ervaring. Begin vandaag aan een groenere levensstijl.
+Abonnementen en lifetime-plannen ontgrendelen de volledige Claud CO2-ervaring. Begin vandaag aan een groenere levensstijl.
 
 ---
 
 ## What's New in This Version
 
-**Version 1.0.6**
+**Version 1.0.7**
 
 - Ontmoet je nieuwe mascotte — Claud reageert nu in realtime op je CO₂-score
 - Weerbewuste tips — Claud controleert lokale omstandigheden en suggereert het beste moment om te lopen, fietsen of het openbaar vervoer te nemen
@@ -85,6 +85,34 @@ Abonnementen en lifetime-plannen ontgrendelen de volledige trackCO2-ervaring. Be
 
 ---
 
+## In-App Purchases & Subscriptions
+
+Kopiëren naar App Store Connect → Abonnementen / In-app aankopen → [product] → [taal].
+
+### Abonnementsgroep: Claud+
+
+| Veld | Waarde |
+|---|---|
+| **Referentienaam** | Claud+ |
+| **Weergavenaam** | Claud+ |
+| **Beschrijving** | Premiumtoegang tot Claud CO2 |
+
+### Abonnementen
+
+| Product-ID | Referentie | Weergavenaam | Beschrijving |
+|---|---|---|---|
+| `fp_499_1w` | Claud+ Weekly | Claud+ | Onbeperkte toegang voor deze week |
+| `fp_1999_1y_1w` | Claud+ Yearly | Claud+ | Onbeperkte toegang voor dit jaar |
+
+### Lifetime-aankopen (niet-verbruikbaar)
+
+| Product-ID | Referentie | Weergavenaam | Beschrijving |
+|---|---|---|---|
+| `com.giusscos.footprintLifetime` | Claud CO2 Lifetime | Lifetime-toegang | Onbeperkte toegang voor altijd |
+| `com.giusscos.footprintFamilyLifetime` | Claud CO2 Family Lifetime | Gezins-lifetime-toegang | Onbeperkte toegang voor altijd, hele gezin |
+
+---
+
 ## Screenshots
 
 See [screenshots.md](./screenshots.md) for device sizes and capture instructions.
@@ -94,10 +122,10 @@ See [screenshots.md](./screenshots.md) for device sizes and capture instructions
 | # | Screen | Caption |
 |---|---|---|
 | 1 | Overzicht | Je CO₂ in één oogopslag |
-| 2 | Activiteiten | Log elke klimaatkeuze |
-| 3 | Reizen / Kaart | Kies de groenste route |
-| 4 | Tips | Tips uit jouw data |
-| 5 | Weer | Wandel wanneer het de moeite waard is |
+| 2 | Activiteiten | Log elke **klimaatkeuze** |
+| 3 | Reizen / Kaart | Kies de **groenste** route |
+| 4 | Tips | **Tips** uit jouw data |
+| 5 | Weer | **Wandel** wanneer het de moeite waard is |
 
 ### How each screenshot should look
 

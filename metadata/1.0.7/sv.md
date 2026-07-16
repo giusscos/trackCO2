@@ -1,6 +1,6 @@
-# trackCO2 — App Store Connect Metadata
+# Claud CO2 — App Store Connect Metadata
 
-**Version:** 1.0.6  
+**Version:** 1.0.7  
 **Locale:** Swedish  
 **Locale code:** `sv`
 
@@ -10,7 +10,7 @@
 
 | Field | Value | Limit | Count |
 |---|---|---|---|
-| **Name** | trackCO2 | 30 | 8 |
+| **Name** | Claud CO2 | 30 | 9 |
 | **Subtitle** | Spåra ditt koldioxidavtryck | 30 | 28 |
 | **Promotional Text** | Träffa Claud — din molnmascot som reagerar på ditt CO₂-resultat. Logga aktiviteter, planera grönare resor och få vädermedvetna promenadtips. | 170 | 130 |
 
@@ -28,7 +28,7 @@ kol,CO2,klimat,hållbarhet,miljö,transport,hälsa,väder,tips,avtryck,grön
 
 ## Description
 
-trackCO2 hjälper dig att förstå och minska ditt personliga koldioxidavtryck — en dag i taget.
+Claud CO2 hjälper dig att förstå och minska ditt personliga koldioxidavtryck — en dag i taget.
 
 Logga aktiviteterna som spelar roll: bilkörning, flyg, kollektivtrafik, mat, energi hemma, promenader, cykling, trädplantering och återvinning. Se hur ditt faktiska CO₂-förbrukning och kompensation utvecklas under veckan med tydliga diagram.
 
@@ -50,13 +50,13 @@ Få personliga insikter från dina loggade aktiviteter: användningstrender, sto
 **Följ trender över tid**  
 Veckotrender, förbrukning vs. kompensation och mest använda aktiviteter hjälper dig att upptäcka mönster och förbättras.
 
-Prenumerationer och livstidsplaner låser upp hela trackCO2-upplevelsen. Börja din resa mot en grönare livsstil idag.
+Prenumerationer och livstidsplaner låser upp hela Claud CO2-upplevelsen. Börja din resa mot en grönare livsstil idag.
 
 ---
 
 ## What's New in This Version
 
-**Version 1.0.6**
+**Version 1.0.7**
 
 - Träffa din nya maskot — Claud reagerar nu på ditt CO₂-resultat i realtid
 - Vädermedvetna tips — Claud kollar lokala förhållanden och föreslår bästa tiden att gå, cykla eller åka kollektivt
@@ -85,6 +85,34 @@ Prenumerationer och livstidsplaner låser upp hela trackCO2-upplevelsen. Börja 
 
 ---
 
+## In-App Purchases & Subscriptions
+
+Kopiera till App Store Connect → Prenumerationer / Köp i appen → [produkt] → [språk].
+
+### Prenumerationsgrupp: Claud+
+
+| Fält | Värde |
+|---|---|
+| **Referensnamn** | Claud+ |
+| **Visningsnamn** | Claud+ |
+| **Beskrivning** | Premiumåtkomst till Claud CO2 |
+
+### Prenumerationer
+
+| Produkt-ID | Referens | Visningsnamn | Beskrivning |
+|---|---|---|---|
+| `fp_499_1w` | Claud+ Weekly | Claud+ | Obegränsad åtkomst denna vecka |
+| `fp_1999_1y_1w` | Claud+ Yearly | Claud+ | Obegränsad åtkomst i ett år |
+
+### Livstidsköp (icke-förbrukningsbara)
+
+| Produkt-ID | Referens | Visningsnamn | Beskrivning |
+|---|---|---|---|
+| `com.giusscos.footprintLifetime` | Claud CO2 Lifetime | Livstidsåtkomst | Obegränsad livstidsåtkomst |
+| `com.giusscos.footprintFamilyLifetime` | Claud CO2 Family Lifetime | Familjelivstidsåtkomst | Obegränsad livstidsåtkomst för familjen |
+
+---
+
 ## Screenshots
 
 See [screenshots.md](./screenshots.md) for device sizes and capture instructions.
@@ -94,10 +122,10 @@ See [screenshots.md](./screenshots.md) for device sizes and capture instructions
 | # | Screen | Caption |
 |---|---|---|
 | 1 | Översikt | Din CO₂ på ett ögonblick |
-| 2 | Aktiviteter | Logga varje klimatval |
-| 3 | Resor / Karta | Välj den grönaste rutten |
-| 4 | Tips | Tips baserade på din data |
-| 5 | Väder | Gå när det är värt det |
+| 2 | Aktiviteter | Logga varje **klimatval** |
+| 3 | Resor / Karta | Välj den **grönaste** rutten |
+| 4 | Tips | **Tips** baserade på din data |
+| 5 | Väder | **Gå** när det är värt det |
 
 ### How each screenshot should look
 

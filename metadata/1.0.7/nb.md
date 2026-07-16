@@ -1,6 +1,6 @@
-# trackCO2 — App Store Connect Metadata
+# Claud CO2 — App Store Connect Metadata
 
-**Version:** 1.0.6  
+**Version:** 1.0.7  
 **Locale:** Norwegian Bokmål  
 **Locale code:** `nb`
 
@@ -10,7 +10,7 @@
 
 | Field | Value | Limit | Count |
 |---|---|---|---|
-| **Name** | trackCO2 | 30 | 8 |
+| **Name** | Claud CO2 | 30 | 9 |
 | **Subtitle** | Spor ditt karbonfotavtrykk | 30 | 27 |
 | **Promotional Text** | Møt Claud — sky-maskoten din som reagerer på CO₂-scoren din. Logg aktiviteter, planlegg grønnere reiser og få værbevisste gå-tips. | 170 | 122 |
 
@@ -28,7 +28,7 @@ karbon,CO2,klima,bærekraft,miljø,transport,helse,vær,tips,fotavtrykk,grønn
 
 ## Description
 
-trackCO2 hjelper deg å forstå og redusere ditt personlige karbonfotavtrykk — dag for dag.
+Claud CO2 hjelper deg å forstå og redusere ditt personlige karbonfotavtrykk — dag for dag.
 
 Logg aktivitetene som teller: bilkjøring, flyreiser, kollektivtransport, mat, energibruk hjemme, gange, sykling, treplanting og resirkulering. Se hvordan ditt faktiske CO₂-forbruk og kompensasjon utvikler seg gjennom uken med tydelige diagrammer.
 
@@ -50,13 +50,13 @@ Få personlige innsikter fra loggede aktiviteter: brukstrender, høyimpact-utsli
 **Følg trender over tid**  
 Ukentlige trender, forbruk vs. kompensasjon og mest brukte aktiviteter hjelper deg å oppdage mønstre og forbedre deg.
 
-Abonnement og livstidsplaner låser opp hele trackCO2-opplevelsen. Start reisen mot en grønnere livsstil i dag.
+Abonnement og livstidsplaner låser opp hele Claud CO2-opplevelsen. Start reisen mot en grønnere livsstil i dag.
 
 ---
 
 ## What's New in This Version
 
-**Version 1.0.6**
+**Version 1.0.7**
 
 - Møt din nye maskot — Claud reagerer nå på CO₂-scoren din i sanntid
 - Værbevisste tips — Claud sjekker lokale forhold og foreslår beste tidspunkt for å gå, sykle eller ta kollektivtransport
@@ -85,6 +85,34 @@ Abonnement og livstidsplaner låser opp hele trackCO2-opplevelsen. Start reisen 
 
 ---
 
+## In-App Purchases & Subscriptions
+
+Kopier til App Store Connect → Abonnementer / Kjøp i app → [produkt] → [språk].
+
+### Abonnementsgruppe: Claud+
+
+| Felt | Verdi |
+|---|---|
+| **Referansenavn** | Claud+ |
+| **Visningsnavn** | Claud+ |
+| **Beskrivelse** | Premium-tilgang til Claud CO2 |
+
+### Abonnementer
+
+| Produkt-ID | Referanse | Visningsnavn | Beskrivelse |
+|---|---|---|---|
+| `fp_499_1w` | Claud+ Weekly | Claud+ | Ubegrenset tilgang denne uken |
+| `fp_1999_1y_1w` | Claud+ Yearly | Claud+ | Ubegrenset tilgang dette året |
+
+### Livstidskjøp (ikke-forbruksvare)
+
+| Produkt-ID | Referanse | Visningsnavn | Beskrivelse |
+|---|---|---|---|
+| `com.giusscos.footprintLifetime` | Claud CO2 Lifetime | Livstidstilgang | Ubegrenset livstidstilgang |
+| `com.giusscos.footprintFamilyLifetime` | Claud CO2 Family Lifetime | Familie livstidstilgang | Ubegrenset livstidstilgang for familien |
+
+---
+
 ## Screenshots
 
 See [screenshots.md](./screenshots.md) for device sizes and capture instructions.
@@ -94,10 +122,10 @@ See [screenshots.md](./screenshots.md) for device sizes and capture instructions
 | # | Screen | Caption |
 |---|---|---|
 | 1 | Oversikt | Din CO₂ på ett blikk |
-| 2 | Aktiviteter | Logg hvert klimavalg |
-| 3 | Reiser / Kart | Velg den grønneste ruten |
-| 4 | Tips | Tips basert på dine data |
-| 5 | Vær | Gå når det lønner seg |
+| 2 | Aktiviteter | Logg hvert **klimavalg** |
+| 3 | Reiser / Kart | Velg den **grønneste** ruten |
+| 4 | Tips | **Tips** basert på dine data |
+| 5 | Vær | **Gå** når det lønner seg |
 
 ### How each screenshot should look
 

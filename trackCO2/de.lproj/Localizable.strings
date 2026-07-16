@@ -1,4 +1,4 @@
-/* Localizable.strings - trackCO2 (German) */
+/* Localizable.strings - Claud (German) */
 
 // MARK: - Tab Bar
 "Home" = "Start";
@@ -177,6 +177,8 @@
 "A bit cloudy…\nA short walk still counts! 🚶" = "Etwas bewölkt…\nEin kurzer Spaziergang zählt trotzdem! 🚶";
 "Stay safe!\nPoor air today. 🏠" = "Bleib sicher!\nSchlechte Luft heute. 🏠";
 "Weather Forecast" = "Wettervorhersage";
+"Other data sources" = "Andere Datenquellen";
+"Opens Apple Weather legal attribution" = "Öffnet die rechtliche Attribution von Apple Weather";
 "Great day to walk or cycle" = "Guter Tag zum Gehen oder Radfahren";
 "Walking possible" = "Gehen möglich";
 "Stay indoors" = "Drinnen bleiben";
@@ -232,7 +234,7 @@
 "Recycling" = "Recycling";
 
 // MARK: - What's New
-"whats_new.title" = "Neuigkeiten in trackCO2";
+"whats_new.title" = "Neuigkeiten in Claud";
 "whats_new.subtitle" = "Das haben wir für dich verbessert.";
 "whats_new.feature.mascot" = "Lerne dein neues Maskottchen kennen — Claud reagiert jetzt in Echtzeit auf deinen CO₂-Score.";
 "whats_new.feature.weather" = "Wetterbewusste Tipps — Claud prüft lokale Bedingungen und schlägt die beste Zeit zum Gehen, Radfahren oder für den ÖPNV vor.";

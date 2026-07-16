@@ -1,6 +1,6 @@
-# Version 1.0.6 — Metadata Index
+# Version 1.0.7 — Metadata Index
 
-**Release:** 1.0.6 (build 1)  
+**Release:** 1.0.7 (build 1)  
 **Date prepared:** July 2026
 
 ## Locales
@@ -31,6 +31,6 @@
 - [ ] Privacy Policy and Support URLs live and reachable
 - [ ] iPhone 6.7" and 6.5" screenshot sets uploaded (minimum required)
 - [ ] iPad screenshots uploaded if iPad is a supported destination
-- [ ] What's New text matches version 1.0.6 features
+- [ ] What's New text matches version 1.0.7 features
 - [ ] Age rating questionnaire completed (HealthKit + location usage)
 - [ ] In-app purchase metadata (subscriptions + lifetime) reviewed

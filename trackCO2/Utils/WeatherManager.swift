@@ -19,6 +19,8 @@ final class WeatherManager {
     private(set) var dailyForecast: [DayForecast] = []
     private(set) var isTodayHighTemperature = false
     private(set) var isTodayLowTemperature = false
+    /// Required for WeatherKit App Store attribution (Guideline 5.2.5).
+    private(set) var attribution: WeatherAttribution?
 
     enum WalkingSuggestion {
         case walk
@@ -103,6 +105,12 @@ final class WeatherManager {
             dailyForecast = []
             isTodayHighTemperature = false
             isTodayLowTemperature = false
+        }
+
+        do {
+            attribution = try await service.attribution
+        } catch {
+            print("[WeatherManager] attribution fetch failed: \(error)")
         }
     }
 

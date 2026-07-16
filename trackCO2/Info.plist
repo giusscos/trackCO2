@@ -18,7 +18,7 @@
 		<string>nb</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>trackCO2 uses your location to fetch local weather conditions and suggest the best time to walk instead of drive.</string>
+	<string>Claud uses your location to fetch local weather conditions and suggest the best time to walk instead of drive.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

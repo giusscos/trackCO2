@@ -18,56 +18,61 @@ struct ListWeatherForecastView: View {
 
     var body: some View {
         List {
-            ForEach(weather.dailyForecast) { forecast in
-                HStack(spacing: 14) {
-                    ZStack {
-                        Circle()
-                            .fill(accentColor(for: forecast.suggestion).gradient.opacity(0.2))
-                            .frame(width: 44, height: 44)
+            Section {
+                ForEach(weather.dailyForecast) { forecast in
+                    HStack(spacing: 14) {
+                        ZStack {
+                            Circle()
+                                .fill(accentColor(for: forecast.suggestion).gradient.opacity(0.2))
+                                .frame(width: 44, height: 44)
 
-                        Image(systemName: forecast.symbolName)
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(accentColor(for: forecast.suggestion).gradient)
-                    }
+                            Image(systemName: forecast.symbolName)
+                                .font(.body.weight(.semibold))
+                                .foregroundStyle(accentColor(for: forecast.suggestion).gradient)
+                        }
 
-                    VStack(alignment: .leading, spacing: 3) {
-                        Text(forecast.date.formatted(.dateTime.weekday(.wide).day().month(.abbreviated)))
-                            .font(.subheadline.weight(.semibold))
+                        VStack(alignment: .leading, spacing: 3) {
+                            Text(forecast.date.formatted(.dateTime.weekday(.wide).day().month(.abbreviated)))
+                                .font(.subheadline.weight(.semibold))
 
-                        Text(suggestionLabel(for: forecast.suggestion))
-                            .font(.caption)
+                            Text(suggestionLabel(for: forecast.suggestion))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            if forecast.suggestion == .avoid {
+                                Text("If driving is unavoidable, this is a better day for it.")
+                                    .font(.caption2)
+                                    .foregroundStyle(.tertiary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+
+                            if WeatherManager.showsSunProtectionTip(for: forecast.suggestion, isHighTemperature: forecast.isHighTemperature) {
+                                Text("It's hot — wear a hat, use sun protection, and avoid walking at midday.")
+                                    .font(.caption2)
+                                    .foregroundStyle(.tertiary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+
+                            if WeatherManager.showsColdWeatherTip(for: forecast.suggestion, isLowTemperature: forecast.isLowTemperature) {
+                                Text("It's cold — dress in layers, cover your hands and head, and warm up before longer walks.")
+                                    .font(.caption2)
+                                    .foregroundStyle(.tertiary)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
+                        Spacer()
+
+                        Text(temperatureRange(for: forecast))
+                            .font(.subheadline)
                             .foregroundStyle(.secondary)
-
-                        if forecast.suggestion == .avoid {
-                            Text("If driving is unavoidable, this is a better day for it.")
-                                .font(.caption2)
-                                .foregroundStyle(.tertiary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-
-                        if WeatherManager.showsSunProtectionTip(for: forecast.suggestion, isHighTemperature: forecast.isHighTemperature) {
-                            Text("It's hot — wear a hat, use sun protection, and avoid walking at midday.")
-                                .font(.caption2)
-                                .foregroundStyle(.tertiary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-
-                        if WeatherManager.showsColdWeatherTip(for: forecast.suggestion, isLowTemperature: forecast.isLowTemperature) {
-                            Text("It's cold — dress in layers, cover your hands and head, and warm up before longer walks.")
-                                .font(.caption2)
-                                .foregroundStyle(.tertiary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
+                            .multilineTextAlignment(.trailing)
                     }
-
-                    Spacer()
-
-                    Text(temperatureRange(for: forecast))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.trailing)
+                    .padding(.vertical, 4)
                 }
-                .padding(.vertical, 4)
+            } footer: {
+                WeatherAttributionView(attribution: weather.attribution)
+                    .padding(.top, 8)
             }
         }
         .navigationTitle("Weather Forecast")

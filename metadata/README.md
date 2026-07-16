@@ -1,13 +1,13 @@
 # App Store Connect Metadata
 
-This folder contains localized App Store Connect copy and screenshot guidance for **trackCO2**.
+This folder contains localized App Store Connect copy and screenshot guidance for **Claud CO2**.
 
 ## Structure
 
 ```
 metadata/
 ├── README.md                 ← this file
-└── 1.0.6/                    ← current app version (MARKETING_VERSION)
+└── 1.0.7/                    ← current app version (MARKETING_VERSION)
     ├── README.md             ← version index and checklist
     ├── screenshots.md        ← device sizes, file naming, design rules
     ├── en.md                 ← English (U.S.)
@@ -26,7 +26,7 @@ metadata/
 
 ## How to use
 
-1. Open the version folder that matches `MARKETING_VERSION` in Xcode (`1.0.6` today).
+1. Open the version folder that matches `MARKETING_VERSION` in Xcode (`1.0.7` today).
 2. Copy fields from the locale file into App Store Connect → App → [locale] → App Information / Version Information.
 3. Follow `screenshots.md` when capturing and exporting marketing screenshots.
 4. Update the version folder when shipping a new release (duplicate the folder and refresh What's New + screenshots).
@@ -35,9 +35,9 @@ metadata/
 
 | Property | Value |
 |---|---|
-| App name | trackCO2 |
+| App name | Claud CO2 |
 | Bundle ID | `giusscos.trackCO2` |
-| Current version | 1.0.6 |
+| Current version | 1.0.7 |
 | Build | 1 |
 | Minimum iOS | 18.5 |
 | Primary category | Health & Fitness |

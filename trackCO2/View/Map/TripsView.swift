@@ -451,6 +451,8 @@ struct TripsView: View {
 // MARK: - Route Option Card
 
 struct RouteOptionCard: View {
+    private static let cardWidth: CGFloat = 128
+
     let option: RouteOption
     let isSelected: Bool
     let isGreenest: Bool
@@ -478,16 +480,15 @@ struct RouteOptionCard: View {
                     .font(.subheadline)
                     .fontWeight(.bold)
 
-                if option.time > 0 {
-                    Text(formatTime(option.time))
-                        .font(.caption2)
-                        .foregroundStyle(isSelected ? .white.opacity(0.7) : .secondary)
-                }
+                Text(option.time > 0 ? formatTime(option.time) : " ")
+                    .font(.caption2)
+                    .foregroundStyle(isSelected ? .white.opacity(0.7) : .secondary)
+                    .opacity(option.time > 0 ? 1 : 0)
 
                 co2Badge
             }
             .padding(12)
-            .frame(minWidth: 110, alignment: .leading)
+            .frame(width: Self.cardWidth, alignment: .leading)
             .background(isSelected ? Color.accentColor : Color.secondary.opacity(0.12))
             .foregroundStyle(isSelected ? .white : .primary)
             .clipShape(RoundedRectangle(cornerRadius: 16))

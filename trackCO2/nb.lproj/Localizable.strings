@@ -1,4 +1,4 @@
-/* Localizable.strings - trackCO2 (Norwegian Bokmål) */
+/* Localizable.strings - Claud (Norwegian Bokmål) */
 
 // MARK: - Tab Bar
 "Home" = "Hjem";
@@ -177,6 +177,8 @@
 "A bit cloudy…\nA short walk still counts! 🚶" = "Litt skyet…\nEn kort tur teller fortsatt! 🚶";
 "Stay safe!\nPoor air today. 🏠" = "Vær forsiktig!\nDårlig luft i dag. 🏠";
 "Weather Forecast" = "Værvarsel";
+"Other data sources" = "Andre datakilder";
+"Opens Apple Weather legal attribution" = "Åpner juridisk attribusjon for Apple Weather";
 "Great day to walk or cycle" = "God dag for å gå eller sykle";
 "Walking possible" = "Gåing mulig";
 "Stay indoors" = "Bli innendørs";
@@ -232,7 +234,7 @@
 "Recycling" = "Resirkulering";
 
 // MARK: - What's New
-"whats_new.title" = "Nytt i trackCO2";
+"whats_new.title" = "Nytt i Claud";
 "whats_new.subtitle" = "Her er hva vi har jobbet med for deg.";
 "whats_new.feature.mascot" = "Møt din nye maskot — Claud reagerer nå på CO₂-scoren din i sanntid.";
 "whats_new.feature.weather" = "Værbevisste tips — Claud sjekker lokale forhold og foreslår beste tidspunkt for å gå, sykle eller ta kollektivtransport.";

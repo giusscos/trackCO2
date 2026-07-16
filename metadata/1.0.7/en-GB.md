@@ -1,6 +1,6 @@
-# trackCO2 — App Store Connect Metadata
+# Claud CO2 — App Store Connect Metadata
 
-**Version:** 1.0.6  
+**Version:** 1.0.7  
 **Locale:** English (U.K.)  
 **Locale code:** `en-GB`
 
@@ -10,7 +10,7 @@
 
 | Field | Value | Limit | Count |
 |---|---|---|---|
-| **Name** | trackCO2 | 30 | 8 |
+| **Name** | Claud CO2 | 30 | 9 |
 | **Subtitle** | Track Your Carbon Footprint | 30 | 28 |
 | **Promotional Text** | Meet Claud — your cloud mascot that reacts to your CO₂ score. Log activities, plan greener journeys, and get weather-smart walking tips. | 170 | 121 |
 
@@ -28,7 +28,7 @@ carbon,footprint,CO2,climate,sustainability,eco,green,transport,health,weather,t
 
 ## Description
 
-trackCO2 helps you understand and reduce your personal carbon footprint — one day at a time.
+Claud CO2 helps you understand and reduce your personal carbon footprint — one day at a time.
 
 Log the activities that matter: driving, flying, public transport, food choices, home energy, walking, cycling, tree planting, and recycling. See your real CO₂ consumption and compensation build up over the week with clear charts and summaries.
 
@@ -50,13 +50,13 @@ Get personalised insights based on your logged activities: usage trends, high-im
 **Track trends over time**  
 Weekly trends, consumption vs. compensation breakdowns, and your most-used activities help you spot patterns and improve.
 
-Subscriptions and lifetime plans unlock the full trackCO2 experience. Start your journey to a greener lifestyle today.
+Subscriptions and lifetime plans unlock the full Claud CO2 experience. Start your journey to a greener lifestyle today.
 
 ---
 
 ## What's New in This Version
 
-**Version 1.0.6**
+**Version 1.0.7**
 
 - Meet your new mascot — Claud now reacts to your CO₂ score in real time
 - Weather-aware tips — Claud checks local conditions to suggest the best time to walk, cycle, or take public transport
@@ -85,6 +85,34 @@ Subscriptions and lifetime plans unlock the full trackCO2 experience. Start your
 
 ---
 
+## In-App Purchases & Subscriptions
+
+Copy into App Store Connect → Subscriptions / In-App Purchases → [product] → [locale].
+
+### Subscription group: Claud+
+
+| Field | Value |
+|---|---|
+| **Reference name** | Claud+ |
+| **Display name** | Claud+ |
+| **Description** | Premium access to Claud CO2 |
+
+### Subscriptions
+
+| Product ID | Reference | Display name | Description |
+|---|---|---|---|
+| `fp_499_1w` | Claud+ Weekly | Claud+ | Get unlimited access for this week |
+| `fp_1999_1y_1w` | Claud+ Yearly | Claud+ | Get unlimited access for this year |
+
+### Lifetime purchases (non-consumable)
+
+| Product ID | Reference | Display name | Description |
+|---|---|---|---|
+| `com.giusscos.footprintLifetime` | Claud CO2 Lifetime | Claud CO2 Lifetime | Lifetime unlimited access |
+| `com.giusscos.footprintFamilyLifetime` | Claud CO2 Family Lifetime | Claud CO2 Family Lifetime | Lifetime unlimited access for your family |
+
+---
+
 ## Screenshots
 
 See [screenshots.md](./screenshots.md) for device sizes and capture instructions.
@@ -94,10 +122,10 @@ See [screenshots.md](./screenshots.md) for device sizes and capture instructions
 | # | Screen | Caption |
 |---|---|---|
 | 1 | Summary / Dashboard | Know your CO₂ at a glance |
-| 2 | Activities | Log every climate choice |
-| 3 | Trips / Map | Pick the greenest route |
-| 4 | Smart Tips | Tips backed by your data |
-| 5 | Weather | Walk when it's worth it |
+| 2 | Activities | Log every climate **choice** |
+| 3 | Trips / Map | Pick the **greenest** route |
+| 4 | Smart Tips | **Tips** backed by your data |
+| 5 | Weather | **Walk** when it's worth it |
 
 ### How each screenshot should look
 

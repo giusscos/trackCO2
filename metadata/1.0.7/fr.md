@@ -1,6 +1,6 @@
-# trackCO2 — App Store Connect Metadata
+# Claud CO2 — App Store Connect Metadata
 
-**Version:** 1.0.6  
+**Version:** 1.0.7  
 **Locale:** French  
 **Locale code:** `fr`
 
@@ -10,7 +10,7 @@
 
 | Field | Value | Limit | Count |
 |---|---|---|---|
-| **Name** | trackCO2 | 30 | 8 |
+| **Name** | Claud CO2 | 30 | 9 |
 | **Subtitle** | Suivez votre empreinte carbone | 30 | 30 |
 | **Promotional Text** | Découvrez Claud — votre mascotte nuage qui réagit à votre score CO₂. Enregistrez vos activités, planifiez des trajets plus verts et recevez des conseils météo. | 170 | 135 |
 
@@ -28,7 +28,7 @@ carbone,CO2,climat,durabilité,écolo,transport,santé,météo,conseils,empreint
 
 ## Description
 
-trackCO2 vous aide à comprendre et réduire votre empreinte carbone personnelle — jour après jour.
+Claud CO2 vous aide à comprendre et réduire votre empreinte carbone personnelle — jour après jour.
 
 Enregistrez les activités qui comptent : conduite, vols, transports en commun, alimentation, énergie domestique, marche, vélo, plantation d'arbres et recyclage. Visualisez votre consommation et compensation de CO₂ sur la semaine avec des graphiques clairs.
 
@@ -50,13 +50,13 @@ Obtenez des analyses personnalisées : tendances d'utilisation, principaux émet
 **Suivez les tendances**  
 Tendances hebdomadaires, répartition consommation vs. compensation et activités les plus utilisées vous aident à repérer les habitudes et progresser.
 
-Les abonnements et forfaits à vie débloquent l'expérience complète trackCO2. Commencez dès aujourd'hui votre transition vers un mode de vie plus vert.
+Les abonnements et forfaits à vie débloquent l'expérience complète Claud CO2. Commencez dès aujourd'hui votre transition vers un mode de vie plus vert.
 
 ---
 
 ## What's New in This Version
 
-**Version 1.0.6**
+**Version 1.0.7**
 
 - Découvrez votre nouvelle mascotte — Claud réagit maintenant à votre score CO₂ en temps réel
 - Conseils météo — Claud vérifie les conditions locales pour suggérer le meilleur moment pour marcher, faire du vélo ou prendre les transports
@@ -85,6 +85,34 @@ Les abonnements et forfaits à vie débloquent l'expérience complète trackCO2.
 
 ---
 
+## In-App Purchases & Subscriptions
+
+À copier dans App Store Connect → Abonnements / Achats intégrés → [produit] → [langue].
+
+### Groupe d'abonnements : Claud+
+
+| Champ | Valeur |
+|---|---|
+| **Nom de référence** | Claud+ |
+| **Nom d'affichage** | Claud+ |
+| **Description** | Accès premium à Claud CO2 |
+
+### Abonnements
+
+| ID produit | Référence | Nom d'affichage | Description |
+|---|---|---|---|
+| `fp_499_1w` | Claud+ Weekly | Claud+ | Accès illimité pendant une semaine |
+| `fp_1999_1y_1w` | Claud+ Yearly | Claud+ | Accès illimité pendant un an |
+
+### Achats à vie (non consommables)
+
+| ID produit | Référence | Nom d'affichage | Description |
+|---|---|---|---|
+| `com.giusscos.footprintLifetime` | Claud CO2 Lifetime | Accès à vie | Accès illimité à vie |
+| `com.giusscos.footprintFamilyLifetime` | Claud CO2 Family Lifetime | Accès à vie familial | Accès illimité à vie pour toute la famille |
+
+---
+
 ## Screenshots
 
 See [screenshots.md](./screenshots.md) for device sizes and capture instructions.
@@ -94,10 +122,10 @@ See [screenshots.md](./screenshots.md) for device sizes and capture instructions
 | # | Screen | Caption |
 |---|---|---|
 | 1 | Résumé | Votre CO₂ en un coup d'œil |
-| 2 | Activités | Chaque choix climatique compte |
-| 3 | Trajets / Carte | Choisissez l'itinéraire le plus vert |
-| 4 | Conseils | Des conseils basés sur vos données |
-| 5 | Météo | Marchez quand c'est le bon moment |
+| 2 | Activités | Chaque **choix** climatique compte |
+| 3 | Trajets / Carte | Choisissez l'itinéraire le plus **vert** |
+| 4 | Conseils | Des **conseils** basés sur vos données |
+| 5 | Météo | **Marchez** quand c'est le bon moment |
 
 ### How each screenshot should look
 

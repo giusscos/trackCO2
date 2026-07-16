@@ -1,4 +1,4 @@
-/* Localizable.strings - trackCO2 (Swedish) */
+/* Localizable.strings - Claud (Swedish) */
 
 // MARK: - Tab Bar
 "Home" = "Hem";
@@ -177,6 +177,8 @@
 "A bit cloudy…\nA short walk still counts! 🚶" = "Lite molnigt…\nEn kort promenad räknas ändå! 🚶";
 "Stay safe!\nPoor air today. 🏠" = "Var försiktig!\nDålig luft idag. 🏠";
 "Weather Forecast" = "Väderprognos";
+"Other data sources" = "Andra datakällor";
+"Opens Apple Weather legal attribution" = "Öppnar juridisk attribution för Apple Weather";
 "Great day to walk or cycle" = "Bra dag för promenad eller cykling";
 "Walking possible" = "Promenad möjlig";
 "Stay indoors" = "Stanna inomhus";
@@ -232,7 +234,7 @@
 "Recycling" = "Återvinning";
 
 // MARK: - What's New
-"whats_new.title" = "Nytt i trackCO2";
+"whats_new.title" = "Nytt i Claud";
 "whats_new.subtitle" = "Här är vad vi har jobbat med för dig.";
 "whats_new.feature.mascot" = "Träffa din nya maskot — Claud reagerar nu på ditt CO₂-resultat i realtid.";
 "whats_new.feature.weather" = "Vädermedvetna tips — Claud kollar lokala förhållanden och föreslår bästa tiden att gå, cykla eller åka kollektivt.";
