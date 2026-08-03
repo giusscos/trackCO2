@@ -22,6 +22,13 @@ struct RouteOption: Identifiable {
     var co2Impact: Double { distance * activity.co2Emission }
 }
 
+// MARK: - Map pick target
+
+enum MapPickTarget: Hashable {
+    case origin
+    case destination
+}
+
 // MARK: - TripsView
 
 struct TripsView: View {
@@ -36,13 +43,18 @@ struct TripsView: View {
     @State private var searchResults: [SearchResult] = []
     @State private var selectedLocation: SearchResult?
     @State private var tappedCoordinate: CLLocationCoordinate2D?
+    @State private var customOriginCoordinate: CLLocationCoordinate2D?
+    @State private var customOriginName: String?
+    @State private var pickTarget: MapPickTarget = .destination
     @State private var routeOptions: [RouteOption] = []
     @State private var selectedOption: RouteOption?
     @State private var isCalculating = false
     @State private var showSearchSheet = false
+    @State private var pendingDestination: SearchResult?
     @State private var nearbyResults: [SearchResult] = []
     @State private var isLoadingNearby = false
     @State private var showLocationDeniedAlert = false
+    @State private var routeRequestID = UUID()
     @Namespace private var searchZoom
 
     @State private var mapTips = TipGroup(.ordered) {
@@ -54,23 +66,58 @@ struct TripsView: View {
     var routePolyline: MKPolyline? { selectedOption?.polyline }
     var hasRoute: Bool { selectedOption != nil }
 
+    private var destinationCoordinate: CLLocationCoordinate2D? {
+        tappedCoordinate ?? selectedLocation?.location
+    }
+
+    private var hasCustomOrigin: Bool { customOriginCoordinate != nil }
+
+    private var originDisplayName: String {
+        if let customOriginName, !customOriginName.isEmpty { return customOriginName }
+        if hasCustomOrigin { return String(localized: "Selected") }
+        return String(localized: "Current Location")
+    }
+
+    private var destinationDisplayName: String {
+        if let name = selectedLocation?.name, !name.isEmpty { return name }
+        if destinationCoordinate != nil { return String(localized: "Selected") }
+        return String(localized: "Choose destination")
+    }
+
+    private var effectiveOrigin: CLLocation? {
+        if let coord = customOriginCoordinate {
+            return CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+        }
+        return locationManager.lastLocation
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottomTrailing) {
                 TripMapView(
                     routePolyline: routePolyline,
-                    destinationCoordinate: tappedCoordinate ?? selectedLocation?.location,
+                    originCoordinate: showSearchSheet ? nil : customOriginCoordinate,
+                    destinationCoordinate: showSearchSheet ? nil : destinationCoordinate,
                     isCalculating: isCalculating,
-                    onTap: { coordinate in
-                        tappedCoordinate = coordinate
-                        selectedLocation = nil
-                        calculateAllRoutes(to: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
-                    }
+                    onTap: handleMapTap
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 28))
 
+                if pickTarget == .origin {
+                    Text("Tap the map to set your start")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(.regularMaterial)
+                        .clipShape(Capsule())
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .padding(.top, 12)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+
                 Button {
-                    showSearchSheet = true
+                    openSearch()
                 } label: {
                     Image(systemName: "magnifyingglass")
                         .font(.title3)
@@ -88,6 +135,7 @@ struct TripsView: View {
             .padding(.horizontal, 12)
             .padding(.top, 8)
             .padding(.bottom, 12)
+            .animation(.spring(duration: 0.3), value: pickTarget)
 
             if hasRoute {
                 routeInfoCard
@@ -102,28 +150,39 @@ struct TripsView: View {
         .animation(.spring(duration: 0.35), value: hasRoute)
         .animation(.spring(duration: 0.3), value: isCalculating)
         .animation(.spring(duration: 0.3), value: routeOptions.count)
-        .sheet(isPresented: $showSearchSheet) {
+        .sheet(isPresented: $showSearchSheet, onDismiss: applyPendingDestination) {
             TripSearchSheet(
-                searchResults: $searchResults,
-                selectedLocation: $selectedLocation,
                 nearbyResults: nearbyResults,
                 isLoadingNearby: isLoadingNearby,
-                userLocation: locationManager.lastLocation?.coordinate
+                userLocation: locationManager.lastLocation?.coordinate,
+                originDisplayName: originDisplayName,
+                hasCustomOrigin: hasCustomOrigin,
+                onSelectCurrentLocation: useCurrentLocationAsOrigin,
+                onSelectOrigin: { result in
+                    setCustomOrigin(coordinate: result.location, name: result.name)
+                },
+                onSelectDestination: { result in
+                    pendingDestination = result
+                },
+                onPickOriginOnMap: {
+                    showSearchSheet = false
+                    DispatchQueue.main.async {
+                        pickTarget = .origin
+                    }
+                }
             )
             .presentationDetents([.fraction(0.5), .large])
             .presentationDragIndicator(.visible)
             .navigationTransition(.zoom(sourceID: "searchBtn", in: searchZoom))
         }
         .onChange(of: selectedLocation) { _, newValue in
-            guard let result = newValue else {
+            guard newValue != nil else {
                 resetRouteState()
                 return
             }
             tappedCoordinate = nil
-            calculateAllRoutes(to: CLLocation(latitude: result.location.latitude, longitude: result.location.longitude))
-        }
-        .onChange(of: searchResults) {
-            if searchResults.count == 1 { selectedLocation = searchResults.first }
+            pickTarget = .destination
+            recalculateIfPossible()
         }
         .onAppear {
             handleLocationAccess()
@@ -293,8 +352,76 @@ struct TripsView: View {
         }
     }
 
+    private func applyPendingDestination() {
+        if let pending = pendingDestination {
+            pendingDestination = nil
+            // Apply after sheet teardown so MapKit isn't updated mid-transition
+            DispatchQueue.main.async {
+                self.tappedCoordinate = nil
+                self.selectedLocation = pending
+            }
+        } else {
+            // Origin may have changed while the sheet was open
+            DispatchQueue.main.async {
+                self.recalculateIfPossible()
+            }
+        }
+    }
+
+    private func handleMapTap(_ coordinate: CLLocationCoordinate2D) {
+        switch pickTarget {
+        case .origin:
+            setCustomOrigin(coordinate: coordinate, name: nil)
+            pickTarget = .destination
+        case .destination:
+            tappedCoordinate = coordinate
+            selectedLocation = nil
+            calculateAllRoutes(to: CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
+        }
+    }
+
+    private func openSearch() {
+        pendingDestination = nil
+        showSearchSheet = true
+    }
+
+    private func useCurrentLocationAsOrigin() {
+        customOriginCoordinate = nil
+        customOriginName = nil
+        guard !showSearchSheet else { return }
+        recalculateIfPossible()
+    }
+
+    private func setCustomOrigin(coordinate: CLLocationCoordinate2D, name: String?) {
+        customOriginCoordinate = coordinate
+        customOriginName = name
+        guard !showSearchSheet else { return }
+        recalculateIfPossible()
+    }
+
+    private func recalculateIfPossible() {
+        guard let dest = destinationCoordinate else {
+            resetRouteState()
+            return
+        }
+        calculateAllRoutes(to: CLLocation(latitude: dest.latitude, longitude: dest.longitude))
+    }
+
+    private func mapItem(for location: CLLocation) -> MKMapItem {
+        if #available(iOS 26.0, *) {
+            return MKMapItem(location: location, address: nil)
+        } else {
+            return MKMapItem(placemark: MKPlacemark(coordinate: location.coordinate))
+        }
+    }
+
     private func calculateAllRoutes(to destination: CLLocation) {
-        guard let currentLocation = locationManager.lastLocation else { return }
+        guard let origin = effectiveOrigin else { return }
+        guard CLLocationCoordinate2DIsValid(origin.coordinate),
+              CLLocationCoordinate2DIsValid(destination.coordinate) else { return }
+
+        let requestID = UUID()
+        routeRequestID = requestID
 
         routeOptions = []
         selectedOption = nil
@@ -303,9 +430,9 @@ struct TripsView: View {
         let activitiesToRoute = vehicleActivities
         guard !activitiesToRoute.isEmpty else { isCalculating = false; return }
 
-        let straightLine = currentLocation.distance(from: destination) / 1000.0
-        let source = MKMapItem(placemark: MKPlacemark(coordinate: currentLocation.coordinate))
-        let dest = MKMapItem(placemark: MKPlacemark(coordinate: destination.coordinate))
+        let straightLine = origin.distance(from: destination) / 1000.0
+        let source = mapItem(for: origin)
+        let dest = mapItem(for: destination)
 
         // Deduplicate MKDirections requests by transport type
         var transportToActivities: [UInt: [Activity]] = [:]
@@ -327,7 +454,7 @@ struct TripsView: View {
         var remaining = transportEntries.count
 
         if remaining == 0 {
-            finalize(collected)
+            finalize(collected, requestID: requestID)
             return
         }
 
@@ -339,6 +466,7 @@ struct TripsView: View {
 
             MKDirections(request: request).calculate { response, _ in
                 DispatchQueue.main.async {
+                    guard requestID == self.routeRequestID else { return }
                     if let route = response?.routes.first {
                         let d = route.distance / 1000.0
                         let t = route.expectedTravelTime
@@ -348,15 +476,17 @@ struct TripsView: View {
                         typeActivities.forEach { collected.append(RouteOption(activity: $0, distance: straightLine, time: 0, polyline: nil)) }
                     }
                     remaining -= 1
-                    if remaining == 0 { finalize(collected) }
+                    if remaining == 0 { finalize(collected, requestID: requestID) }
                 }
             }
         }
     }
 
-    private func finalize(_ options: [RouteOption]) {
+    private func finalize(_ options: [RouteOption], requestID: UUID) {
+        guard requestID == routeRequestID else { return }
         let sorted = options.sorted { $0.co2Impact < $1.co2Impact }
         Task { @MainActor in
+            guard requestID == self.routeRequestID else { return }
             await MapPickDestinationTip().invalidate(reason: .actionPerformed)
             routeOptions = sorted
             isCalculating = false
@@ -365,10 +495,7 @@ struct TripsView: View {
     }
 
     private func selectOption(_ option: RouteOption?) {
-        withAnimation(.spring(duration: 0.3)) {
-            selectedOption = option
-        }
-        // Camera animation is handled by TripMapView reacting to routePolyline identity change
+        selectedOption = option
     }
 
     private func resetRouteState() {
@@ -385,7 +512,9 @@ struct TripsView: View {
             routeOptions = []
             selectedOption = nil
             isCalculating = false
+            pickTarget = .destination
         }
+        // Keep custom origin so users can plan multiple trips from the same start
         // TripMapView detects routePolyline → nil and flies back to user location
     }
 
@@ -400,17 +529,27 @@ struct TripsView: View {
             routeOptions = []
             selectedOption = nil
             isCalculating = false
+            pickTarget = .destination
         }
         // TripMapView detects routePolyline → nil and flies back to user location
     }
 
     private func openInAppleMaps() {
         guard let option = selectedOption else { return }
-        let coord = tappedCoordinate ?? selectedLocation?.location
-        guard let destinationCoord = coord else { return }
-        let destination = MKMapItem(placemark: MKPlacemark(coordinate: destinationCoord))
+        guard let destinationCoord = destinationCoordinate else { return }
+        let destination = mapItem(for: CLLocation(latitude: destinationCoord.latitude, longitude: destinationCoord.longitude))
+        destination.name = destinationDisplayName
+
+        let source: MKMapItem
+        if let originCoord = customOriginCoordinate {
+            source = mapItem(for: CLLocation(latitude: originCoord.latitude, longitude: originCoord.longitude))
+            source.name = originDisplayName
+        } else {
+            source = MKMapItem.forCurrentLocation()
+        }
+
         MKMapItem.openMaps(
-            with: [MKMapItem.forCurrentLocation(), destination],
+            with: [source, destination],
             launchOptions: [MKLaunchOptionsDirectionsModeKey: directionsModeKey(for: option.activity.type)]
         )
     }
@@ -525,17 +664,26 @@ struct RouteOptionCard: View {
 // MARK: - Search Sheet
 
 struct TripSearchSheet: View {
-    @Binding var searchResults: [SearchResult]
-    @Binding var selectedLocation: SearchResult?
     var nearbyResults: [SearchResult]
     var isLoadingNearby: Bool
     var userLocation: CLLocationCoordinate2D?
+    var originDisplayName: String
+    var hasCustomOrigin: Bool
+    var onSelectCurrentLocation: () -> Void
+    var onSelectOrigin: (SearchResult) -> Void
+    var onSelectDestination: (SearchResult) -> Void
+    var onPickOriginOnMap: () -> Void
 
     @Environment(\.modelContext) var modelContext
     @Query private var favoritePlaces: [FavoritePlace]
     @State private var locationService = LocationService(completer: .init())
-    @State private var search: String = ""
+    @State private var originSearch: String = ""
+    @State private var destinationSearch: String = ""
+    @FocusState private var focusedField: MapPickTarget?
     @Environment(\.dismiss) var dismiss
+
+    private var isOriginSearch: Bool { focusedField == .origin }
+    private var activeSearch: String { isOriginSearch ? originSearch : destinationSearch }
 
     var pinnedPlaces: [FavoritePlace] { favoritePlaces.filter { $0.isPinned } }
     var frequentPlaces: [FavoritePlace] {
@@ -549,30 +697,18 @@ struct TripSearchSheet: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // Search bar
-                HStack {
-                    Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-                    TextField("Search destination", text: $search)
-                        .autocorrectionDisabled()
-                        .onSubmit {
-                            Task {
-                                let results = (try? await locationService.search(with: search)) ?? []
-                                searchResults = results
-                                if !results.isEmpty { dismiss() }
-                            }
-                        }
-                }
-                .modifier(TextFieldGrayBackgroundColor())
-                .padding(.horizontal)
-                .padding(.top, 8)
+                fromToFields
+                    .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 4)
 
-                if search.isEmpty {
+                if activeSearch.isEmpty {
                     browsingList
                 } else {
                     searchCompletionsList
                 }
             }
-            .navigationTitle("Search destination")
+            .navigationTitle("Search")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -580,15 +716,123 @@ struct TripSearchSheet: View {
                 }
             }
         }
-        .onChange(of: search) {
-            locationService.update(queryFragment: search)
+        .onChange(of: originSearch) {
+            guard focusedField == .origin else { return }
+            updateCompleter(with: originSearch)
         }
+        .onChange(of: destinationSearch) {
+            guard focusedField == .destination else { return }
+            updateCompleter(with: destinationSearch)
+        }
+        .onChange(of: focusedField) { _, newValue in
+            guard let newValue else { return }
+            let query = newValue == .origin ? originSearch : destinationSearch
+            updateCompleter(with: query)
+        }
+    }
+
+    private func updateCompleter(with query: String) {
+        // Avoid kicking the completer with an empty query on sheet presentation / focus changes
+        guard !query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            locationService.completions = []
+            return
+        }
+        locationService.update(queryFragment: query)
+    }
+
+    // MARK: - From / To fields
+
+    private var fromToFields: some View {
+        VStack(spacing: 8) {
+            searchFieldRow(
+                tint: .green,
+                placeholder: hasCustomOrigin ? originDisplayName : String(localized: "Current Location"),
+                text: $originSearch,
+                field: .origin
+            )
+
+            searchFieldRow(
+                tint: .red,
+                placeholder: String(localized: "Search destination"),
+                text: $destinationSearch,
+                field: .destination
+            )
+        }
+    }
+
+    private func searchFieldRow(
+        tint: Color,
+        placeholder: String,
+        text: Binding<String>,
+        field: MapPickTarget
+    ) -> some View {
+        HStack(spacing: 10) {
+            Circle()
+                .fill(tint)
+                .frame(width: 8, height: 8)
+
+            TextField(placeholder, text: text)
+                .focused($focusedField, equals: field)
+                .autocorrectionDisabled()
+                .submitLabel(.search)
+                .onSubmit {
+                    Task {
+                        let query = field == .origin ? originSearch : destinationSearch
+                        let results = (try? await locationService.search(with: query)) ?? []
+                        applySearchResults(results)
+                    }
+                }
+
+            if !text.wrappedValue.isEmpty {
+                Button {
+                    text.wrappedValue = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(Color.secondary.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(focusedField == field ? tint.opacity(0.5) : Color.clear, lineWidth: 1.5)
+        )
     }
 
     // MARK: - Browsing (empty search)
 
     private var browsingList: some View {
         List {
+            if isOriginSearch {
+                Section {
+                    PlaceRow(
+                        iconName: "location.fill",
+                        iconColor: .blue,
+                        title: String(localized: "Current Location"),
+                        subtitle: nil,
+                        badge: nil
+                    ) {
+                        originSearch = ""
+                        onSelectCurrentLocation()
+                        focusedField = .destination
+                    }
+
+                    PlaceRow(
+                        iconName: "mappin.and.ellipse",
+                        iconColor: .green,
+                        title: String(localized: "Pick on Map"),
+                        subtitle: nil,
+                        badge: nil
+                    ) {
+                        onPickOriginOnMap()
+                    }
+                }
+            }
+
             if !pinnedPlaces.isEmpty {
                 Section("Pinned") {
                     ForEach(pinnedPlaces) { place in
@@ -688,8 +932,7 @@ struct TripSearchSheet: View {
             ) {
                 Task {
                     if let result = try? await locationService.search(with: "\(completion.title) \(completion.subTitle)").first {
-                        searchResults = [result]
-                        dismiss()
+                        applySearchResults([result])
                     }
                 }
             }
@@ -724,19 +967,44 @@ struct TripSearchSheet: View {
 
     // MARK: - Actions
 
+    private func applySearchResults(_ results: [SearchResult]) {
+        guard let first = results.first else { return }
+        if isOriginSearch {
+            originSearch = ""
+            onSelectOrigin(first)
+            focusedField = .destination
+        } else {
+            onSelectDestination(first)
+            dismiss()
+        }
+    }
+
     private func selectPlace(_ place: FavoritePlace) {
-        searchResults = [SearchResult(
+        let result = SearchResult(
             location: place.coordinate,
             name: place.name,
             subtitle: place.subtitle,
             category: place.category
-        )]
-        dismiss()
+        )
+        if isOriginSearch {
+            originSearch = ""
+            onSelectOrigin(result)
+            focusedField = .destination
+        } else {
+            onSelectDestination(result)
+            dismiss()
+        }
     }
 
     private func selectNearbyResult(_ result: SearchResult) {
-        searchResults = [result]
-        dismiss()
+        if isOriginSearch {
+            originSearch = ""
+            onSelectOrigin(result)
+            focusedField = .destination
+        } else {
+            onSelectDestination(result)
+            dismiss()
+        }
     }
 
     private func pinNearbyResult(_ result: SearchResult) {

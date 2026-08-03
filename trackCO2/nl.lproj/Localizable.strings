@@ -62,6 +62,18 @@
 "Unpin" = "Losmaken";
 "Pin" = "Vastzetten";
 "Place" = "Plaats";
+"From" = "Van";
+"To" = "Naar";
+"Current Location" = "Huidige locatie";
+"Choose destination" = "Kies bestemming";
+"Choose start" = "Kies start";
+"Search start" = "Zoek start";
+"Search for a start" = "Zoek een startpunt";
+"Search" = "Zoeken";
+"Use Current Location" = "Gebruik huidige locatie";
+"Pick on Map" = "Kies op de kaart";
+"Tap the map to set your start" = "Tik op de kaart om je start in te stellen";
+"Start" = "Start";
 
 // MARK: - Summary Widgets
 "This week CO2" = "CO2 deze week";
@@ -126,7 +138,7 @@
 "Change the Multiplier" = "Vermenigvuldiger wijzigen";
 "Long-press + or - to select a different step size." = "Houd + of - ingedrukt om een andere stapgrootte te kiezen.";
 "Pick a Destination" = "Kies een bestemming";
-"Tap anywhere on the map or use the search button to choose where you're headed." = "Tik ergens op de kaart of gebruik de zoekknop om je bestemming te kiezen.";
+"Search to set From and To, or tap the map to choose a destination. From defaults to your current location." = "Zoek om Van en Naar in te stellen, of tik op de kaart om een bestemming te kiezen. Van is standaard je huidige locatie.";
 "Compare Transport Modes" = "Vervoersmiddelen vergelijken";
 "Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Veeg door de kaarten om de CO₂-impact te vergelijken. De groenste route wordt altijd eerst getoond.";
 "Log Your Trip" = "Rit registreren";

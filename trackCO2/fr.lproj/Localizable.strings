@@ -62,6 +62,18 @@
 "Unpin" = "Désépingler";
 "Pin" = "Épingler";
 "Place" = "Lieu";
+"From" = "De";
+"To" = "À";
+"Current Location" = "Position actuelle";
+"Choose destination" = "Choisir la destination";
+"Choose start" = "Choisir le départ";
+"Search start" = "Rechercher le départ";
+"Search for a start" = "Rechercher un point de départ";
+"Search" = "Rechercher";
+"Use Current Location" = "Utiliser la position actuelle";
+"Pick on Map" = "Choisir sur la carte";
+"Tap the map to set your start" = "Touchez la carte pour définir le départ";
+"Start" = "Départ";
 
 // MARK: - Summary Widgets
 "This week CO2" = "CO2 cette semaine";
@@ -126,7 +138,7 @@
 "Change the Multiplier" = "Modifier le multiplicateur";
 "Long-press + or - to select a different step size." = "Appuyez longuement sur + ou - pour sélectionner une taille de pas différente.";
 "Pick a Destination" = "Choisir une destination";
-"Tap anywhere on the map or use the search button to choose where you're headed." = "Touchez n'importe où sur la carte ou utilisez le bouton de recherche pour choisir votre destination.";
+"Search to set From and To, or tap the map to choose a destination. From defaults to your current location." = "Recherchez pour définir De et À, ou touchez la carte pour choisir une destination. De est votre position actuelle par défaut.";
 "Compare Transport Modes" = "Comparer les modes de transport";
 "Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Faites défiler les cartes pour comparer l'impact CO₂. L'itinéraire le plus écologique est toujours affiché en premier.";
 "Log Your Trip" = "Enregistrer le trajet";

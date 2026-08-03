@@ -24,7 +24,7 @@ struct MapPickDestinationTip: Tip {
         Text("Pick a Destination")
     }
     var message: Text? {
-        Text("Tap anywhere on the map or use the search button to choose where you're headed.")
+        Text("Search to set From and To, or tap the map to choose a destination. From defaults to your current location.")
     }
     var image: Image? {
         Image(systemName: "mappin.and.ellipse")

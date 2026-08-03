@@ -62,6 +62,18 @@
 "Unpin" = "Unpin";
 "Pin" = "Pin";
 "Place" = "Place";
+"From" = "From";
+"To" = "To";
+"Current Location" = "Current Location";
+"Choose destination" = "Choose destination";
+"Choose start" = "Choose start";
+"Search start" = "Search start";
+"Search for a start" = "Search for a start";
+"Search" = "Search";
+"Use Current Location" = "Use Current Location";
+"Pick on Map" = "Pick on Map";
+"Tap the map to set your start" = "Tap the map to set your start";
+"Start" = "Start";
 
 // MARK: - Summary Widgets
 "This week CO2" = "This week CO2";
@@ -126,7 +138,7 @@
 "Change the Multiplier" = "Change the Multiplier";
 "Long-press + or - to select a different step size." = "Long-press + or - to select a different step size.";
 "Pick a Destination" = "Pick a Destination";
-"Tap anywhere on the map or use the search button to choose where you're headed." = "Tap anywhere on the map or use the search button to choose where you're headed.";
+"Search to set From and To, or tap the map to choose a destination. From defaults to your current location." = "Search to set From and To, or tap the map to choose a destination. From defaults to your current location.";
 "Compare Transport Modes" = "Compare Transport Modes";
 "Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Swipe through the cards to compare CO₂ impact. The greenest route is always shown first.";
 "Log Your Trip" = "Log Your Trip";

@@ -6,12 +6,27 @@
 import MapKit
 import SwiftUI
 
+// MARK: - Annotation kinds
+
+final class TripPointAnnotation: MKPointAnnotation {
+    enum Kind { case origin, destination }
+    let kind: Kind
+
+    init(kind: Kind, coordinate: CLLocationCoordinate2D, title: String?) {
+        self.kind = kind
+        super.init()
+        self.coordinate = coordinate
+        self.title = title
+    }
+}
+
 // MARK: - Coordinator
 
 final class TripMapCoordinator: NSObject, MKMapViewDelegate, UIGestureRecognizerDelegate {
     var onTap: (CLLocationCoordinate2D) -> Void
     var trackedPolyline: MKPolyline?
-    var destinationAnnotation: MKPointAnnotation?
+    var originAnnotation: TripPointAnnotation?
+    var destinationAnnotation: TripPointAnnotation?
 
     init(onTap: @escaping (CLLocationCoordinate2D) -> Void) {
         self.onTap = onTap
@@ -51,11 +66,19 @@ final class TripMapCoordinator: NSObject, MKMapViewDelegate, UIGestureRecognizer
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation { return nil }
-        let id = "TripPin"
+
+        let trip = annotation as? TripPointAnnotation
+        let id = trip?.kind == .origin ? "TripOriginPin" : "TripDestinationPin"
         let view = (mapView.dequeueReusableAnnotationView(withIdentifier: id) as? MKMarkerAnnotationView)
             ?? MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: id)
         view.annotation = annotation
-        view.markerTintColor = .systemRed
+        if let trip {
+            view.markerTintColor = trip.kind == .origin ? .systemGreen : .systemRed
+            view.glyphImage = UIImage(systemName: trip.kind == .origin ? "figure.walk" : "flag.fill")
+        } else {
+            view.markerTintColor = .systemRed
+            view.glyphImage = nil
+        }
         view.displayPriority = .required
         return view
     }
@@ -65,6 +88,7 @@ final class TripMapCoordinator: NSObject, MKMapViewDelegate, UIGestureRecognizer
 
 struct TripMapView: UIViewRepresentable {
     var routePolyline: MKPolyline?
+    var originCoordinate: CLLocationCoordinate2D?
     var destinationCoordinate: CLLocationCoordinate2D?
     var isCalculating: Bool
     var onTap: (CLLocationCoordinate2D) -> Void
@@ -130,21 +154,45 @@ struct TripMapView: UIViewRepresentable {
             coordinator.trackedPolyline = routePolyline
         }
 
-        // Destination pin
-        if let coord = destinationCoordinate {
-            if let existing = coordinator.destinationAnnotation {
+        updatePin(
+            on: mapView,
+            coordinator: coordinator,
+            kind: .origin,
+            coordinate: originCoordinate,
+            title: String(localized: "Start"),
+            annotation: &coordinator.originAnnotation
+        )
+        updatePin(
+            on: mapView,
+            coordinator: coordinator,
+            kind: .destination,
+            coordinate: destinationCoordinate,
+            title: String(localized: "Selected"),
+            annotation: &coordinator.destinationAnnotation
+        )
+    }
+
+    private func updatePin(
+        on mapView: MKMapView,
+        coordinator: TripMapCoordinator,
+        kind: TripPointAnnotation.Kind,
+        coordinate: CLLocationCoordinate2D?,
+        title: String,
+        annotation: inout TripPointAnnotation?
+    ) {
+        if let coord = coordinate {
+            if let existing = annotation {
                 if existing.coordinate.latitude != coord.latitude || existing.coordinate.longitude != coord.longitude {
                     existing.coordinate = coord
                 }
             } else {
-                let ann = MKPointAnnotation()
-                ann.coordinate = coord
+                let ann = TripPointAnnotation(kind: kind, coordinate: coord, title: title)
                 mapView.addAnnotation(ann)
-                coordinator.destinationAnnotation = ann
+                annotation = ann
             }
-        } else if let existing = coordinator.destinationAnnotation {
+        } else if let existing = annotation {
             mapView.removeAnnotation(existing)
-            coordinator.destinationAnnotation = nil
+            annotation = nil
         }
     }
 
@@ -152,23 +200,36 @@ struct TripMapView: UIViewRepresentable {
 
     private func fitCamera(mapView: MKMapView, to polyline: MKPolyline) {
         let boundingRect = polyline.boundingMapRect
+        guard !boundingRect.isNull, !boundingRect.isEmpty else { return }
+
         let center = MKMapPoint(x: boundingRect.midX, y: boundingRect.midY)
+        guard CLLocationCoordinate2DIsValid(center.coordinate) else { return }
 
         // Enforce a 500 m minimum visible radius — fixes over-zoom for short routes
         let ppm = MKMapPointsPerMeterAtLatitude(center.coordinate.latitude)
+        guard ppm.isFinite, ppm > 0 else { return }
+
         let minRadius = 500.0 * ppm
         let minRect = MKMapRect(x: center.x - minRadius, y: center.y - minRadius,
                                 width: minRadius * 2, height: minRadius * 2)
+        let visible = boundingRect.union(minRect)
+        guard !visible.isNull, !visible.isEmpty else { return }
 
         let padding = UIEdgeInsets(top: 80, left: 40, bottom: 80, right: 40)
-        mapView.setVisibleMapRect(boundingRect.union(minRect), edgePadding: padding, animated: true)
+        // Defer camera change so it doesn't race sheet dismissal / annotation updates
+        DispatchQueue.main.async {
+            mapView.setVisibleMapRect(visible, edgePadding: padding, animated: true)
+        }
     }
 
     private func flyToUser(mapView: MKMapView) {
         let center = mapView.userLocation.location?.coordinate ?? mapView.region.center
-        mapView.setRegion(
-            MKCoordinateRegion(center: center, latitudinalMeters: 1000, longitudinalMeters: 1000),
-            animated: true
-        )
+        guard CLLocationCoordinate2DIsValid(center) else { return }
+        DispatchQueue.main.async {
+            mapView.setRegion(
+                MKCoordinateRegion(center: center, latitudinalMeters: 1000, longitudinalMeters: 1000),
+                animated: true
+            )
+        }
     }
 }

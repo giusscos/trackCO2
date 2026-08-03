@@ -62,6 +62,18 @@
 "Unpin" = "Lossa";
 "Pin" = "Fäst";
 "Place" = "Plats";
+"From" = "Från";
+"To" = "Till";
+"Current Location" = "Aktuell plats";
+"Choose destination" = "Välj destination";
+"Choose start" = "Välj start";
+"Search start" = "Sök start";
+"Search for a start" = "Sök efter en start";
+"Search" = "Sök";
+"Use Current Location" = "Använd aktuell plats";
+"Pick on Map" = "Välj på kartan";
+"Tap the map to set your start" = "Tryck på kartan för att ange start";
+"Start" = "Start";
 
 // MARK: - Summary Widgets
 "This week CO2" = "CO2 denna vecka";
@@ -126,7 +138,7 @@
 "Change the Multiplier" = "Ändra multiplikatorn";
 "Long-press + or - to select a different step size." = "Tryck länge på + eller - för att välja en annan stegstorlek.";
 "Pick a Destination" = "Välj destination";
-"Tap anywhere on the map or use the search button to choose where you're headed." = "Tryck var som helst på kartan eller använd sökknappen för att välja destination.";
+"Search to set From and To, or tap the map to choose a destination. From defaults to your current location." = "Sök för att ange Från och Till, eller tryck på kartan för att välja destination. Från är din aktuella plats som standard.";
 "Compare Transport Modes" = "Jämför transportmedel";
 "Swipe through the cards to compare CO₂ impact. The greenest route is always shown first." = "Svep genom korten för att jämföra CO₂-påverkan. Den grönaste rutten visas alltid först.";
 "Log Your Trip" = "Logga resa";
