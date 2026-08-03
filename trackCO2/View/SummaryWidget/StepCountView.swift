@@ -24,7 +24,7 @@ struct StepCountView: View {
                 .frame(maxHeight: .infinity, alignment: .bottom)
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
@@ -71,7 +71,9 @@ struct StepsMiniGraph: View {
                 }
             }
         }
+        .frame(minWidth: 0, maxWidth: .infinity)
         .frame(height: 60)
+        .clipped()
     }
 }
 

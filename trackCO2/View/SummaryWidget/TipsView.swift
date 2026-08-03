@@ -38,10 +38,11 @@ struct TipsView: View {
                 Text(tip.message)
                     .fontWeight(.bold)
                     .lineLimit(2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }

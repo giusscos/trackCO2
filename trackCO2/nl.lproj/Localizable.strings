@@ -242,3 +242,9 @@
 "whats_new.feature.ui" = "Een schonere, snellere ervaring — herontworpen kaarten, vloeiendere navigatie en een intuïtiever ontwerp door de hele app.";
 "whats_new.feature.maps" = "Nieuwe kaartbeleving — plan groenere reizen met live vervoersvergelijking en CO₂-schattingen op de kaart.";
 "whats_new.cta" = "Doorgaan";
+
+// MARK: - New Activity Types
+"Natural Gas Usage" = "Aardgasverbruik";
+"Streaming" = "Streaming";
+"Solar Energy" = "Zonne-energie";
+"Clothing Purchase" = "Kledingaankoop";

@@ -10,12 +10,12 @@ import Foundation
 func calculateCO2Totals(activities: [Activity]) -> (consumption: Double, compensation: Double) {
     var totalConsumption: Double = 0.0
     var totalCompensation: Double = 0.0
-    
+
     for activity in activities {
         guard let events = activity.events else { continue }
         for event in events {
             let emission = event.quantity * activity.co2Emission
-            
+
             if emission > .zero {
                 totalConsumption += emission
             } else if emission < .zero {
@@ -23,7 +23,7 @@ func calculateCO2Totals(activities: [Activity]) -> (consumption: Double, compens
             }
         }
     }
-    
+
     return (consumption: totalConsumption, compensation: totalCompensation)
 }
 
@@ -35,15 +35,15 @@ func findMostUsedActivity(activities: [Activity]) -> Activity? {
 
 func calculateWeeklyUsage(activity: Activity) -> Double {
     guard let events = activity.events else { return 0.0 }
-    
+
     let calendar = Calendar.current
     let now = Date()
     let oneWeekAgo = calendar.date(byAdding: .day, value: -7, to: now) ?? now
-    
+
     let weeklyEvents = events.filter { event in
         event.createdAt >= oneWeekAgo && event.createdAt <= now
     }
-    
+
     return weeklyEvents.reduce(0.0) { total, event in
         total + event.quantity
     }
@@ -51,20 +51,19 @@ func calculateWeeklyUsage(activity: Activity) -> Double {
 
 func hasEnoughDataForTrends(activity: Activity) -> Bool {
     guard let events = activity.events, !events.isEmpty else { return false }
-    
+
     let calendar = Calendar.current
     let now = Date()
     let fiveDaysAgo = calendar.date(byAdding: .day, value: -5, to: now) ?? now
-    
+
     let recentEvents = events.filter { event in
         event.createdAt >= fiveDaysAgo && event.createdAt <= now
     }
-    
-    // Check if we have events spanning at least 5 different days
+
     let uniqueDays = Set(recentEvents.map { event in
         calendar.startOfDay(for: event.createdAt)
     })
-    
+
     return uniqueDays.count >= 5
 }
 
@@ -72,7 +71,7 @@ func getTopActivitiesByWeeklyUsage(activities: [Activity], limit: Int = 2) -> [A
     let activitiesWithUsage = activities.map { activity in
         (activity: activity, weeklyUsage: calculateWeeklyUsage(activity: activity))
     }
-    
+
     return activitiesWithUsage
         .filter { $0.weeklyUsage > 0 && hasEnoughDataForTrends(activity: $0.activity) }
         .sorted { $0.weeklyUsage > $1.weeklyUsage }
@@ -106,4 +105,44 @@ func hasAnyTrendsData(activities: [Activity]) -> Bool {
     return activities.contains { activity in
         calculateWeeklyUsage(activity: activity) > 0 && hasEnoughDataForTrends(activity: activity)
     }
+}
+
+/// Returns the number of consecutive days (ending today) on which at least one activity event was logged.
+func calculateCurrentStreak(activities: [Activity]) -> Int {
+    let calendar = Calendar.current
+    let allEvents = activities.flatMap { $0.events ?? [] }
+    guard !allEvents.isEmpty else { return 0 }
+
+    var streak = 0
+    var checkDate = calendar.startOfDay(for: Date())
+
+    while true {
+        guard let nextDay = calendar.date(byAdding: .day, value: 1, to: checkDate) else { break }
+        let hasEvent = allEvents.contains { $0.createdAt >= checkDate && $0.createdAt < nextDay }
+        guard hasEvent else { break }
+        streak += 1
+        guard let prevDay = calendar.date(byAdding: .day, value: -1, to: checkDate) else { break }
+        checkDate = prevDay
+    }
+
+    return streak
+}
+
+/// Returns the net CO₂ (kg) for a given calendar day, or nil if no events were logged that day.
+func calculateDailyNetCO2(activities: [Activity], for date: Date) -> Double? {
+    let calendar = Calendar.current
+    let startOfDay = calendar.startOfDay(for: date)
+    guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { return nil }
+
+    var hasData = false
+    var net = 0.0
+
+    for activity in activities {
+        for event in activity.events ?? [] where event.createdAt >= startOfDay && event.createdAt < endOfDay {
+            net += event.quantity * activity.co2Emission
+            hasData = true
+        }
+    }
+
+    return hasData ? net : nil
 }

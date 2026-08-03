@@ -28,9 +28,9 @@ extension ActivityEmissionType {
             return .transport
         case .beef, .chicken, .vegetables, .rice, .dairy:
             return .food
-        case .electricity:
+        case .electricity, .naturalGas, .streaming, .clothing:
             return .energy
-        case .treePlanting, .recycling:
+        case .treePlanting, .recycling, .solarEnergy:
             return .reduction
         }
     }

@@ -242,3 +242,9 @@
 "whats_new.feature.ui" = "En renare och snabbare upplevelse — omdesignade kort, smidigare navigering och en mer intuitiv layout i hela appen.";
 "whats_new.feature.maps" = "Ny kartupplevelse — planera grönare resor med live transportjämförelse och CO₂-uppskattningar på kartan.";
 "whats_new.cta" = "Fortsätt";
+
+// MARK: - New Activity Types
+"Natural Gas Usage" = "Naturgasanvändning";
+"Streaming" = "Streaming";
+"Solar Energy" = "Solenergi";
+"Clothing Purchase" = "Klädköp";

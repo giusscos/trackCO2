@@ -242,3 +242,9 @@
 "whats_new.feature.ui" = "Uma experiência mais limpa e rápida — cartões redesenhados, navegação mais fluida e um layout mais intuitivo em toda a app.";
 "whats_new.feature.maps" = "Nova experiência de mapas — planeie viagens mais ecológicas com comparação de transportes em tempo real e estimativas de CO₂ no mapa.";
 "whats_new.cta" = "Continuar";
+
+// MARK: - New Activity Types
+"Natural Gas Usage" = "Uso de Gás Natural";
+"Streaming" = "Streaming";
+"Solar Energy" = "Energia Solar";
+"Clothing Purchase" = "Compra de Roupas";

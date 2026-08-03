@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import TipKit
+import UserNotifications
 
 @main
 struct trackCO2App: App {
@@ -19,31 +20,35 @@ struct trackCO2App: App {
             FavoritePlace.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        
+        // To enable iCloud sync, replace the line above with:
+        //   ModelConfiguration(schema: schema, isStoredInMemoryOnly: false, cloudKitDatabase: .automatic)
+        // and add the iCloud + CloudKit entitlements in Xcode → Signing & Capabilities.
+
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
-    
+
     init() {
         do {
             try Tips.configure([
                 .datastoreLocation(.applicationDefault),
                 .displayFrequency(.immediate)
             ])
-        }
-        catch {
-            // Handle TipKit errors
+        } catch {
             print("Error initializing TipKit \(error.localizedDescription)")
         }
     }
-    
+
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(store)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                    Task { await NotificationManager.shared.checkAuthorization() }
+                }
         }
         .modelContainer(sharedModelContainer)
     }

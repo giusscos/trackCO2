@@ -17,17 +17,25 @@ var defaultActivities: [Activity] {
         Activity(type: .motorcycle, name: ActivityEmissionType.motorcycle.localizedDefaultName, quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.1),
         Activity(type: .bus, name: ActivityEmissionType.bus.localizedDefaultName, quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.08),
         Activity(type: .train, name: ActivityEmissionType.train.localizedDefaultName, quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: 0.04),
-        
+
         // Foods
         Activity(type: .beef, name: ActivityEmissionType.beef.localizedDefaultName, quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 60.0),
         Activity(type: .chicken, name: ActivityEmissionType.chicken.localizedDefaultName, quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 6.0),
         Activity(type: .vegetables, name: ActivityEmissionType.vegetables.localizedDefaultName, quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 1.0),
         Activity(type: .rice, name: ActivityEmissionType.rice.localizedDefaultName, quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 4.0),
         Activity(type: .dairy, name: ActivityEmissionType.dairy.localizedDefaultName, quantityUnit: .kg, emissionUnit: .kgCO2e, co2Emission: 10.0),
-        
+
         // Energy
         Activity(type: .electricity, name: ActivityEmissionType.electricity.localizedDefaultName, quantityUnit: .kWh, emissionUnit: .kgCO2e, co2Emission: 0.53),
-        
+        Activity(type: .naturalGas, name: ActivityEmissionType.naturalGas.localizedDefaultName, quantityUnit: .m3, emissionUnit: .kgCO2e, co2Emission: 2.0),
+        Activity(type: .solarEnergy, name: ActivityEmissionType.solarEnergy.localizedDefaultName, quantityUnit: .kWh, emissionUnit: .kgCO2e, co2Emission: -0.53),
+
+        // Digital
+        Activity(type: .streaming, name: ActivityEmissionType.streaming.localizedDefaultName, quantityUnit: .hour, emissionUnit: .kgCO2e, co2Emission: 0.036),
+
+        // Consumer
+        Activity(type: .clothing, name: ActivityEmissionType.clothing.localizedDefaultName, quantityUnit: .item, emissionUnit: .kgCO2e, co2Emission: 33.0),
+
         // CO2 Reduction
         Activity(type: .walking, name: ActivityEmissionType.walking.localizedDefaultName, quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: -0.15),
         Activity(type: .biking, name: ActivityEmissionType.biking.localizedDefaultName, quantityUnit: .km, emissionUnit: .kgCO2e, co2Emission: -0.15),
@@ -46,9 +54,9 @@ class Activity {
     var emissionUnit: EmissionUnit = EmissionUnit.kgCO2e
     var co2Emission: Double = 0.0 // Calculated as quantity * emission factor
     var createdAt: Date = Date()
-    
+
     @Relationship(deleteRule: .cascade) var events: [ActivityEvent]?
-    
+
     init(type: ActivityEmissionType = .car, name: String, activityDescription: String = "", quantityUnit: QuantityUnit = .km, emissionUnit: EmissionUnit = .kgCO2e, co2Emission: Double = 0.0, createdAt: Date = Date()) {
         self.type = type
         self.name = name
@@ -58,7 +66,7 @@ class Activity {
         self.co2Emission = co2Emission
         self.createdAt = createdAt
     }
-    
+
     /// Localized name for display. Default activities are stored by key and resolved at runtime.
     var displayName: String {
         if ActivityEmissionType.isKnownDefaultName(name, for: type) {
@@ -71,7 +79,7 @@ class Activity {
 enum EmissionUnit: String, CaseIterable, Codable {
     case kgCO2e = "kgCO2e"
     case gCO2e = "gCO2e"
-    
+
     var id: String {
         self.rawValue
     }
@@ -83,37 +91,50 @@ enum QuantityUnit: String, CaseIterable, Codable {
     case kWh = "kWh"
     case tree = "tree"
     case steps = "steps"
-    
+    case m3 = "m³"
+    case hour = "h"
+    case item = "item"
+
     var id: String {
         self.rawValue
     }
 }
 
 enum ActivityEmissionType: String, CaseIterable, Identifiable, Codable {
-    // CO2 In
+    // CO2 In — Transport
     case car = "Car"
     case airplane = "Airplane"
     case boat = "Boat"
     case motorcycle = "Motorcycle"
     case bus = "Bus"
     case train = "Train"
-    
+
+    // CO2 In — Food
     case beef = "Beef"
     case chicken = "Chicken"
     case vegetables = "Vegetables"
     case rice = "Rice"
     case dairy = "Dairy"
-    
+
+    // CO2 In — Energy
     case electricity = "Electricity"
-    
+    case naturalGas = "Natural Gas"
+
+    // CO2 In — Digital
+    case streaming = "Streaming"
+
+    // CO2 In — Consumer
+    case clothing = "Clothing"
+
     // CO2 Out
+    case solarEnergy = "Solar Energy"
     case walking = "Walking"
     case biking = "Biking"
     case treePlanting = "Tree Planting"
     case recycling = "Recycling"
-    
+
     var id: String { rawValue }
-    
+
     var emoji: String {
         switch self {
         case .car: return "🚗"
@@ -122,44 +143,56 @@ enum ActivityEmissionType: String, CaseIterable, Identifiable, Codable {
         case .motorcycle: return "🏍️"
         case .bus: return "🚌"
         case .train: return "🚆"
-            
+
         case .beef: return "🥩"
         case .chicken: return "🍗"
         case .vegetables: return "🥕"
         case .rice: return "🍚"
         case .dairy: return "🧀"
-            
+
         case .electricity: return "⚡️"
-            
+        case .naturalGas: return "🔥"
+
+        case .streaming: return "📺"
+
+        case .clothing: return "👕"
+
+        case .solarEnergy: return "☀️"
         case .walking: return "🚶"
         case .biking: return "🚲"
         case .treePlanting: return "🌳"
         case .recycling: return "♻️"
         }
     }
-    
+
     var isCO2Reducing: Bool {
         switch self {
-        case .walking, .biking, .treePlanting, .recycling:
+        case .walking, .biking, .treePlanting, .recycling, .solarEnergy:
             return true
         default:
             return false
         }
     }
-    
+
     var quantityUnit: QuantityUnit {
         switch self {
         case .car, .airplane, .boat, .motorcycle, .bus, .train, .walking, .biking:
             return .km
         case .beef, .chicken, .vegetables, .rice, .dairy, .recycling:
             return .kg
-        case .electricity:
+        case .electricity, .solarEnergy:
             return .kWh
         case .treePlanting:
             return .tree
+        case .naturalGas:
+            return .m3
+        case .streaming:
+            return .hour
+        case .clothing:
+            return .item
         }
     }
-    
+
     /// English localization key used as the canonical stored name for default activities.
     var defaultNameKey: String {
         switch self {
@@ -175,19 +208,23 @@ enum ActivityEmissionType: String, CaseIterable, Identifiable, Codable {
         case .rice: return "Rice Consumption"
         case .dairy: return "Dairy Consumption"
         case .electricity: return "Electricity Usage"
+        case .naturalGas: return "Natural Gas Usage"
+        case .streaming: return "Streaming"
+        case .clothing: return "Clothing Purchase"
+        case .solarEnergy: return "Solar Energy"
         case .walking: return "Walking"
         case .biking: return "Biking"
         case .treePlanting: return "Tree Planting"
         case .recycling: return "Recycling"
         }
     }
-    
+
     var localizedDefaultName: String {
         String(localized: String.LocalizationValue(defaultNameKey))
     }
-    
+
     private static let supportedLocales = ["en", "en-GB", "en-CA", "de", "es", "fr", "it", "nb", "nl", "pt", "pt-BR", "sv"]
-    
+
     static func isKnownDefaultName(_ name: String, for type: ActivityEmissionType) -> Bool {
         if name == type.defaultNameKey { return true }
         for locale in supportedLocales {
