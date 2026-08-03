@@ -16,6 +16,7 @@ struct SummaryView: View {
         case createActivity
         case selectActivities
         case selectAppIcon
+        case customizeHomeOrder
 
         var id: String {
             switch self {
@@ -23,6 +24,7 @@ struct SummaryView: View {
             case .createActivity:      return "createActivity"
             case .selectActivities:    return "selectActivities"
             case .selectAppIcon:       return "selectAppIcon"
+            case .customizeHomeOrder:  return "customizeHomeOrder"
             }
         }
     }
@@ -34,6 +36,7 @@ struct SummaryView: View {
 
     @AppStorage("appIcon") var appIcon: String = defaultAppIcon
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @AppStorage("homeSectionOrder") private var homeSectionOrderRaw: String = HomeSection.defaultOrderRaw
 
     @Environment(\.modelContext) var modelContext
     @Environment(\.requestReview) var requestReview
@@ -60,6 +63,10 @@ struct SummaryView: View {
     #if DEBUG
     @State private var showEraseAllDataConfirmation = false
     #endif
+
+    private var sectionOrder: [HomeSection] {
+        HomeSection.resolvedOrder(from: homeSectionOrderRaw)
+    }
 
     var body: some View {
         NavigationStack {
@@ -92,37 +99,63 @@ struct SummaryView: View {
     private var summaryScrollContent: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ClaudMascotView(healthScore: calculateWeeklyCO2Health(activities: activities))
-                CO2ChartView()
-                WeatherSuggestionView()
-                widgetGrid
-                if hasAnyTrendsData(activities: activities) {
-                    TrendsView()
+                ForEach(sectionOrder) { section in
+                    sectionView(section)
                 }
-                NavigationLink {
-                    CalendarHeatmapView()
-                } label: {
-                    CalendarHeatmapPreviewRow(activities: activities)
-                }
-                .buttonStyle(.plain)
             }
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity)
         }
     }
 
-    private var widgetGrid: some View {
-        LazyVGrid(columns: Self.widgetColumns, alignment: .leading, spacing: 8) {
+    @ViewBuilder
+    private func sectionView(_ section: HomeSection) -> some View {
+        switch section {
+        case .mascot:
+            ClaudMascotView(healthScore: calculateWeeklyCO2Health(activities: activities))
+        case .co2Chart:
+            CO2ChartView()
+        case .weather:
+            WeatherSuggestionView()
+        case .healthKit:
             if healthKitAuthorized {
-                StepCountView()
-                WalkingRunningDistanceView()
+                pairedWidgets {
+                    StepCountView()
+                    WalkingRunningDistanceView()
+                }
             }
-            CompensationView()
-            ConsumptionView()
-            BudgetView()
-            StreakView()
-            MostUsedView()
-            TipsView()
+        case .balance:
+            pairedWidgets {
+                CompensationView()
+                ConsumptionView()
+            }
+        case .budgetStreak:
+            pairedWidgets {
+                BudgetView()
+                StreakView()
+            }
+        case .insights:
+            pairedWidgets {
+                MostUsedView()
+                TipsView()
+            }
+        case .trends:
+            if hasAnyTrendsData(activities: activities) {
+                TrendsView()
+            }
+        case .calendar:
+            NavigationLink {
+                CalendarHeatmapView()
+            } label: {
+                CalendarHeatmapPreviewRow(activities: activities)
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func pairedWidgets<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        LazyVGrid(columns: Self.widgetColumns, alignment: .leading, spacing: 8) {
+            content()
         }
         .frame(minWidth: 0, maxWidth: .infinity)
     }
@@ -177,6 +210,12 @@ struct SummaryView: View {
             Label("Share my stats", systemImage: "square.and.arrow.up")
         }
         .disabled(activities.isEmpty)
+
+        Button {
+            activeSheet = .customizeHomeOrder
+        } label: {
+            Label("Customize Home", systemImage: "arrow.up.arrow.down")
+        }
 
         Divider()
 
@@ -245,6 +284,8 @@ struct SummaryView: View {
             SelectActivitiesToPersistView()
         case .selectAppIcon:
             SelectAppIconView(selectedIcon: $appIcon)
+        case .customizeHomeOrder:
+            CustomizeHomeOrderView(orderRaw: $homeSectionOrderRaw)
         }
     }
 

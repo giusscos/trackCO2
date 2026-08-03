@@ -285,3 +285,15 @@
 "Milestone Reached! 🎉" = "Milestone Reached! 🎉";
 "Enable daily reminder" = "Enable daily reminder";
 "Turn off reminders" = "Turn off reminders";
+
+// MARK: - Customize Home Order
+"Customize Home" = "Customize Home";
+"Claud" = "Claud";
+"Weather" = "Weather";
+"Steps & Distance" = "Steps & Distance";
+"Compensation & Consumption" = "Compensation & Consumption";
+"Budget & Streak" = "Budget & Streak";
+"Most used & Tips" = "Most used & Tips";
+"Drag to change the order of sections on the Home screen." = "Drag to change the order of sections on the Home screen.";
+"Reset" = "Reset";
+"Done" = "Done";

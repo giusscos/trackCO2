@@ -248,3 +248,16 @@
 "Streaming" = "Streaming";
 "Solar Energy" = "Énergie Solaire";
 "Clothing Purchase" = "Achat de Vêtements";
+
+// MARK: - Customize Home Order
+"Customize Home" = "Personnaliser l'accueil";
+"Claud" = "Claud";
+"Weather" = "Météo";
+"Steps & Distance" = "Pas et Distance";
+"Compensation & Consumption" = "Compensation et Consommation";
+"Budget & Streak" = "Budget et Série";
+"Most used & Tips" = "Plus utilisées et Conseils";
+"Drag to change the order of sections on the Home screen." = "Faites glisser pour modifier l'ordre des sections sur l'écran d'accueil.";
+"Reset" = "Réinitialiser";
+"Done" = "OK";
+

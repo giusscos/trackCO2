@@ -248,3 +248,16 @@
 "Streaming" = "Streaming";
 "Solar Energy" = "Zonne-energie";
 "Clothing Purchase" = "Kledingaankoop";
+
+// MARK: - Customize Home Order
+"Customize Home" = "Startscherm aanpassen";
+"Claud" = "Claud";
+"Weather" = "Weer";
+"Steps & Distance" = "Stappen & Afstand";
+"Compensation & Consumption" = "Compensatie & Verbruik";
+"Budget & Streak" = "Budget & Reeks";
+"Most used & Tips" = "Meest gebruikt & Tips";
+"Drag to change the order of sections on the Home screen." = "Sleep om de volgorde van secties op het startscherm te wijzigen.";
+"Reset" = "Resetten";
+"Done" = "Klaar";
+
