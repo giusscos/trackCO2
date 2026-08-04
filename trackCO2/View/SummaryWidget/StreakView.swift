@@ -22,6 +22,7 @@ struct StreakView: View {
                 Text("\(streak)")
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundStyle(streakValueColor)
                 Text("days")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -29,7 +30,7 @@ struct StreakView: View {
 
             Text(streakMessage)
                 .font(.caption)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(streak >= 1 ? streakValueColor.opacity(0.85) : .secondary)
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -46,6 +47,15 @@ struct StreakView: View {
         case 3...6: return "🔥"
         case 7...13: return "🌍"
         default: return "🏆"
+        }
+    }
+
+    private var streakValueColor: Color {
+        switch streak {
+        case 0: return .secondary
+        case 1...6: return .green
+        case 7...13: return .mint
+        default: return .orange
         }
     }
 

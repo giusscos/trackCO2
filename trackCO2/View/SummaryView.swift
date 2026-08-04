@@ -474,7 +474,9 @@ private struct CalendarHeatmapPreviewRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
+            HStack(spacing: 6) {
+                Image(systemName: "leaf.fill")
+                    .foregroundStyle(.green)
                 Text("Activity Calendar")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -486,16 +488,24 @@ private struct CalendarHeatmapPreviewRow: View {
             HStack(spacing: 4) {
                 ForEach(last14Days, id: \.self) { date in
                     let net = calculateDailyNetCO2(activities: activities, for: date)
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(previewColor(net: net))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 22)
-                        .overlay {
-                            if calendar.isDateInToday(date) {
-                                RoundedRectangle(cornerRadius: 4)
-                                    .stroke(Color.accentColor, lineWidth: 2)
-                            }
+                    let style = CO2DayStyle.style(for: net)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(style.color)
+                        if let glyph = style.glyph, net != nil {
+                            Text(glyph)
+                                .font(.system(size: 10))
                         }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 30)
+                    .overlay {
+                        if calendar.isDateInToday(date) {
+                            RoundedRectangle(cornerRadius: 4)
+                                .stroke(Color.accentColor, lineWidth: 2)
+                        }
+                    }
+                    .accessibilityLabel(style.accessibilityLabel)
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity)
@@ -504,15 +514,6 @@ private struct CalendarHeatmapPreviewRow: View {
         .frame(minWidth: 0, maxWidth: .infinity)
         .background(.ultraThinMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 16))
-    }
-
-    private func previewColor(net: Double?) -> Color {
-        guard let net else { return Color.secondary.opacity(0.15) }
-        if net < -5  { return Color.green.opacity(0.85) }
-        if net < 0   { return Color.green.opacity(0.40) }
-        if net < 5   { return Color.secondary.opacity(0.15) }
-        if net < 15  { return Color.orange.opacity(0.45) }
-        return Color.red.opacity(0.70)
     }
 }
 

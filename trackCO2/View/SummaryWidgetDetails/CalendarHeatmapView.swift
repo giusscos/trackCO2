@@ -92,17 +92,25 @@ struct CalendarHeatmapView: View {
                 HStack(spacing: 6) {
                     Text("Better")
                         .font(.caption2).foregroundStyle(.secondary)
-                    ForEach([-2.0, -0.5, 0.0, 5.0, 15.0], id: \.self) { v in
-                        RoundedRectangle(cornerRadius: 3)
-                            .fill(dayColor(net: v))
-                            .frame(width: 16, height: 16)
+                    ForEach(CO2DayStyle.legendSamples, id: \.self) { v in
+                        let style = CO2DayStyle.style(for: v)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(style.color)
+                            if let glyph = style.glyph {
+                                Text(glyph)
+                                    .font(.system(size: 8))
+                            }
+                        }
+                        .frame(width: 18, height: 18)
+                        .accessibilityLabel(style.accessibilityLabel)
                     }
                     Text("Worse")
                         .font(.caption2).foregroundStyle(.secondary)
                     Spacer()
-                    Circle()
-                        .fill(Color.secondary.opacity(0.15))
-                        .frame(width: 16, height: 16)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(CO2DayStyle.style(for: nil).color)
+                        .frame(width: 18, height: 18)
                     Text("No data")
                         .font(.caption2).foregroundStyle(.secondary)
                 }
@@ -123,8 +131,9 @@ struct CalendarHeatmapView: View {
         let loggedDays = netValues.count
 
         return VStack(alignment: .leading, spacing: 12) {
-            Text("Monthly Summary")
+            Label("Monthly Summary", systemImage: totalNet <= 0 ? "leaf.fill" : "cloud.fill")
                 .font(.headline)
+                .foregroundStyle(totalNet <= 0 ? .green : .orange)
 
             HStack(spacing: 12) {
                 SummaryTile(title: "Days logged", value: "\(loggedDays)", color: .blue)
@@ -155,23 +164,41 @@ private struct DayCell: View {
     var body: some View {
         let isToday = calendar.isDateInToday(date)
         let isFuture = date > Date()
+        let style = CO2DayStyle.style(for: isFuture ? nil : net)
 
         ZStack {
             RoundedRectangle(cornerRadius: 6)
-                .fill(isFuture ? Color.secondary.opacity(0.05) : dayColor(net: net))
+                .fill(isFuture ? Color.secondary.opacity(0.05) : style.color)
 
-            Text("\(calendar.component(.day, from: date))")
-                .font(.caption2)
-                .fontWeight(isToday ? .bold : .regular)
-                .foregroundStyle(isFuture ? Color.secondary.opacity(0.4) : .primary)
+            VStack(spacing: 1) {
+                Text("\(calendar.component(.day, from: date))")
+                    .font(.caption2)
+                    .fontWeight(isToday ? .bold : .regular)
+                    .foregroundStyle(isFuture ? Color.secondary.opacity(0.4) : .primary)
+
+                if !isFuture, let glyph = style.glyph, net != nil {
+                    Text(glyph)
+                        .font(.system(size: 9))
+                }
+            }
         }
         .aspectRatio(1, contentMode: .fill)
         .overlay {
             if isToday {
                 RoundedRectangle(cornerRadius: 6)
-                    .stroke(Color.accentColor, lineWidth: 2)
+                    .stroke(Color.green.opacity(0.85), lineWidth: 2)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(dayAccessibilityLabel(isToday: isToday, isFuture: isFuture, style: style))
+    }
+
+    private func dayAccessibilityLabel(isToday: Bool, isFuture: Bool, style: CO2DayStyle) -> String {
+        let day = calendar.component(.day, from: date)
+        if isFuture { return "\(day), future" }
+        var parts = ["\(day)", style.accessibilityLabel]
+        if isToday { parts.append(String(localized: "Today")) }
+        return parts.joined(separator: ", ")
     }
 }
 
@@ -190,15 +217,6 @@ private struct SummaryTile: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-private func dayColor(net: Double?) -> Color {
-    guard let net else { return Color.secondary.opacity(0.15) }
-    if net < -5  { return Color.green.opacity(0.85) }
-    if net < 0   { return Color.green.opacity(0.40) }
-    if net < 5   { return Color.secondary.opacity(0.15) }
-    if net < 15  { return Color.orange.opacity(0.45) }
-    return Color.red.opacity(0.70)
 }
 
 #Preview {

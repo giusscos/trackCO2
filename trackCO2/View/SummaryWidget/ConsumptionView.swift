@@ -19,20 +19,28 @@ struct ConsumptionView: View {
                 HStack {
                     Text("Consumption")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                
+                        .lineLimit(1)
+
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }
             }
             .font(.headline)
-            
-            Text("\(calculateCO2Totals(activities: activities).consumption, specifier: "%.2f")")
-                .font(.title)
-                .fontWeight(.bold)
-            +
-            Text("kg")
-                .font(.caption)
-                .fontWeight(.medium)
+
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Image(systemName: "smoke.fill")
+                    .font(.title3)
+                    .foregroundStyle(.orange)
+                (
+                    Text("\(calculateCO2Totals(activities: activities).consumption, specifier: "%.2f")")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    +
+                    Text("kg")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                )
+            }
         }
         .padding()
         .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

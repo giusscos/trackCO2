@@ -19,20 +19,28 @@ struct CompensationView: View {
                 HStack {
                     Text("Compensation")
                         .frame(maxWidth: .infinity, alignment: .leading)
-                
+                        .lineLimit(1)
+
                     Label("Navigate to", systemImage: "chevron.right")
                         .labelStyle(.iconOnly)
                 }
             }
             .font(.headline)
-            
-            Text("\(calculateCO2Totals(activities: activities).compensation, specifier: "%.2f")")
-                .font(.title)
-                .fontWeight(.bold)
-            +
-            Text("kg")
-                .font(.caption)
-                .fontWeight(.medium)
+
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Image(systemName: "leaf.fill")
+                    .font(.title3)
+                    .foregroundStyle(.green)
+                (
+                    Text("\(calculateCO2Totals(activities: activities).compensation, specifier: "%.2f")")
+                        .font(.title)
+                        .fontWeight(.bold)
+                    +
+                    Text("kg")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                )
+            }
         }
         .padding()
         .frame(minWidth: 0, maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
