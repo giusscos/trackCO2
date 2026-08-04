@@ -487,7 +487,7 @@ struct TripsView: View {
         let sorted = options.sorted { $0.co2Impact < $1.co2Impact }
         Task { @MainActor in
             guard requestID == self.routeRequestID else { return }
-            await MapPickDestinationTip().invalidate(reason: .actionPerformed)
+            MapPickDestinationTip().invalidate(reason: .actionPerformed)
             routeOptions = sorted
             isCalculating = false
             selectOption(sorted.first)
