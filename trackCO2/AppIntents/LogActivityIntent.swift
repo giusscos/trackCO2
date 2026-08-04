@@ -59,7 +59,7 @@ actor ActivityLogger {
 
 struct LogActivityIntent: AppIntent {
     static var title: LocalizedStringResource = "Log CO₂ Activity"
-    static var description = IntentDescription("Log a CO₂ activity directly from Siri or Shortcuts.")
+    static var description = IntentDescription("Log a CO₂ activity directly from Shortcuts.")
     static var openAppWhenRun: Bool = false
 
     @Parameter(title: "Activity Type")
