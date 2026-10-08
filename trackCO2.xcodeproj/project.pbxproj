@@ -290,8 +290,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Claud;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Claud reads your steps and walking distance from the Health app to log your walks automatically.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Claud reads your steps and walking distance from the Health app to log your walks automatically.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Claud uses your location to show local weather and air tips and to plan greener trips.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -330,8 +330,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Claud;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app uses HealthKit to read your steps and walking distance to help you track your activity and CO₂ compensation.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Claud reads your steps and walking distance from the Health app to log your walks automatically.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Claud reads your steps and walking distance from the Health app to log your walks automatically.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Claud uses your location to show local weather and air tips and to plan greener trips.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

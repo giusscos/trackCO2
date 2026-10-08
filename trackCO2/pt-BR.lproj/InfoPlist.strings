@@ -1,0 +1,4 @@
+/* Permission prompts shown by iOS. Keys match Info.plist. */
+"NSLocationWhenInUseUsageDescription" = "O Claud usa sua localização para mostrar dicas locais de clima e ar e planejar viagens mais verdes.";
+"NSHealthShareUsageDescription" = "O Claud lê seus passos e a distância percorrida a pé no app Saúde para registrar suas caminhadas automaticamente.";
+"NSHealthUpdateUsageDescription" = "O Claud lê seus passos e a distância percorrida a pé no app Saúde para registrar suas caminhadas automaticamente.";

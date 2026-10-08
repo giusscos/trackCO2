@@ -1,0 +1,4 @@
+/* Permission prompts shown by iOS. Keys match Info.plist. */
+"NSLocationWhenInUseUsageDescription" = "Claud använder din plats för att visa lokala väder- och lufttips och planera grönare resor.";
+"NSHealthShareUsageDescription" = "Claud läser dina steg och gångsträcka från appen Hälsa för att logga dina promenader automatiskt.";
+"NSHealthUpdateUsageDescription" = "Claud läser dina steg och gångsträcka från appen Hälsa för att logga dina promenader automatiskt.";
