@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Xcode per-user state
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Raw App Store captures and exports (kept locally, not in git)
+metadata/*/screenshots/
