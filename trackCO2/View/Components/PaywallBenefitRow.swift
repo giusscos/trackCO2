@@ -5,18 +5,6 @@
 
 import SwiftUI
 
-struct GlassLifetimeButtonStyle: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 26.0, *) {
-            content.buttonStyle(.glass)
-        } else {
-            content
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.capsule)
-        }
-    }
-}
-
 struct PaywallBenefitRow: View {
     let icon: String
     let accent: Color

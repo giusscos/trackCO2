@@ -22,7 +22,9 @@ struct TipsView: View {
     var body: some View {
         VStack (alignment: .leading) {
             NavigationLink {
-                ListTipsView()
+                PremiumGate(feature: .tips) {
+                    ListTipsView()
+                }
             } label: {
                 HStack {
                     Text("Tips")

@@ -22,37 +22,7 @@
         {
           "description" : "Lifetime unlimited access for your family",
           "displayName" : "Claud CO2 Family Lifetime",
-          "locale" : "en_GB"
-        },
-        {
-          "description" : "Lifetime unlimited access for your family",
-          "displayName" : "Claud CO2 Family Lifetime",
           "locale" : "en_CA"
-        },
-        {
-          "description" : "Lifetime-Zugang für die ganze Familie",
-          "displayName" : "Familien-Lifetime-Zugang",
-          "locale" : "de"
-        },
-        {
-          "description" : "Acceso ilimitado de por vida para tu familia",
-          "displayName" : "Acceso familiar de por vida",
-          "locale" : "es_ES"
-        },
-        {
-          "description" : "Acesso vitalício ilimitado para a família",
-          "displayName" : "Acesso vitalício familiar",
-          "locale" : "pt_PT"
-        },
-        {
-          "description" : "Lifetime unlimited access for your family",
-          "displayName" : "Claud CO2 Family Lifetime",
-          "locale" : "en_US"
-        },
-        {
-          "description" : "Obegränsad livstidsåtkomst för familjen",
-          "displayName" : "Familjelivstidsåtkomst",
-          "locale" : "sv"
         },
         {
           "description" : "Accès illimité à vie pour toute la famille",
@@ -60,19 +30,54 @@
           "locale" : "fr"
         },
         {
+          "description" : "Acceso ilimitado de por vida para tu familia",
+          "displayName" : "Acceso familiar de por vida",
+          "locale" : "es_ES"
+        },
+        {
           "description" : "Acesso vitalício ilimitado para sua família",
           "displayName" : "Acesso vitalício familiar",
           "locale" : "pt_BR"
         },
         {
-          "description" : "Accesso illimitato a vita per la famiglia",
-          "displayName" : "Accesso familiare a vita",
-          "locale" : "it"
+          "description" : "Acesso vitalício ilimitado para a família",
+          "displayName" : "Acesso vitalício familiar",
+          "locale" : "pt_PT"
+        },
+        {
+          "description" : "Lifetime-Zugang für die ganze Familie",
+          "displayName" : "Familien-Lifetime-Zugang",
+          "locale" : "de"
         },
         {
           "description" : "Onbeperkte toegang voor altijd, hele gezin",
           "displayName" : "Gezins-lifetime-toegang",
           "locale" : "nl"
+        },
+        {
+          "description" : "Obegränsad livstidsåtkomst för familjen",
+          "displayName" : "Familjelivstidsåtkomst",
+          "locale" : "sv"
+        },
+        {
+          "description" : "Lifetime unlimited access for your family",
+          "displayName" : "Claud CO2 Family Lifetime",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "Lifetime unlimited access for your family",
+          "displayName" : "Claud CO2 Family Lifetime",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Acceso ilimitado de por vida para tu familia",
+          "displayName" : "Acceso familiar de por vida",
+          "locale" : "es_MX"
+        },
+        {
+          "description" : "Accesso illimitato a vita per la famiglia",
+          "displayName" : "Accesso familiare a vita",
+          "locale" : "it"
         }
       ],
       "productID" : "com.giusscos.footprintFamilyLifetime",
@@ -85,19 +90,14 @@
       "internalID" : "6748358613",
       "localizations" : [
         {
-          "description" : "Lifetime unlimited access",
-          "displayName" : "Claud CO2 Lifetime",
-          "locale" : "en_GB"
+          "description" : "Onbeperkte toegang voor altijd",
+          "displayName" : "Lifetime-toegang",
+          "locale" : "nl"
         },
         {
-          "description" : "Lifetime unlimited access",
-          "displayName" : "Claud CO2 Lifetime",
-          "locale" : "en_CA"
-        },
-        {
-          "description" : "Unbegrenzter Lifetime-Zugang",
-          "displayName" : "Lifetime-Zugang",
-          "locale" : "de"
+          "description" : "Accès illimité à vie",
+          "displayName" : "Accès à vie",
+          "locale" : "fr"
         },
         {
           "description" : "Acceso ilimitado de por vida",
@@ -107,7 +107,22 @@
         {
           "description" : "Acesso vitalício ilimitado",
           "displayName" : "Acesso vitalício",
+          "locale" : "pt_BR"
+        },
+        {
+          "description" : "Acesso vitalício ilimitado",
+          "displayName" : "Acesso vitalício",
           "locale" : "pt_PT"
+        },
+        {
+          "description" : "Unbegrenzter Lifetime-Zugang",
+          "displayName" : "Lifetime-Zugang",
+          "locale" : "de"
+        },
+        {
+          "description" : "Acceso ilimitado de por vida",
+          "displayName" : "Acceso de por vida",
+          "locale" : "es_MX"
         },
         {
           "description" : "Lifetime unlimited access",
@@ -115,9 +130,9 @@
           "locale" : "en_US"
         },
         {
-          "description" : "Accès illimité à vie",
-          "displayName" : "Accès à vie",
-          "locale" : "fr"
+          "description" : "Lifetime unlimited access",
+          "displayName" : "Claud CO2 Lifetime",
+          "locale" : "en_GB"
         },
         {
           "description" : "Obegränsad livstidsåtkomst",
@@ -125,19 +140,14 @@
           "locale" : "sv"
         },
         {
-          "description" : "Acesso vitalício ilimitado",
-          "displayName" : "Acesso vitalício",
-          "locale" : "pt_BR"
+          "description" : "Lifetime unlimited access",
+          "displayName" : "Claud CO2 Lifetime",
+          "locale" : "en_CA"
         },
         {
           "description" : "Accesso illimitato a vita",
           "displayName" : "Accesso a vita",
           "locale" : "it"
-        },
-        {
-          "description" : "Onbeperkte toegang voor altijd",
-          "displayName" : "Lifetime-toegang",
-          "locale" : "nl"
         }
       ],
       "productID" : "com.giusscos.footprintLifetime",
@@ -153,7 +163,7 @@
     "_developerTeamID" : "MA7MBQ947C",
     "_disableDialogs" : false,
     "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 805826875.98067701,
+    "_lastSynchronizedDate" : 813176460.11270404,
     "_locale" : "en_US",
     "_renewalBillingIssuesEnabled" : false,
     "_storefront" : "USA",
@@ -197,6 +207,9 @@
     ],
     "_timeRate" : 0
   },
+  "subscriptionBundleGroups" : [
+
+  ],
   "subscriptionGroups" : [
     {
       "id" : "21727569",
@@ -204,11 +217,165 @@
         {
           "description" : "",
           "displayName" : "Claud+",
+          "locale" : "it"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "sv"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "fr"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "de"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
           "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "en_CA"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "nl"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "pt_BR"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "es_MX"
+        },
+        {
+          "description" : "",
+          "displayName" : "Claud+",
+          "locale" : "pt_PT"
         }
       ],
       "name" : "Claud+",
       "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "2.99",
+              "displayPrice" : "2.99",
+              "internalID" : "6820644965_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "2.99",
+          "familyShareable" : false,
+          "groupNumber" : 6,
+          "internalID" : "6820644965",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Acesso ilimitado por um mês",
+              "displayName" : "Claud+",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "Acceso ilimitado durante un mes",
+              "displayName" : "Claud+",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Onbeperkte toegang voor deze maand",
+              "displayName" : "Claud+",
+              "locale" : "nl"
+            },
+            {
+              "description" : "Acceso ilimitado durante un mes",
+              "displayName" : "Claud+",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Get unlimited access for this month",
+              "displayName" : "Claud+",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Obegränsad åtkomst i en månad",
+              "displayName" : "Claud+",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Unbegrenzter Zugang für diesen Monat",
+              "displayName" : "Claud+",
+              "locale" : "de"
+            },
+            {
+              "description" : "Get unlimited access for this month",
+              "displayName" : "Claud+",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Accesso illimitato per un mese",
+              "displayName" : "Claud+",
+              "locale" : "it"
+            },
+            {
+              "description" : "Acesso ilimitado durante um mês",
+              "displayName" : "Claud+",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Accès illimité pendant un mois",
+              "displayName" : "Claud+",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Get unlimited access for this month",
+              "displayName" : "Claud+",
+              "locale" : "en_CA"
+            }
+          ],
+          "productID" : "fp_299_1m",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Claud+ Monthly 2.99",
+          "subscriptionGroupID" : "21727569",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
         {
           "adHocOffers" : [
 
@@ -239,9 +406,74 @@
               "locale" : "en_US"
             },
             {
+              "description" : "Accesso illimitato per questa settimana",
+              "displayName" : "Claud+",
+              "locale" : "it"
+            },
+            {
               "description" : "Obegränsad åtkomst denna vecka",
               "displayName" : "Claud+",
               "locale" : "sv"
+            },
+            {
+              "description" : "Acceso ilimitado durante una semana",
+              "displayName" : "Claud+",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Get unlimited access for this week",
+              "displayName" : "Claud+",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unbegrenzter Zugang für diese Woche",
+              "displayName" : "Claud+",
+              "locale" : "de"
+            },
+            {
+              "description" : "Accès illimité pendant une semaine",
+              "displayName" : "Claud+",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Acceso ilimitado durante una semana",
+              "displayName" : "Claud+",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Acesso ilimitado por uma semana",
+              "displayName" : "Claud+",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "Acesso ilimitado durante uma semana",
+              "displayName" : "Claud+",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Get unlimited access for this week",
+              "displayName" : "Claud+",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Onbeperkte toegang voor deze week",
+              "displayName" : "Claud+",
+              "locale" : "nl"
+            },
+            {
+              "description" : "Get unlimited access for this week",
+              "displayName" : "Claud+",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Obegränsad åtkomst denna vecka",
+              "displayName" : "Claud+",
+              "locale" : "sv"
+            },
+            {
+              "description" : "Accesso illimitato per questa settimana",
+              "displayName" : "Claud+",
+              "locale" : "it"
             },
             {
               "description" : "Unbegrenzter Zugang für diese Woche",
@@ -274,19 +506,14 @@
               "locale" : "pt_PT"
             },
             {
-              "description" : "Accesso illimitato per questa settimana",
+              "description" : "Acceso ilimitado durante una semana",
               "displayName" : "Claud+",
-              "locale" : "it"
+              "locale" : "es_ES"
             },
             {
               "description" : "Accès illimité pendant une semaine",
               "displayName" : "Claud+",
               "locale" : "fr"
-            },
-            {
-              "description" : "Acceso ilimitado durante una semana",
-              "displayName" : "Claud+",
-              "locale" : "es_ES"
             }
           ],
           "productID" : "fp_499_1w",
@@ -320,7 +547,7 @@
           "internalID" : "6748361170",
           "introductoryOffer" : {
             "billingPlanType" : "BILLED_UPFRONT",
-            "internalID" : "E4DC07BE",
+            "internalID" : "eyJzIjoiNjc0ODM2MTE3MCIsImQiOjE3NTE5NTgwMDAsImkiOiJVUyIsInQiOiIiLCJwIjoiMCJ9",
             "numberOfPeriods" : 1,
             "paymentMode" : "free",
             "subscriptionPeriod" : "P1W"
@@ -328,7 +555,7 @@
           "introductoryOffers" : [
             {
               "billingPlanType" : "BILLED_UPFRONT",
-              "internalID" : "E4DC07BE",
+              "internalID" : "eyJzIjoiNjc0ODM2MTE3MCIsImQiOjE3NTE5NTgwMDAsImkiOiJVUyIsInQiOiIiLCJwIjoiMCJ9",
               "numberOfPeriods" : 1,
               "paymentMode" : "free",
               "subscriptionPeriod" : "P1W"
@@ -336,9 +563,74 @@
           ],
           "localizations" : [
             {
+              "description" : "Acesso ilimitado durante um ano",
+              "displayName" : "Claud+",
+              "locale" : "pt_PT"
+            },
+            {
+              "description" : "Onbeperkte toegang voor dit jaar",
+              "displayName" : "Claud+",
+              "locale" : "nl"
+            },
+            {
+              "description" : "Obegränsad åtkomst i ett år",
+              "displayName" : "Claud+",
+              "locale" : "sv"
+            },
+            {
               "description" : "Get unlimited access for this year",
               "displayName" : "Claud+",
               "locale" : "en_US"
+            },
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Claud+",
+              "locale" : "en_CA"
+            },
+            {
+              "description" : "Unbegrenzter Zugang für dieses Jahr",
+              "displayName" : "Claud+",
+              "locale" : "de"
+            },
+            {
+              "description" : "Acceso ilimitado durante un año",
+              "displayName" : "Claud+",
+              "locale" : "es_ES"
+            },
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Claud+",
+              "locale" : "en_GB"
+            },
+            {
+              "description" : "Acesso ilimitado por um ano",
+              "displayName" : "Claud+",
+              "locale" : "pt_BR"
+            },
+            {
+              "description" : "Acceso ilimitado durante un año",
+              "displayName" : "Claud+",
+              "locale" : "es_MX"
+            },
+            {
+              "description" : "Accesso illimitato per un anno",
+              "displayName" : "Claud+",
+              "locale" : "it"
+            },
+            {
+              "description" : "Accès illimité pendant un an",
+              "displayName" : "Claud+",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Claud+",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Get unlimited access for this year",
+              "displayName" : "Claud+",
+              "locale" : "en_GB"
             },
             {
               "description" : "Obegränsad åtkomst i ett år",
@@ -376,19 +668,14 @@
               "locale" : "it"
             },
             {
-              "description" : "Get unlimited access for this year",
+              "description" : "Accès illimité pendant un an",
               "displayName" : "Claud+",
-              "locale" : "en_GB"
+              "locale" : "fr"
             },
             {
               "description" : "Get unlimited access for this year",
               "displayName" : "Claud+",
               "locale" : "en_CA"
-            },
-            {
-              "description" : "Accès illimité pendant un an",
-              "displayName" : "Claud+",
-              "locale" : "fr"
             }
           ],
           "productID" : "fp_1999_1y_1w",
@@ -403,8 +690,11 @@
       ]
     }
   ],
+  "subscriptionSuiteGroups" : [
+
+  ],
   "version" : {
-    "major" : 5,
-    "minor" : 0
+    "major" : 6,
+    "minor" : 3
   }
 }

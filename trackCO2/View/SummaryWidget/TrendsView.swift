@@ -18,7 +18,9 @@ struct TrendsView: View {
     var body: some View {
         VStack (alignment: .leading) {
             NavigationLink {
-                ListTrendsView()
+                PremiumGate(feature: .trends) {
+                    ListTrendsView()
+                }
             } label: {
                 HStack {
                     Text("Trends")

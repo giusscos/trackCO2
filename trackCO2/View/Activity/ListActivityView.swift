@@ -79,7 +79,9 @@ struct ListActivityView: View {
             .sheet(item: $activeSheet) { sheet in
                 switch sheet {
                 case .createActivity:
-                    CreateActivityView()
+                    PremiumGate(feature: .customActivities, presentation: .modal) {
+                        CreateActivityView()
+                    }
                 case .editActivity(let activity):
                     EditActivityView(activity: activity)
                 case .selectActivities:

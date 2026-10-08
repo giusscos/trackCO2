@@ -31,9 +31,70 @@ struct WeatherSuggestionView: View {
     }
 
     var body: some View {
+        Group {
+            if locationManager.isAuthorized {
+                suggestionCard
+            } else {
+                locationPrompt
+            }
+        }
+        .task {
+            guard locationManager.isAuthorized else { return }
+            await weather.refresh(using: locationManager)
+        }
+        .onChange(of: locationManager.authorizationStatus) { _, _ in
+            guard locationManager.isAuthorized else { return }
+            Task {
+                await weather.refresh(using: locationManager)
+            }
+        }
+    }
+
+    /// Without location the forecast can't load, so ask for it here, in context, instead of spinning forever.
+    private var locationPrompt: some View {
+        Button {
+            if locationManager.needsSettingsRedirect {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            } else {
+                locationManager.requestAuthorizationIfNeeded()
+            }
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "location.fill")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(Color.blue.gradient)
+                    .frame(width: 44, height: 44)
+                    .background(Circle().fill(Color.blue.gradient.opacity(0.2)))
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("weather.location.title")
+                        .font(.subheadline.weight(.semibold))
+                    Text(locationManager.needsSettingsRedirect ? "weather.location.settings" : "weather.location.body")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Label("Navigate to", systemImage: "chevron.right")
+                    .labelStyle(.iconOnly)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var suggestionCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             NavigationLink {
-                ListWeatherForecastView()
+                PremiumGate(feature: .weatherForecast) {
+                    ListWeatherForecastView()
+                }
             } label: {
                 HStack(spacing: 14) {
                     ZStack {
@@ -92,16 +153,6 @@ struct WeatherSuggestionView: View {
             // Outside NavigationLink so the legal URL remains tappable (WeatherKit 5.2.5).
             WeatherAttributionView(attribution: weather.attribution, compact: true)
                 .padding(.horizontal, 4)
-        }
-        .task {
-            guard locationManager.isAuthorized else { return }
-            await weather.refresh(using: locationManager)
-        }
-        .onChange(of: locationManager.authorizationStatus) { _, _ in
-            guard locationManager.isAuthorized else { return }
-            Task {
-                await weather.refresh(using: locationManager)
-            }
         }
         .onChange(of: locationManager.lastLocation) { _, location in
             guard location != nil else { return }

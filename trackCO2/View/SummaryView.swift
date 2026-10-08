@@ -17,6 +17,7 @@ struct SummaryView: View {
         case selectActivities
         case selectAppIcon
         case customizeHomeOrder
+        case paywall
 
         var id: String {
             switch self {
@@ -25,6 +26,7 @@ struct SummaryView: View {
             case .selectActivities:    return "selectActivities"
             case .selectAppIcon:       return "selectAppIcon"
             case .customizeHomeOrder:  return "customizeHomeOrder"
+            case .paywall:             return "paywall"
             }
         }
     }
@@ -36,6 +38,7 @@ struct SummaryView: View {
 
     @AppStorage("appIcon") var appIcon: String = defaultAppIcon
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @AppStorage("skippedHealthInOnboarding") private var skippedHealthInOnboarding = false
     @AppStorage("homeSectionOrder") private var homeSectionOrderRaw: String = HomeSection.defaultOrderRaw
 
     @Environment(\.modelContext) var modelContext
@@ -62,6 +65,7 @@ struct SummaryView: View {
 
     #if DEBUG
     @State private var showEraseAllDataConfirmation = false
+    @State private var didGenerateScreenshotData = false
     #endif
 
     private var sectionOrder: [HomeSection] {
@@ -101,6 +105,10 @@ struct SummaryView: View {
             VStack(spacing: 8) {
                 ForEach(sectionOrder) { section in
                     sectionView(section)
+                }
+
+                if !storeKit.hasPaid {
+                    ClaudPlusBannerView()
                 }
             }
             .padding()
@@ -145,7 +153,9 @@ struct SummaryView: View {
             }
         case .calendar:
             NavigationLink {
-                CalendarHeatmapView()
+                PremiumGate(feature: .calendar) {
+                    CalendarHeatmapView()
+                }
             } label: {
                 CalendarHeatmapPreviewRow(activities: activities)
             }
@@ -241,7 +251,24 @@ struct SummaryView: View {
             }
         }
 
+        if skippedHealthInOnboarding {
+            Button {
+                skippedHealthInOnboarding = false
+                loadHealthKitData()
+            } label: {
+                Label("health.menu.connect", systemImage: "heart")
+            }
+        }
+
         Divider()
+
+        if !storeKit.hasPaid {
+            Button {
+                activeSheet = .paywall
+            } label: {
+                Label("premium.menu.upgrade", systemImage: "sparkles")
+            }
+        }
 
         if storeKit.purchasedSubscriptions.count > 0 {
             Button {
@@ -270,7 +297,7 @@ struct SummaryView: View {
         Divider()
 
         Link("Terms of Service", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-        Link("Privacy Policy", destination: URL(string: "https://giusscos.it/privacy")!)
+        Link("Privacy Policy", destination: URL(string: "https://giusscos.com/work/claud/privacy/")!)
     }
 
     @ViewBuilder
@@ -279,13 +306,24 @@ struct SummaryView: View {
         case .createActivityEvent:
             ListActivityEventView()
         case .createActivity:
-            CreateActivityView()
+            PremiumGate(feature: .customActivities, presentation: .modal) {
+                CreateActivityView()
+            }
         case .selectActivities:
             SelectActivitiesToPersistView()
         case .selectAppIcon:
-            SelectAppIconView(selectedIcon: $appIcon)
+            PremiumGate(feature: .appIcons, presentation: .modal) {
+                SelectAppIconView(selectedIcon: $appIcon)
+            }
         case .customizeHomeOrder:
-            CustomizeHomeOrderView(orderRaw: $homeSectionOrderRaw)
+            PremiumGate(feature: .customizeHome, presentation: .modal) {
+                CustomizeHomeOrderView(orderRaw: $homeSectionOrderRaw)
+            }
+        case .paywall:
+            PaywallView(
+                onPurchaseComplete: { activeSheet = nil },
+                onClose: { activeSheet = nil }
+            )
         }
     }
 
@@ -310,6 +348,12 @@ struct SummaryView: View {
     // MARK: - Lifecycle
 
     private func handleAppear() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-screenshotData"), !didGenerateScreenshotData {
+            didGenerateScreenshotData = true
+            try? DevelopmentDataManager.generateScreenshotData(in: modelContext)
+        }
+        #endif
         guard hasCompletedOnboarding else { return }
         loadHealthKitData()
         scheduleReviewRequestIfAppropriate()
@@ -327,8 +371,9 @@ struct SummaryView: View {
         scheduleReviewRequestIfAppropriate()
     }
 
-    private func handleActiveSheetChange(_: ActiveSheet?, sheet: ActiveSheet?) {
-        guard sheet == nil else { return }
+    private func handleActiveSheetChange(_ previous: ActiveSheet?, sheet: ActiveSheet?) {
+        // Never ask for a rating right after someone closes the paywall.
+        guard sheet == nil, previous != .paywall else { return }
         scheduleReviewRequestIfAppropriate()
     }
 
@@ -366,6 +411,8 @@ struct SummaryView: View {
     }
 
     private func loadHealthKitData() {
+        // Don't re-prompt people who skipped Health in onboarding; they can connect from the menu.
+        guard !skippedHealthInOnboarding else { return }
         healthKitManager.requestAuthorization { success in
             healthKitAuthorized = success
             if success {

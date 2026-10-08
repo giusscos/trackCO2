@@ -22,6 +22,26 @@ enum DevelopmentDataManager {
         try context.save()
     }
 
+    /// Greener, tidier dataset for App Store screenshots (launch with `-screenshotData`).
+    static func generateScreenshotData(in context: ModelContext) throws {
+        try eraseAllData(in: context)
+        let activities = try ensureDefaultActivities(in: context)
+        try insertEvents(plans: [
+            (.car, 3, 5...10),
+            (.train, 2, 12...30),
+            (.bus, 4, 3...8),
+            (.walking, 1, 3...7),
+            (.biking, 1, 6...14),
+            (.vegetables, 1, 0.4...0.9),
+            (.beef, 9, 0.15...0.3),
+            (.electricity, 3, 4...8),
+            (.treePlanting, 3, 1...2),
+            (.recycling, 2, 2...5),
+        ], days: 70, for: activities, in: context)
+        try insertMockFavoritePlaces(in: context)
+        try context.save()
+    }
+
     private static func ensureDefaultActivities(in context: ModelContext) throws -> [ActivityEmissionType: Activity] {
         let existing = try context.fetch(FetchDescriptor<Activity>())
         var byType = Dictionary(uniqueKeysWithValues: existing.map { ($0.type, $0) })
@@ -43,9 +63,6 @@ enum DevelopmentDataManager {
     }
 
     private static func insertMockEvents(for activities: [ActivityEmissionType: Activity], in context: ModelContext) throws {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-
         let eventPlans: [(ActivityEmissionType, Int, ClosedRange<Double>)] = [
             (.car, 1, 8...35),
             (.walking, 1, 1...6),
@@ -58,8 +75,19 @@ enum DevelopmentDataManager {
             (.treePlanting, 14, 1...3),
             (.recycling, 4, 1...5),
         ]
+        try insertEvents(plans: eventPlans, days: 56, for: activities, in: context)
+    }
 
-        for dayOffset in 0..<56 {
+    private static func insertEvents(
+        plans eventPlans: [(ActivityEmissionType, Int, ClosedRange<Double>)],
+        days: Int,
+        for activities: [ActivityEmissionType: Activity],
+        in context: ModelContext
+    ) throws {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        for dayOffset in 0..<days {
             guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
 
             for (type, interval, quantityRange) in eventPlans {

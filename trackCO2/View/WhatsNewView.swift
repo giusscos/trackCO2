@@ -18,11 +18,9 @@ struct WhatsNewView: View {
     }
 
     private let features: [Feature] = [
-        Feature(icon: "theatermasks.fill", accent: .purple, text: "whats_new.feature.mascot"),
-        Feature(icon: "cloud.sun.bolt.fill", accent: .cyan, text: "whats_new.feature.weather"),
-        Feature(icon: "lightbulb.fill", accent: .green, text: "whats_new.feature.tips"),
-        Feature(icon: "sparkles", accent: .orange, text: "whats_new.feature.ui"),
-        Feature(icon: "map.fill", accent: .blue, text: "whats_new.feature.maps")
+        Feature(icon: "person.2.fill", accent: .green, text: "whats_new.v109.free"),
+        Feature(icon: "bolt.fill", accent: .orange, text: "whats_new.v109.seed"),
+        Feature(icon: "sparkles", accent: .purple, text: "whats_new.v109.plus")
     ]
 
     var body: some View {

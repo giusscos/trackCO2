@@ -19,10 +19,21 @@ class Store {
     private var subscriptionGroupStatus: RenewalState?
     var isLoading: Bool = true
     
-    let productIds: [String] = ["fp_499_1w", "fp_1999_1y_1w"]
+    /// Every subscription that grants Claud+, including legacy plans no longer sold on the paywall.
+    let productIds: [String] = ["fp_499_1w", "fp_1999_1y_1w", "fp_299_1m"]
+    static let monthlyID = "fp_299_1m"
+    static let yearlyID = "fp_1999_1y_1w"
+    static let lifetimeID = "com.giusscos.footprintLifetime"
+    /// Plans offered on the paywall, in display order. The yearly plan (with free trial) sits in the middle and is preselected.
+    static let paywallProductIds: [String] = [monthlyID, yearlyID, lifetimeID]
     let groupId: String = "21727569"
-    
+
     let productLifetimeIds: [String] = ["com.giusscos.footprintFamilyLifetime", "com.giusscos.footprintLifetime"]
+
+    var paywallProducts: [Product] {
+        let all = subscriptions + storeProducts
+        return Store.paywallProductIds.compactMap { id in all.first { $0.id == id } }
+    }
     
     // if there are multiple product types - create multiple variable for each .consumable, .nonconsumable, .autoRenewable, .nonRenewable.
     private var storeProducts: [Product] = []
@@ -30,7 +41,11 @@ class Store {
     private(set) var entitledProductIDs: Set<String> = []
     
     var hasPaid: Bool {
-        !purchasedSubscriptions.isEmpty || !purchasedProducts.isEmpty || !entitledProductIDs.isEmpty
+        #if DEBUG
+        // Launch with `-premiumOverride` to capture marketing screenshots of Claud+ screens.
+        if ProcessInfo.processInfo.arguments.contains("-premiumOverride") { return true }
+        #endif
+        return !purchasedSubscriptions.isEmpty || !purchasedProducts.isEmpty || !entitledProductIDs.isEmpty
     }
     
     var updateListenerTask : Task<Void, Error>? = nil
@@ -105,6 +120,14 @@ class Store {
         }
     }
     
+    /// Syncs with the App Store and returns whether any Claud+ entitlement is active afterwards.
+    @MainActor
+    func restorePurchases() async -> Bool {
+        try? await AppStore.sync()
+        await updateCustomerProductStatus()
+        return hasPaid
+    }
+
     //check if product has already been purchased
     func isPurchased(_ product: Product) async throws -> Bool {
         // as we only have one product type grouping .nonconsumable - we check if it belongs to the purchasedCourses which ran init()
