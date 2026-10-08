@@ -17,6 +17,17 @@
 		<string>sv</string>
 		<string>nb</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>giusscos.trackCO2</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>claud</string>
+			</array>
+		</dict>
+	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Claud uses your location to show local weather and air tips and to plan greener trips.</string>
 	<key>UIBackgroundModes</key>

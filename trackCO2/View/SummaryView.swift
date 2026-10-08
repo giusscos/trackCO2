@@ -36,6 +36,9 @@ struct SummaryView: View {
         GridItem(.flexible(minimum: 0), spacing: 8)
     ]
 
+    /// Changes when a `claud://log` link arrives; opens the log-activity sheet.
+    var logRequestID: Int = 0
+
     @AppStorage("appIcon") var appIcon: String = defaultAppIcon
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @AppStorage("skippedHealthInOnboarding") private var skippedHealthInOnboarding = false
@@ -81,6 +84,9 @@ struct SummaryView: View {
                 .sheet(isPresented: $showShareSheet) { shareSheet }
                 .manageSubscriptionsSheet(isPresented: $manageSubscription, subscriptionGroupID: storeKit.groupId)
                 .onAppear(perform: handleAppear)
+                .onChange(of: logRequestID) { _, _ in
+                    activeSheet = .createActivityEvent
+                }
                 .onChange(of: hasCompletedOnboarding, handleOnboardingChange)
                 .onChange(of: showAddYesterdayWalkingAlert, handleWalkingAlertChange)
                 .onChange(of: activeSheet, handleActiveSheetChange)

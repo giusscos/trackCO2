@@ -19,12 +19,25 @@ struct ContentView: View {
     @Environment(Store.self) private var store
     @State private var showWhatsNew = false
     @State private var didCheckExistingSubscription = false
+    @State private var selectedTab: AppTab = .home
+    /// Bumped by `claud://log` so Home opens the log-activity sheet.
+    @State private var logRequestID = 0
+    /// A link can arrive before the tabs exist (cold launch, onboarding), so it waits here.
+    @State private var pendingLink: DeepLink?
 
     private var currentVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
 
     var body: some View {
+        content
+            .onOpenURL { url in
+                pendingLink = DeepLink(url: url)
+            }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         if !hasCompletedOnboarding {
             // Shown right away; products keep loading in the background for the paywall at the end.
             OnboardingView()
@@ -44,11 +57,12 @@ struct ContentView: View {
         } else if store.isLoading {
             ProgressView()
         } else {
-            TabView {
-                SummaryView()
+            TabView(selection: $selectedTab) {
+                SummaryView(logRequestID: logRequestID)
                     .tabItem {
                         Label("Home", systemImage: "house.fill")
                     }
+                    .tag(AppTab.home)
 
                 PremiumGate(feature: .trips, presentation: .tab) {
                     TripsView()
@@ -56,16 +70,20 @@ struct ContentView: View {
                     .tabItem {
                         Label("Trips", systemImage: "map.fill")
                     }
+                    .tag(AppTab.trips)
 
                 ListActivityView()
                     .tabItem {
                         Label("Activities", systemImage: "list.bullet")
                     }
+                    .tag(AppTab.activities)
             }
+            .onChange(of: pendingLink) { _, _ in applyPendingLink() }
             .onAppear {
                 UITextField.appearance().clearButtonMode = .whileEditing
                 seedDefaultActivitiesIfNeeded()
                 checkWhatsNew()
+                applyPendingLink()
             }
             .fullScreenCover(isPresented: $showWhatsNew, onDismiss: {
                 lastSeenVersion = currentVersion
@@ -76,6 +94,24 @@ struct ContentView: View {
                 guard completed else { return }
                 checkWhatsNew()
             }
+        }
+    }
+
+    private func applyPendingLink() {
+        guard let link = pendingLink else { return }
+        pendingLink = nil
+        switch link {
+        case .home:
+            selectedTab = .home
+        case .log:
+            selectedTab = .home
+            // Give Home a moment to appear on a cold launch so it sees the change.
+            Task {
+                try? await Task.sleep(for: .milliseconds(400))
+                logRequestID += 1
+            }
+        case .trips:
+            selectedTab = .trips
         }
     }
 
