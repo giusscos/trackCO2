@@ -78,6 +78,9 @@ struct ContentView: View {
                     }
                     .tag(AppTab.activities)
             }
+            // Tab bar on compact width; on regular width (iPhone Duo inner display, iPad)
+            // it can expand into a sidebar.
+            .tabViewStyle(.sidebarAdaptable)
             .onChange(of: pendingLink) { _, _ in applyPendingLink() }
             .onAppear {
                 UITextField.appearance().clearButtonMode = .whileEditing

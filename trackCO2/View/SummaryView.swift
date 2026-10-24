@@ -46,6 +46,7 @@ struct SummaryView: View {
 
     @Environment(\.modelContext) var modelContext
     @Environment(\.requestReview) var requestReview
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     @Query var activities: [Activity]
 
@@ -109,8 +110,17 @@ struct SummaryView: View {
     private var summaryScrollContent: some View {
         ScrollView {
             VStack(spacing: 8) {
-                ForEach(sectionOrder) { section in
-                    sectionView(section)
+                if horizontalSizeClass == .regular {
+                    // Two columns on regular width (iPhone Duo inner display, iPad),
+                    // alternating sections so the user's order still reads left to right.
+                    HStack(alignment: .top, spacing: 8) {
+                        sectionColumn(sectionOrder.enumerated().filter { $0.offset.isMultiple(of: 2) }.map(\.element))
+                        sectionColumn(sectionOrder.enumerated().filter { !$0.offset.isMultiple(of: 2) }.map(\.element))
+                    }
+                } else {
+                    ForEach(sectionOrder) { section in
+                        sectionView(section)
+                    }
                 }
 
                 if !storeKit.hasPaid {
@@ -167,6 +177,15 @@ struct SummaryView: View {
             }
             .buttonStyle(.plain)
         }
+    }
+
+    private func sectionColumn(_ sections: [HomeSection]) -> some View {
+        VStack(spacing: 8) {
+            ForEach(sections) { section in
+                sectionView(section)
+            }
+        }
+        .frame(minWidth: 0, maxWidth: .infinity, alignment: .top)
     }
 
     private func pairedWidgets<Content: View>(@ViewBuilder content: () -> Content) -> some View {
